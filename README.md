@@ -1,6 +1,6 @@
 # DeepSeek Harness 白皮书 · dsh-handbook
 
-> **从 0 到 1 玩转 DeepSeek Harness——官方开源 Agent 运行时的新手百科全书。**
+> **从 0 到 1 玩转 DeepSeek Harness的新手百科全书。**
 > ⭐ 如果你觉得有帮助，点个 Star 支持持续更新 · 中文 · [English](./README.en.md)
 
 <p align="center">
