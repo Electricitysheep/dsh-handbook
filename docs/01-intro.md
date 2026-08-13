@@ -2,6 +2,14 @@
 
 > 本章目标：从一个完全零基础的角度，建立对 DeepSeek Harness（dsh）的完整认知——**它是什么、为什么值得学、和主流 Agent 有什么区别、什么时候用它**。读完本章，你不需要任何前置知识，就能理解 dsh 在整个 AI 开发工具版图中的位置。
 
+## TL;DR（本章核心，30 秒版）
+
+1. **dsh = Agent 的乐高底座**：官方开源（MIT）的运行时，一切能力都是插件，你可以自由拼装
+2. **harness = 模型外面的工程层**：会话、工具、上下文、循环控制——让模型在仓库里真正干活
+3. **和 Claude Code 的区别**：Claude Code 是"整车"，dsh 是"底座 + 积木"——可定制面完全不同
+4. **生态窗口**：2026-08-13 开源，中文教程此前为零——现在入场是早期
+5. **谁该用**：要深度定制/玩生态/跑 CI 的开发者；要开箱即用的选 Claude Code
+
 ## 1.1 先建立三个直觉
 
 在讲技术之前，先用三个类比建立直觉：
@@ -30,6 +38,32 @@
 | 官方定位 | 官方 README 原话："everything is a plugin" |
 
 ## 1.3 架构是怎么"一切皆插件"的
+
+```mermaid
+flowchart TB
+    subgraph Profile["你的 profile（可启动形态）"]
+        P1["dsh web（Web UI）"]
+        P2["dsh headless（CLI）"]
+        P3["自定义 profile（TUI/桌面/机器人…）"]
+    end
+    subgraph Plugins["能力层（每个能力 = 一个插件）"]
+        L["llm：模型接入 + 推理档位"]
+        T["tools：写文件/终端/搜索/技能"]
+        S["session：会话持久化"]
+        C["client：界面（web/终端）"]
+        ST["settings：用户配置"]
+    end
+    subgraph Cordis["Cordis 插件容器"]
+        D["依赖注入 · 事件 · 生命周期"]
+    end
+    Profile --> Cordis
+    Cordis --> Plugins
+    Plugins --> L
+    Plugins --> T
+    Plugins --> S
+    Plugins --> C
+    Plugins --> ST
+```
 
 ### 3.1 分层视图
 
@@ -153,3 +187,18 @@
 ---
 
 **下一章**：[第 2 章：五分钟快速上手](./02-quickstart.md) —— 装起来，跑起来。
+
+---
+
+## 动手练习（检验你是否真懂了）
+
+1. **一句话测试**：向不懂技术的人解释"dsh 是什么"（不能用"Agent/harness/插件"这些词）
+2. **对比测试**：说出 dsh 和 Claude Code 的 3 个本质区别（不是功能列表）
+3. **选型测试**：给下面场景选工具并说明理由：
+   - 场景 A：想要开箱即用的终端编码助手
+   - 场景 B：想做一个"模型无关、界面自定义"的公司内部 Agent 平台
+   - 场景 C：想在 CI 里每天自动跑一个数据分析任务
+4. **架构测试**：画出"profile → 插件 → 扩展点"的关系图（不看原文）
+5. **FAQ 测试**：回答"dsh 是模型吗？""没写过 TS 能玩吗？"
+
+> 完成练习后，进 [第 2 章](./02-quickstart.md) 动手装起来。
