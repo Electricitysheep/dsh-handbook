@@ -22,3 +22,4 @@
 - [Chapter 9: MCP & subagent workflow](docs/09-mcp-subagent-workflow.md)
 - [Chapter 10: Complex cases](docs/10-complex-cases.md)
 - [Chapter 11: Future](docs/11-future.md)
+- [Chapter 12: Known limitations & boundaries (rc honest view)](docs/12-limitations.md)
