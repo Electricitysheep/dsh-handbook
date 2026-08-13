@@ -90,6 +90,7 @@ flowchart TD
     C9 --> C10
     subgraph 进阶["进阶：复杂案例与展望"]
         C10["10 复杂实战案例"] --> C11["11 未来展望"]
+    C11 --> C12["12 已知不足（诚实版）"]
     end
     C11 --> Appendix["附 术语表 · 命令速查 · Benchmark"]
 ```
@@ -108,6 +109,7 @@ flowchart TD
 | 9 | [MCP、子代理与工作流](./docs/09-mcp-subagent-workflow.md) | 外部工具接入、并行子代理、多步编排、Agent 系统蓝图|
 | 10 | [复杂实战案例](./docs/10-complex-cases.md) | **dsh 真实跑出的**：数据清洗+可视化管线（186s）、5-bug 修复+49 测试（94s），含产物与判断力分析|
 | 11 | [未来展望](./docs/11-future.md) | 技术/生态/竞争/行业/机会/风险 六角度演进预测 + 时间线|
+| 12 | [已知不足与边界](./docs/12-limitations.md) | rc 版诚实版：不稳定性/生态早期/跨平台短板/策略风险 |
 | 附 | [术语表与命令速查](./docs/appendix-glossary.md) · [Benchmark](./docs/benchmark.md) | 30+ 术语、命令速查、3 Agent 实测|
 
 ## 💎 内容精华速览（点开即看，不止链接）
