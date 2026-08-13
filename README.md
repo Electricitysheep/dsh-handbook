@@ -10,8 +10,8 @@
 <div align="center">
 
 ![dsh-handbook](https://img.shields.io/badge/dsh--handbook-白皮书-blue)
-![chapters](https://img.shields.io/badge/章节-7-green)
-![pdf](https://img.shields.io/badge/PDF-1.25MB-orange)
+![chapters](https://img.shields.io/badge/章节-13-green)
+![pdf](https://img.shields.io/badge/PDF-3.9MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
 ![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.6-8A2BE2)
 
@@ -210,8 +210,8 @@ dsh --profile headless "你好，请用一句话介绍你自己"
 
 ## 白皮书 PDF
 
-- **中文完整版**：[DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf)（7 章合订，1.25MB）
-- 英文版 PDF 随英文章节完成度更新
+- **中文完整版**：[DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf)（13 章节，109k 字符，3.9MB）
+- **英文完整版**：[DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf)（10 章，54k 字符）
 
 ## 为什么值得读（而不是只看官方文档）
 
