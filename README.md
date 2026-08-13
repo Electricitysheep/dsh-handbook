@@ -54,6 +54,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | 7 | [生态与资源](./docs/07-ecosystem.md) | 官方入口、参与路径、阅读建议 | ✅ |
 | 8 | [工具与上下文系统](./docs/08-tools-context.md) | 60+ 能力包地图、内置工具、上下文注入、compaction、安全模型 | ✅ |
 | 9 | [MCP、子代理与工作流](./docs/09-mcp-subagent-workflow.md) | 外部工具接入、并行子代理、多步编排、Agent 系统蓝图 | ✅ |
+| 10 | [复杂实战案例](./docs/10-complex-cases.md) | **dsh 真实跑出的**：数据清洗+可视化管线（186s）、5-bug 修复+49 测试（94s），含产物与判断力分析 | ✅ |
 | 附 | [术语表与命令速查](./docs/appendix-glossary.md) · [Benchmark](./docs/benchmark.md) | 30+ 术语、命令速查、3 Agent 实测 | ✅ |
 
 ## 内容精华速览（点开即看，不止链接）
@@ -129,6 +130,15 @@ dsh --profile headless "你好，请用一句话介绍自己"
 - **子代理**：并行委派任务（大仓库调研/长任务分解）
 - **工作流**：确定性多步编排（拉取→清洗→报表→校验）
 - **四阶段新手路径**：单 Agent → +MCP → +子代理 → +工作流
+</details>
+
+<details>
+<summary><b>🧪 第 10 章：复杂实战案例 —— dsh 真实跑出来的</b></summary>
+
+- **案例 A**：数据质量分析→清洗→可视化（186s，52→35 行归零，chart.png，含权衡说明）
+- **案例 B**：5-bug 修复 + 49 测试（94s，pytest 49 passed，覆盖除零/负数/精度边界）
+- **画像**：多步工具链自动编排 + 有判断力 + 产物可追踪
+- 隐私声明：全部合成数据/自造代码
 </details>
 
 <details>
