@@ -14,9 +14,11 @@
 - [Plugin template (clone & run)](examples/plugin-template/README.md)
 - [Config reference (settings/cordis.patch.yml/profile)](docs/config-reference.md)
 - [FAQ](docs/faq.md)
-- [Benchmark: same model × 6 agents](docs/benchmark/)
+<!-- [fix] 链接健康检查：docs/benchmark/ 是目录不存在，实为 docs/benchmark.md -->
+- [Benchmark: same model × 6 agents](docs/benchmark.md)
 - [Chapter 1: Intro & capability matrix](docs/01-intro.md)
-- [Chapter 2: Install & onboarding](docs/02-install.md)
+<!-- [fix] 链接健康检查：docs/02-install.md 不存在，实为 docs/02-quickstart.md -->
+- [Chapter 2: Install & onboarding](docs/02-quickstart.md)
 - [Chapter 3: Profiles](docs/03-profiles.md)
 - [Chapter 4: Plugin development](docs/04-plugin-dev.md)
 - [Chapter 5: Use cases](docs/05-cases.md)
