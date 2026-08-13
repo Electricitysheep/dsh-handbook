@@ -2,6 +2,14 @@
 
 > 本章目标：**跟着做，跑起来**。每一条命令都给出预期输出与常见错误解法。建议打开终端边看边做。
 
+## TL;DR（本章核心，30 秒版）
+
+1. **装**：`npx -y @deepseek-ai/dsh web` → http://127.0.0.1:3080
+2. **两种模式**：web（对话 UI）/ headless（`dsh --profile headless "任务"`，CI 友好）
+3. **推理档位三档**：low（最快）/ high（默认）/ max（最强）——**工具链任务 90% 时间在思考，降档是最快提速**
+4. **模型**：`deepseek-v4-flash`（默认，性价比）或 `deepseek-v4-pro`（旗舰）
+5. **配置**：`~/.dsh/settings.yaml`（模型 + 推理档位）
+
 ## 2.1 准备工作（30 秒检查）
 
 | 需要 | 检查命令 | 通过标准 |
@@ -190,3 +198,15 @@ agent-default-model:
 ---
 
 **下一章**：[第 3 章：profile 与插件系统](./03-profiles.md) —— 理解可定制骨架。
+
+---
+
+## 动手练习（10 分钟内完成）
+
+1. **安装**：`npx -y @deepseek-ai/dsh --version` 确认版本
+2. **Web 对话**：启动 `dsh web`，新会话发"你好"，观察回复与界面布局
+3. **Headless**：`dsh --profile headless "1+1 等于几"`，确认打印结果后退出
+4. **推理档位实验**：把 settings.yaml 的 `reasoningEffort` 改为 `low`，重新跑一个简单任务，感受速度差异
+5. **排障演练**：模拟"端口被占"（先起一个占用 3080 的服务），用 `netstat` 排查
+
+> 全部通过后，进 [第 3 章](./03-profiles.md) 理解"为什么能这样改"。
