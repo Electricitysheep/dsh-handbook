@@ -52,7 +52,8 @@ The actual tool names the model can call are **short verbs** (observed from dsh 
 
 A single model request's context = system prompt + skill catalog + conversation history + tool results. This is visible in session logs:
 
-```
+<!-- [style] 示意图代码块统一补 text 语言标签 -->
+```text
 Context injection @deepseek-ai/dsh-system-prompt   ← Official system prompt
 Context injection skill-catalog                    ← Skill catalog
 ```

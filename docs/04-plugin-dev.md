@@ -27,7 +27,8 @@
 
 ## 4.2 项目骨架
 
-```
+<!-- [style] 目录树代码块统一补 text 语言标签 -->
+```text
 dsh-tool-turbo/
 ├── package.json          # host 插件声明
 ├── tsconfig.json
@@ -183,7 +184,7 @@ it('downgrades to low for simple tool chains', () => {
 
 挂载插件（第 3 章方法）→ 重启 `dsh web` → 发一个创建文件的任务 → 观察 dsh 进程日志：
 
-```
+```text
 [tool-turbo] agent/request: calls=[]                    => reasoningEffort=high
 [tool-turbo] agent/request: calls=[{"name":"write",…}] => reasoningEffort=low
 ```
