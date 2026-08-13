@@ -1,7 +1,11 @@
 # DeepSeek Harness 白皮书 · dsh-handbook
 
 > **从 0 到 1 玩转 DeepSeek Harness——官方开源 Agent 运行时的新手百科全书。**
-> 中文 · [English](./README.en.md) · 持续更新（随 dsh rc 版本迭代）
+> ⭐ 如果你觉得有帮助，点个 Star 支持持续更新 · 中文 · [English](./README.en.md)
+
+<p align="center">
+  <img src="./docs/assets/banner.svg" alt="dsh-handbook banner" width="720"/>
+</p>
 
 <div align="center">
 
