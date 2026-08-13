@@ -135,3 +135,53 @@ dsh 有 compaction（上下文溢出恢复）、guard（超时）、interaction�
 ---
 
 **附录 A**：[术语表与命令速查](./appendix-glossary.md)
+
+## 扩展案例（第二批，三个功能领域）
+
+> 完整执行报告见 [case-expansion-report.md](./case-expansion-report.md)，产物在 `docs/assets/`。全部合成数据。
+
+### 案例 C：HTML 解析（Web 前端，约 3m18s）
+
+**任务**：给定含表格+表单+图表的合成 HTML，编写零第三方依赖的解析脚本提取表格并输出 CSV。
+
+**dsh 的表现**：
+- **零依赖权衡**：主动选标准库 `html.parser`（而非 BeautifulSoup）
+- **健壮性**：实现表格嵌套深度计数，防止越界
+- **路径无关**：用 `__file__` 定位输入，不依赖运行目录
+
+产物：[case-c-parser.py](./assets/case-c-parser.py)｜验证：输出 9 行×7 列 CSV，与源表逐字段一致
+
+### 案例 D：代码重构（软件工程，约 4m37s）
+
+**任务**：把约 200 行过程式订单脚本（含重复代码 `calc_order_total` / `calc_order_total_v2`）重构为 OOP + 职责分离，行为一致，测试验证。
+
+**dsh 的表现**：
+- **精准识别重复**：合并两份相同逻辑为 `Order.total()` 单一入口
+- **SOLID 设计**：Product/Customer/Order（模型）+ OrderProcessor（查询）+ ReportGenerator（报告）
+- **向后兼容**：保留模块级函数接口，可直接替换
+- **测试深度**：17/17 PASS——不仅对比函数返回值，还对比**脚本级整体运行产物**（report.txt / orders.json）
+- **沙箱感知**：发现 `tempfile.mkdtemp` 在沙箱下 0700 ACL 不可写，主动换方案
+
+产物：[case-d-orders_refactored.py](./assets/case-d-orders_refactored.py) + [case-d-test_refactor.py](./assets/case-d-test_refactor.py)｜验证：**17/17 PASS**
+
+### 案例 E：API 文档生成（文档，约 1m04s）
+
+**任务**：给含 8 个函数的 Python 模块生成完整 Markdown API 文档（参数表/返回值/异常/示例/边界）。
+
+**dsh 的表现**：
+- **契约差异识别**：主动发现"文档声明"与"代码实现"的差异（如 `user_id` 字符集未强制校验），如实写入边界章节
+- **防御式文档**：为每个函数标注调用陷阱（负数 limit、空 updates 行为）
+- **ReadTheDocs 风格**：423 行，8 个函数全覆盖，示例含 doctest 风格
+
+产物：[case-e-api.md](./assets/case-e-api.md)
+
+### 第二批案例画像
+
+| 维度 | 表现 |
+|---|---|
+| 跨领域能力 | ✅ Web/工程/文档三种任务都能闭环 |
+| 工程意识 | ✅ 零依赖权衡、沙箱感知、向后兼容、契约差异识别 |
+| 验证习惯 | ✅ 每个案例都运行验证（含脚本级产物对比） |
+| 耗时 | 1-5 分钟/案例，复杂度越高越久 |
+
+**总结**：dsh 在"要写代码 + 要验证"的工程任务上表现稳定，且**会做权衡（依赖/兼容/安全）**——这是 agent 从"能答"到"能干活"的分水岭。
