@@ -36,6 +36,7 @@
 
 ## 6.2 reasoning_effort 策略（官方三档）
 
+<!-- [fix] 技术准确性核验："官方三档"在默认 DeepSeek 适配器（deepseek-official）下为 off / high / max；low 是 pi-ai（opencode-go）网关档位（本白皮书实测环境，即 benchmark 所走网关）。工具链降档叙事在网关环境下成立，settings.yaml 对默认 provider 请用 off -->
 | 档位 | 场景建议 |
 |---|---|
 | `low` | 简单/确定性轮次：文件操作、批量、工具链中的廉价步 |
