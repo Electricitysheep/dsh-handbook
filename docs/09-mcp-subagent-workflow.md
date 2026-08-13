@@ -12,6 +12,14 @@
 4. **组合起来 = Agent 系统**：父 Agent 规划 → 子代理并行调研 → 工具链 + MCP → 工作流汇总 → 产物
 5. **新手路径四阶段**：单 Agent + 内置工具 → + MCP → + 子代理 → + 工作流（逐步叠加，别跳级）
 
+<details><summary>本章导航</summary>
+- [9.1 MCP：接入外部工具生态](#91-mcp接入外部工具生态)
+- [9.2 子代理（subagent）：并行干活](#92-子代理subagent并行干活)
+- [9.3 工作流（workflow）：多步编排](#93-工作流workflow多步编排)
+- [9.4 组合起来：一个"Agent 系统"长什么样](#94-组合起来一个agent-系统长什么样)
+- [9.5 社区生态示例（2026-08-13 快照）](#95-社区生态示例2026-08-13-快照)
+</details>
+
 ## 9.1 MCP：接入外部工具生态
 
 **MCP（Model Context Protocol）**是"给 Agent 插外部工具"的开放协议。dsh 提供 `mcp` 客户端包（`@deepseek-ai/dsh-mcp-client`）。
