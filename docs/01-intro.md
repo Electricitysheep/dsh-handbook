@@ -112,7 +112,7 @@ flowchart TB
 
 ## 1.4 DSH 与主流 Agent 的全面对比
 
-### 4.1 能力矩阵
+### 4.1 能力矩阵（核心六家）
 
 | 维度 | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI |
 |---|---|---|---|---|---|---|
@@ -126,7 +126,61 @@ flowchart TB
 | 生态阶段 | 零日起步（2026-08-13） | 成熟 | 成熟 | 成熟 | 成熟 | 早期 |
 | 适合谁 | **想深度定制 + 玩生态的开发者** | 开箱即用 | 开箱即用 | 熟悉 OpenCode 用户 | Google 生态 | Kimi 生态 |
 
-### 4.2 案例对比：同一个任务，不同的打开方式
+### 4.1.1 更多主流 Agent 速览（一句话定位）
+
+| Agent | 一句话定位 | 与 dsh 的核心差异 |
+|---|---|---|
+| **Cursor** | IDE 内嵌的 AI 编码助手（Composer/Agent 模式） | 深度绑定 IDE；dsh 是独立运行时，可配任意编辑器/终端 |
+| **Amp** | 终端原生、代理优先的 AI 编码 agent | 轻量终端形态；dsh 多了官方后端 + 插件生态 |
+| **Devin** | 云端"AI 软件工程师"（独立任务/浏览器/工作区） | 托管云端；dsh 本地运行、数据不出本机 |
+| **Windsurf** | IDE 内嵌编码 agent（Flow/Agent 模式） | 同 Cursor，绑定 IDE |
+| **Aider** | 开源、Git 优先的终端 pair-programming agent | 专注"改代码 + git"；dsh 是通用运行时 |
+| **Qwen Code** | 阿里通义 coding agent CLI（内置 DeepSeek provider） | 主打 Qwen 模型；dsh 官方适配 DeepSeek 且插件化 |
+| **GLM CLI** | 智谱 coding agent CLI | 主打 GLM 模型；dsh 模型无关 + 插件生态 |
+| **Grok CLI** | xAI 终端 coding agent | 主打 Grok 模型 |
+
+> 结论：主流 agent 大致分三类——**IDE 内嵌**（Cursor/Windsurf）、**终端编码助手**（Codex/OpenCode/Aider/Qwen Code/GLM CLI/Grok CLI）、**运行时/平台**（dsh/Devin）。dsh 是目前唯一"官方开源 + 模型无关 + 插件生态"的运行时型选手。
+
+### 4.2 通俗文字版：每家是什么、适合谁、和 dsh 差在哪
+
+**Claude Code（Anthropic）**：目前最成熟的终端编码助手。开箱即用、TUI 体验好、生态成熟——**适合想马上干活的人**。缺点：闭源、绑定 Claude 模型、定制空间有限（只能配置/钩子）。和 dsh 比：dsh 能改的东西它改不了（界面/工具链/后端），但 dsh 的"开箱即用"还比不上它。
+
+**OpenAI Codex**：OpenAI 的终端 agent。工程能力强、GPT 系模型加持。同样闭源绑定。和 dsh 比：能力线接近，但 dsh 开源可自改。
+
+**OpenCode**：开源、终端、可配任意模型——和 dsh 最像的"邻居"。关键差异：**OpenCode 没有官方后端运行时**（它是客户端 + 配置），dsh 有官方 bundle + 60+ 包 + 插件生态，可定制面更深。**如果你是 OpenCode 用户，迁移 dsh 的成本很低**（概念类似）。
+
+**Gemini CLI**：Google 的终端 agent。长上下文/多模态是强项（Gemini 模型优势）。绑定 Google 生态。
+
+**Kimi CLI**：月之暗面的终端 agent。中文场景好、Kimi 模型加持。生态早期。
+
+**Cursor / Windsurf**：IDE 内嵌型——它们的优势是"编辑器里就用"，劣势是**你被锁在 IDE 里**。dsh 是独立运行时，可以在任意环境（终端/CI/服务器/未来的 TUI）用同一套 agent 能力。
+
+**Devin**：云端工程师——你给它任务，它在云上干活。优势是托管、有浏览器；劣势是**数据出本机**、费用高。dsh 本地运行，隐私可控。
+
+**Aider**：老牌开源、Git 优先、轻量。适合"只想让 AI 帮改代码"的极简主义者。dsh 是更重的运行时——如果你只需要 Aider 做的事，Aider 够用；如果你想做 Agent 系统，dsh 是底座。
+
+**Qwen Code / GLM CLI / Grok CLI**：各家模型的终端 agent——模型绑定是它们的天然属性。dsh 模型无关（官方适配 DeepSeek，可接 OpenAI 兼容），更适合想"模型可换"的人。
+
+### 4.2.1 一张图理解 dsh 的差异化位置
+
+```
+定制深度（可改的东西）
+   高 │            dsh（运行时 + 插件生态）
+      │
+      │    自建框架（LangGraph 等）
+      │
+      │    OpenCode（客户端 + 配置）
+      │
+   低 │    Claude Code / Codex / Gemini / Kimi（产品即运行时）
+      └──────────────────────────────────────
+       低            开箱即用程度            高
+```
+
+- **右上**：dsh——可定制面最大，但"开箱即用"需生态补足
+- **左上**：自建框架——完全自由但全要自己搭
+- **右下**：产品型 agent——最好用但最封闭
+
+### 4.2.2 案例对比：同一个任务，不同的打开方式
 
 **任务**：让 Agent 在仓库里"找到所有调用某个函数的地方，并统一改一个参数"。
 
@@ -134,12 +188,11 @@ flowchart TB
 |---|---|---|
 | **dsh（web）** | `dsh web` → 输入指令 → 模型用 Grep/Read/Edit 工具完成 | Web UI + 右侧插件侧边栏（可加 Git 面板） |
 | **dsh（headless）** | `dsh --profile headless "任务"` → 打印结果退出 | **可进 CI**：非零退出码即失败 |
-| Claude Code | `claude` → 输入指令 → 模型完成 | 终端 TUI，开箱即用 |
-| Codex | `codex` → 输入指令 | 终端 TUI |
-| OpenCode | `opencode` → 输入指令 | 终端 TUI，可配任意模型 |
-| Kimi CLI | `kimi` → 输入指令 | 终端 TUI |
+| Claude Code / Codex / OpenCode / Kimi | 打开 TUI → 输入指令 → 模型完成 | 终端 TUI，开箱即用 |
+| Cursor / Windsurf | 在 IDE 里选中代码 → 输入指令 | IDE 内嵌体验 |
+| Devin | 网页里建任务 → 云上完成 | 托管、有浏览器、数据出本机 |
 
-**差异点在哪**：同样一句话，**dsh 让你多了一个选择维度——界面和工具链都可以换**。比如把 Git 面板、工具调用提速插件挂进去，同一个模型干活的效率就不一样了。其他 Agent 的界面/工具链是官方定的。
+**差异点在哪**：同样一句话，**dsh 让你多了一个选择维度——界面和工具链都可以换**。其他 Agent 的界面/工具链是官方定的，dsh 是你可以拼的。
 
 ### 4.3 案例对比：真实工作流（我们的实测）
 
@@ -152,7 +205,7 @@ flowchart TB
 | 插件开发 | 从零到可运行插件：1 天（含测试+实机验证） | 扩展点清晰（agent/request waterfall） |
 | 与 Claude Code 同任务 | dsh 配 V4-Flash 成本约为 Claude 的 1/10~1/30 | 价格维度 dsh 生态显著占优 |
 
-> 数据来源：本白皮书配套开发记录（dsh-tool-turbo 实测日志 + 官方成绩单对比）。
+> 同模型 × 不同 Agent 的严格对比见 [Benchmark 附录](./benchmark.md)（omp 36s / dsh 85s / opencode 114s）。
 
 ## 1.5 什么时候用 dsh（选型决策）
 
