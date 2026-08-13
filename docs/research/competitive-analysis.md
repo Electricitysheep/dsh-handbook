@@ -25,7 +25,7 @@
 | 6 | 缺社区运营 | claude-code Discord / ROADMAP / CONTRIBUTING / Good First Issue | ⚠️ 部分：discussions 已开 + 官方库 3 帖响应；无 CONTRIBUTING/ROADMAP |
 | 7 | 缺 llms.txt + Topics | llmstxt.org 标准 | ✅ 已落地（llms.txt + llms-full.txt） |
 | 8 | 缺 Used by / 社会证明 | awesome logo 墙 / langchain 案例 | ⚠️ 部分：生态联动区有 2 个真实项目 |
-| 9 | 缺 Star History badge | star-history.com SVG | ❌ 未加（+15% star 转化） |
+| 9 | 缺 Star History badge | star-history.com SVG | ⏸ 曾加后移除——star 数尚少（17）时展示意义低，待增长后再加 |
 | 10 | 缺 GitHub 原生警告框 | claude-code `> [!WARNING]` | ✅ 已落地（rc 版本警告） |
 
 ## 标杆可复用设计（摘要）
