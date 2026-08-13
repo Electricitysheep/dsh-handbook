@@ -5,6 +5,14 @@
 > **Goal of this chapter:** Demonstrate dsh's actual capabilities, output quality, and timing on multi-step tool chains through two **complex tasks completed live in dsh.**
 > **Privacy notice:** Both cases use **synthetic data / self-authored code** only. No real business data or sensitive information is involved.
 
+## TL;DR (30-second version)
+
+1. **Case A (data quality analysis, 186 seconds)**: 52 rows of dirty data → analysis → cleaning script → visualization → run verification. 52 → 35 rows, all issues resolved.
+2. **Case B (5-bug fix + 49 tests, 94 seconds)**: calculator module with 5 planted bugs → all fixed → 49 tests pass, covering edge cases, precision, and exceptions.
+3. **dsh's profile**: auto-orchestrated multi-step tool chains, shows judgment (proactively explains data trade-offs), artifact tracking, controllable timing (94-186s).
+4. **Key insight**: write acceptance criteria clearly in the prompt (e.g. "run and verify"), and dsh will close the loop. For complex tasks, specify "what to do + how to verify."
+5. **Failure recovery**: not triggered in these cases. Production recommendation: pair with guard timeouts + human approval.
+
 ## Case A: Data Quality Analysis + Cleaning + Visualization (186 seconds)
 
 ### Task
@@ -88,6 +96,26 @@ python -m pytest test_calculator.py -v   # 49 passed in 0.37s
 | Failure recovery | Not triggered in these cases; production recommendation: pair with guard timeouts + human approval |
 
 **Takeaway for newcomers:** dsh excels at tasks involving "multiple files, multiple steps, and verification" — which is also its primary value proposition as an agent runtime. For complex tasks, the recommendation is to **write acceptance criteria clearly in the prompt** (e.g. "run to verify"), and dsh will follow through to completion.
+
+---
+
+## Hands-on exercises
+
+1. **Reproduce Case A**: create a synthetic JSON file with dirty data (missing values, type errors, duplicates, outliers). Give it to dsh with the same prompt. Compare your results with the case study.
+2. **Reproduce Case B**: create a Python module with 5 planted bugs. Ask dsh to find and fix them, then write tests. How many bugs does it find? How many tests does it write?
+3. **Prompt variation**: run Case A twice. First time, say "clean the data." Second time, say "clean the data, run and verify, and explain your trade-offs." Compare the output quality.
+4. **Timing analysis**: measure how long each step takes (read, write, bash, verify). Which step is the bottleneck? How does this compare to the 90% / <1% split from Chapter 6?
+5. **Failure injection**: give dsh an impossible task (e.g. "fix this code, but don't run the tests"). Does it still try to verify? What happens when the acceptance criteria are unclear?
+6. **Think**: why does dsh "show judgment" (explain trade-offs, design edge-case tests)? Is this a feature of the model, the harness, or the prompt?
+
+## FAQ
+
+- **Q: Are these real-world cases or synthetic?** Synthetic. The data and code are self-authored to demonstrate capabilities. No real business data is involved.
+- **Q: Why 94 seconds for Case B?** That's the total wall-clock time for reading the code, finding 5 bugs, fixing them, writing 49 tests, running them, and summarizing. Most of the time is model thinking (Chapter 6).
+- **Q: What if dsh misses a bug?** In Case B, it found all 5. But in general, the quality depends on the prompt. If you say "find all bugs," it will try. If you say "fix the obvious bugs," it might miss subtle ones.
+- **Q: Can I use dsh for production data cleaning?** Yes, but review the output. dsh explains its trade-offs (e.g. "median imputation creates a spike"), but you should verify the cleaning logic matches your business rules.
+- **Q: What's the "artifact tracking" mentioned in the summary?** Tool returns carry `locations` (file paths). dsh uses these to build "artifact file lines" — the artifact chips at the end of the conversation. You can click to open each file.
+- **Q: How do I handle failure recovery in production?** Pair dsh with guard timeouts (to prevent infinite loops) and human approval (for sensitive operations). The `guard/*` and `interaction/*` packages provide these capabilities.
 
 ---
 

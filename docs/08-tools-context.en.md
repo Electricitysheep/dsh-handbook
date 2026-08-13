@@ -88,4 +88,24 @@ Long conversations blow up the context window. dsh's `compaction` plugins (e.g. 
 
 ---
 
+## Hands-on exercises
+
+1. **Tool inventory**: open a `dsh web` session. Ask the model: "List all the tools you can call." Compare the list with Section 8.2. Are there any surprises?
+2. **Artifact tracking**: give dsh a task that modifies multiple files (e.g. "Create a Python project with a main script, a test file, and a README"). After the task, check the artifact chips at the end of the conversation. Can you open each file?
+3. **Context inspection**: open the session log (top-right in `dsh web`). Look for "Context injection" lines. What sections are injected? How much of the context is system prompt vs conversation history?
+4. **Long conversation test**: have a 20+ turn conversation with dsh. At what point does compaction kick in? Check the logs for compaction events. Does the model still remember early context?
+5. **Permission modes**: in the Web UI, switch between different access modes (e.g. "Workspace Write"). What changes? What operations are restricted?
+6. **Think**: why are tool names short verbs instead of descriptive names? How does this affect the model's ability to use them correctly?
+
+## FAQ
+
+- **Q: What's the difference between `edit` and `write`?** `write` creates or overwrites a file. `edit` (or `str_replace_editor`) makes precise replacements within a file. Use `edit` for small changes, `write` for new files or major rewrites.
+- **Q: Why does the model sometimes use `bash` instead of `read`?** The model chooses tools based on the task. If it needs to run a command (e.g. `cat file.txt`), it uses `bash`. If it just needs to read the file content, it uses `read`. Both work, but `read` is more efficient.
+- **Q: What happens when the context window fills up?** dsh's compaction plugins detect the overflow, prune the history, and optionally summarize. You don't need to manually clear the conversation, but important context may be lost. For critical info, write it into the prompt.
+- **Q: Can I add custom tools?** Yes, via a host plugin. Use the `tools` capability to register new tools. The model will see them in the tool schema and can call them.
+- **Q: What's a "skill" and how is it different from a tool?** A skill is a higher-level capability injected via the skill catalog. The model calls skills via the `skill` tool. Skills are typically more complex than tools (e.g. "review this code" vs "read this file").
+- **Q: Is sandboxing enabled by default?** Yes. Tool execution has isolation and approval layers. Dangerous operations (e.g. `bash` commands) may require confirmation. You can configure the sandbox via the `sandbox/*` and `interaction/*` packages.
+
+---
+
 **Next chapter**: [Chapter 9: MCP, Subagents & Workflows](./09-mcp-subagent-workflow.en.md)
