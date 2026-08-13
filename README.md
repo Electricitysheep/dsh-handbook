@@ -42,21 +42,21 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 ## 目录（从 0 到 1）
 
-| # | 章节 | 你将学会 | 状态 |
+| # | 章节 | 你将学会|
 |---|---|---|---|
-| 🗺 | [学习路径（3 天计划）](./docs/roadmap.md) | 从 0 到 1：每天目标 + 验收标准 + 学习原则 | ✅ |
-| 1 | [认识 DeepSeek Harness](./docs/01-intro.md) · [EN](./docs/01-intro.en.md) | 它是什么、为什么值得学、**与主流 Agent 全面对比**、FAQ | ✅ 双语 |
-| 2 | [五分钟快速上手](./docs/02-quickstart.md) · [EN](./docs/02-quickstart.en.md) | 安装、web/headless 双模式、模型与推理档位、排障 | ✅ |
-| 3 | [profile 与插件系统](./docs/03-profiles.md) | 可定制骨架、插件挂载、host/client 双半、扩展点、真实坑 | ✅ |
-| 4 | [插件开发实战](./docs/04-plugin-dev.md) | 从零写第一个插件（完整代码 + 测试 + 实机验证） | ✅ |
-| 5 | [实战案例](./docs/05-cases.md) | 三个真实开源 PR 的完整闭环 | ✅ |
-| 6 | [进阶与性能调优](./docs/06-advanced.md) | 推理档位策略、耗时分析、踩坑清单 | ✅ |
-| 7 | [生态与资源](./docs/07-ecosystem.md) | 官方入口、参与路径、阅读建议 | ✅ |
-| 8 | [工具与上下文系统](./docs/08-tools-context.md) | 60+ 能力包地图、内置工具、上下文注入、compaction、安全模型 | ✅ |
-| 9 | [MCP、子代理与工作流](./docs/09-mcp-subagent-workflow.md) | 外部工具接入、并行子代理、多步编排、Agent 系统蓝图 | ✅ |
-| 10 | [复杂实战案例](./docs/10-complex-cases.md) | **dsh 真实跑出的**：数据清洗+可视化管线（186s）、5-bug 修复+49 测试（94s），含产物与判断力分析 | ✅ |
-| 11 | [未来展望](./docs/11-future.md) | 技术/生态/竞争/行业/机会/风险 六角度演进预测 + 时间线 | ✅ |
-| 附 | [术语表与命令速查](./docs/appendix-glossary.md) · [Benchmark](./docs/benchmark.md) | 30+ 术语、命令速查、3 Agent 实测 | ✅ |
+| 🗺 | [学习路径（3 天计划）](./docs/roadmap.md) | 从 0 到 1：每天目标 + 验收标准 + 学习原则|
+| 1 | [认识 DeepSeek Harness](./docs/01-intro.md) · [EN](./docs/01-intro.en.md) | 它是什么、为什么值得学、**与主流 Agent 全面对比**、FAQ|
+| 2 | [五分钟快速上手](./docs/02-quickstart.md) · [EN](./docs/02-quickstart.en.md) | 安装、web/headless 双模式、模型与推理档位、排障|
+| 3 | [profile 与插件系统](./docs/03-profiles.md) | 可定制骨架、插件挂载、host/client 双半、扩展点、真实坑|
+| 4 | [插件开发实战](./docs/04-plugin-dev.md) | 从零写第一个插件（完整代码 + 测试 + 实机验证）|
+| 5 | [dsh 应用场景](./docs/05-cases.md) | 5 大场景 + 高缓存命中率专题 + 5 行业视角 + 提示词法则|
+| 6 | [进阶与性能调优](./docs/06-advanced.md) | 推理档位策略、耗时分析、踩坑清单|
+| 7 | [生态与资源](./docs/07-ecosystem.md) | 官方入口、参与路径、阅读建议|
+| 8 | [工具与上下文系统](./docs/08-tools-context.md) | 60+ 能力包地图、内置工具、上下文注入、compaction、安全模型|
+| 9 | [MCP、子代理与工作流](./docs/09-mcp-subagent-workflow.md) | 外部工具接入、并行子代理、多步编排、Agent 系统蓝图|
+| 10 | [复杂实战案例](./docs/10-complex-cases.md) | **dsh 真实跑出的**：数据清洗+可视化管线（186s）、5-bug 修复+49 测试（94s），含产物与判断力分析|
+| 11 | [未来展望](./docs/11-future.md) | 技术/生态/竞争/行业/机会/风险 六角度演进预测 + 时间线|
+| 附 | [术语表与命令速查](./docs/appendix-glossary.md) · [Benchmark](./docs/benchmark.md) | 30+ 术语、命令速查、3 Agent 实测|
 
 ## 内容精华速览（点开即看，不止链接）
 
@@ -184,16 +184,16 @@ dsh --profile headless "你好，请用一句话介绍你自己"
 
 ## DSH vs 主流 Agent（能力矩阵）
 
-| 维度 | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI |
+| 维度 | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI|
 |---|---|---|---|---|---|---|
-| 开源 | ✅ MIT | ❌ | ❌ | ✅ MIT | ❌ | ❌ |
-| 模型绑定 | 模型无关 | Claude 系 | GPT 系 | 任意 | Gemini 系 | Kimi 系 |
-| **插件体系** | **官方级：一切皆插件，60+ 官方包** | 配置/钩子 | 配置 | 配置 | 无 | 无 |
-| 自定义界面 | ✅（client 半） | ❌ | ❌ | 部分 | ❌ | ❌ |
-| 自动化/CI | ✅ headless | ✅ | ✅ | ✅ | ✅ | ✅ |
-| TUI | 插件可做 | ✅ 内置 | ✅ 内置 | ✅ 内置 | ✅ | ✅ |
-| 生态阶段 | 零日（2026-08-13） | 成熟 | 成熟 | 成熟 | 成熟 | 早期 |
-| 适合谁 | 深度定制+生态 | 开箱即用 | 开箱即用 | OpenCode 用户 | Google | Kimi |
+| 开源 | ✅ MIT | ❌ | ❌ | ✅ MIT | ❌ | ❌|
+| 模型绑定 | 模型无关 | Claude 系 | GPT 系 | 任意 | Gemini 系 | Kimi 系|
+| **插件体系** | **官方级：一切皆插件，60+ 官方包** | 配置/钩子 | 配置 | 配置 | 无 | 无|
+| 自定义界面 | ✅（client 半） | ❌ | ❌ | 部分 | ❌ | ❌|
+| 自动化/CI | ✅ headless | ✅ | ✅ | ✅ | ✅|
+| TUI | 插件可做 | ✅ 内置 | ✅ 内置 | ✅ 内置 | ✅|
+| 生态阶段 | 零日（2026-08-13） | 成熟 | 成熟 | 成熟 | 成熟 | 早期|
+| 适合谁 | 深度定制+生态 | 开箱即用 | 开箱即用 | OpenCode 用户 | Google | Kimi|
 
 > 实测案例、同模型多 Agent 对比数据见 [第 1 章](./docs/01-intro.md) 与 benchmark 章节。
 
@@ -201,11 +201,11 @@ dsh --profile headless "你好，请用一句话介绍你自己"
 
 > 模型统一 `deepseek-v4-flash`（同一网关、同一 key），只对比 Agent 工程层。3 任务全部正确完成，差异在效率：
 
-| Agent | 总耗时 | 正确率 |
+| Agent | 总耗时 | 正确率|
 |---|---|---|
-| **omp** | **36s** | 27/27 ✅ |
-| **dsh** | **85s** | 27/27 ✅ |
-| **opencode** | 114s | 27/27 ✅ |
+| **omp** | **36s** | 27/27 ✅|
+| **dsh** | **85s** | 27/27 ✅|
+| **opencode** | 114s | 27/27 ✅|
 
 > 3 轮采样中位数，27/27 全对。完整方法/解读见 [📊 Benchmark 附录](./docs/benchmark.md)。
 
@@ -216,12 +216,12 @@ dsh --profile headless "你好，请用一句话介绍你自己"
 
 ## 为什么值得读（而不是只看官方文档）
 
-| 官方文档 | 本白皮书 |
+| 官方文档 | 本白皮书|
 |---|---|
-| 架构视角（AGENTS.md / architecture.md） | **新手视角**：一条从 0 到 1 的路径 |
-| 零散示例 | **每章可运行**，命令全部实测 |
-| 无中文教程 | **中文优先**，英文同步 |
-| 无生态实操 | **真实插件/PR 拆解**（含踩坑与安全约束） |
+| 架构视角（AGENTS.md / architecture.md） | **新手视角**：一条从 0 到 1 的路径|
+| 零散示例 | **每章可运行**，命令全部实测|
+| 无中文教程 | **中文优先**，英文同步|
+| 无生态实操 | **真实插件/PR 拆解**（含踩坑与安全约束）|
 
 ## 与生态联动
 
