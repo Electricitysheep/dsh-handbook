@@ -17,11 +17,11 @@
 |---|---|---|
 | [第 1 章：认识 DeepSeek Harness](./docs/01-intro.md) | 它是什么、架构、与 Claude Code / OpenCode 的差异、插件生态定位 | ✅ |
 | [第 2 章：五分钟快速上手](./docs/02-quickstart.md) | 安装、web / headless 双模式、第一个对话、模型与推理档位 | ✅ |
-| [第 3 章：profile 与插件系统](./docs/03-profiles.md) | profile 结构、cordis.patch.yml、插件注册、host/client 双半 | 规划中 |
-| [第 4 章：插件开发实战](./docs/04-plugin-dev.md) | 从零写第一个插件：settings、agent/request waterfall、事件监听 | 规划中 |
-| [第 5 章：实战案例](./docs/05-cases.md) | Git 面板、HTML 草稿预览、tool 加速插件——真实代码讲原理 | 规划中 |
-| [第 6 章：进阶与性能调优](./docs/06-advanced.md) | MCP、subagent、workflow、reasoning_effort 策略、常见坑 | 规划中 |
-| [第 7 章：生态与资源](./docs/07-ecosystem.md) | dsh-plugin、官方 Discussions/Discord、社区插件清单 | 规划中 |
+| [第 3 章：profile 与插件系统](./docs/03-profiles.md) | profile 结构、cordis.patch.yml、插件注册、host/client 双半、扩展点、常见坑 | ✅ |
+| [第 4 章：插件开发实战](./docs/04-plugin-dev.md) | 从零写第一个插件：纯函数决策 + agent/request waterfall + 测试与实机验证 | ✅ |
+| [第 5 章：实战案例](./docs/05-cases.md) | Git 面板、HTML 草稿预览、tool 加速插件——真实代码讲原理 | ✅ |
+| [第 6 章：进阶与性能调优](./docs/06-advanced.md) | reasoning_effort 策略、工具耗时分析、真实踩坑清单、评测视角 | ✅ |
+| [第 7 章：生态与资源](./docs/07-ecosystem.md) | 官方入口、插件生态、参与路径、阅读建议 | ✅ |
 
 ## 白皮书 PDF
 
