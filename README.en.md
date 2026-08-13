@@ -45,10 +45,12 @@ dsh --profile headless "Hello, introduce yourself in one sentence"
 
 ## Demo
 
+<!-- [fix] 链接健康检查：docs/demo-plugin.md 不存在（planned 未落地），指向现有 docs/demo.md -->
+
 | Demo | What it shows |
 |---|---|
 | [📺 30s overview of dsh](./docs/demo.md) | Install → Web UI → Headless → plugins (real screenshots) |
-| [⚡ Community plugin demo](./docs/demo-plugin.md) (planned) | Git panel / tool-turbo hands-on |
+| [⚡ Community plugin demo](./docs/demo.md) (planned) | Git panel / tool-turbo hands-on |
 
 ## PDF
 
