@@ -353,12 +353,13 @@ agent-default-model:
 本白皮书的方法论来自真实开源实践：
 - [dsh-tool-turbo](https://github.com/Electricitysheep/dsh-tool-turbo) —— 工具调用提速插件（第 4/6 章源码）
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) —— 社区侧边栏插件（第 5 章案例）
+- 官方讨论区活跃响应 —— 已在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 回应 3 帖：[#380 插件踩坑](https://github.com/deepseek-ai/deepseek-harness/discussions/380)（本白皮书第 3/4 章结论）、[#392 TUI examples 建议](https://github.com/deepseek-ai/deepseek-harness/discussions/392)、[#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118)
 
 ## 🙏 贡献与反馈
 
 - ⭐ 觉得有帮助？点个 Star 支持持续更新
 - 章节/命令失效？rc 版本迭代所致，欢迎 issue 指正
-- 想参与？见 [第 7 章：生态与资源](./docs/07-ecosystem.md)
+- 想参与？见 [🤝 贡献指南（CONTRIBUTING）](./CONTRIBUTING.md) · 想看计划？[🗺️ 路线图（ROADMAP）](./ROADMAP.md) · 生态参与见 [第 7 章](./docs/07-ecosystem.md)
 
 ## ℹ️ 版本说明
 
