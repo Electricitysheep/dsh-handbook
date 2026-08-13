@@ -6,6 +6,14 @@
 
 > ⚠️ This chapter is based on official architecture docs (`packages/AGENTS.md`) and package structure. Some feature examples are marked "pending live testing" — rc versions iterate quickly, so defer to the official changelog for exact usage.
 
+## TL;DR (30-second version)
+
+1. **MCP = plug external tools into the agent**: connect to databases, browsers, internal systems via the MCP protocol. Get the built-in tools working first, then add MCP when you have a clear gap.
+2. **Subagents = work in parallel**: delegate tasks to sub-agents for parallel execution (large-repo research, long-task decomposition, independent verification). Master single-agent workflow first.
+3. **Workflows = deterministic process orchestration**: unlike "multi-turn conversation" (model freestyles), workflows define steps as a flow executed in order or by condition. Suited for fetch → clean → report → validate.
+4. **Combined = agent system**: parent agent plans → subagents research in parallel → tool chain + MCP → workflow aggregates → artifacts.
+5. **Beginner path, four stages**: single agent + built-in tools → + MCP → + subagents → + workflows. Stack gradually, don't skip levels.
+
 ## 9.1 MCP: Connecting to the External Tool Ecosystem
 
 **MCP (Model Context Protocol)** is an open protocol for "plugging external tools into an agent." dsh provides an `mcp` client package (`@deepseek-ai/dsh-mcp-client`).
@@ -61,6 +69,26 @@ Community projects already appearing in the official Discussions:
 - Plugin development / speed-up tools (e.g. `dsh-tool-turbo`, the companion to this handbook)
 
 The ecosystem is growing fast. **Now is a great time to start building.**
+
+---
+
+## Hands-on exercises
+
+1. **MCP exploration**: search GitHub for MCP servers (e.g. database, browser, chart). Pick one. Read its documentation. What would it add to dsh?
+2. **Subagent design**: think of a task that could benefit from parallelism (e.g. "research 5 modules in a large repo"). How would you decompose it into subagent tasks? What would the parent agent do?
+3. **Workflow sketch**: design a deterministic workflow for a real task (e.g. "daily data pipeline: fetch → clean → analyze → report"). What are the steps? What conditions or branches exist?
+4. **Agent system diagram**: draw a diagram of an "agent system" that combines all four capabilities (single agent + MCP + subagents + workflow). What does each component do?
+5. **Beginner path check**: which stage are you at? If you're at stage 1 (single agent), master it first. If you're at stage 2 (MCP), what external tool are you connecting? What gap does it fill?
+6. **Think**: why does the guide say "don't skip levels"? What goes wrong if you spawn subagents before mastering single-agent workflow?
+
+## FAQ
+
+- **Q: When should I add MCP?** Only when you have a clear tool gap. If dsh's built-in tools (read/write/bash/grep) can't do what you need (e.g. query a database, interact with a browser), then MCP is the answer.
+- **Q: Do subagents speed up every task?** No. Subagents add coordination overhead. They're useful for parallelizable tasks (research, decomposition, verification). For sequential tasks, they just add complexity.
+- **Q: What's the difference between a workflow and a multi-turn conversation?** A conversation is "the model freestyles." A workflow is "steps are defined as a flow." Workflows are deterministic; conversations are adaptive. Use workflows for repeatable processes.
+- **Q: Can I combine subagents and workflows?** Yes. A workflow can spawn subagents for parallel steps. This is the "agent system" pattern: parent plans, subagents execute, workflow orchestrates.
+- **Q: Are subagents and workflows stable in rc?** They're part of the official architecture, but rc versions iterate quickly. Check the changelog and `packages/AGENTS.md` for the latest status.
+- **Q: Where do I find MCP servers?** Search GitHub for "MCP server" or check the official MCP documentation. The ecosystem is growing fast.
 
 ---
 
