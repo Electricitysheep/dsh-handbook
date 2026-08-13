@@ -1,6 +1,7 @@
 # dsh 插件模板（Plugin Template）
 
-> 白皮书 [第 4 章](../docs/04-plugin-dev.md) 的配套骨架——**照抄就能跑**的 host 插件。
+<!-- [fix] 链接健康检查：../docs/04-plugin-dev.md 从 examples/plugin-template/ 起算指向不存在的 examples/docs/，改为 ../../docs/04-plugin-dev.md -->
+> 白皮书 [第 4 章](../../docs/04-plugin-dev.md) 的配套骨架——**照抄就能跑**的 host 插件。
 > 模板功能：在每次模型请求前注入自定义 `reasoning_effort`（示例策略：简单工具链降档）。
 
 ## 目录结构
