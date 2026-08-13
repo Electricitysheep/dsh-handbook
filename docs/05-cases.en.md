@@ -1,86 +1,158 @@
 [English](./05-cases.en.md) | [中文](./05-cases.md) · [← Back](../README.md)
 
-# Chapter 5: Real-World Cases
+# Chapter 5: What dsh Can Do for You — Application Scenarios
 
-> **Goal of this chapter:** Walk through three **real, merged open-source PRs** to demonstrate the full plugin development loop: requirements → implementation → testing → live verification. All are genuine community PRs you can study against the source code.
+> Goal: step out of the "how to build dsh" lens and look from the **user's** perspective — where dsh genuinely helps in daily work. Every scenario has a copy-paste task example with real measured timing.
 
-## 5.1 Case 1: Git Panel — Adding push / pull / fetch
+## TL;DR (30-second version)
 
-**Background:** The community plugin `DSH-better-sidebar` provides a Git panel, but it only supports local operations (stage/commit/restore). **No remote sync.**
+1. **dsh is a general-purpose agent runtime** — not just a coding assistant: data analysis, documentation, automation, and code comprehension all work.
+2. **Five core scenarios**: daily coding / data processing / documentation & knowledge / automation & ops / code understanding & refactoring.
+3. **One usage pattern**: describe the goal in one sentence + state the acceptance criteria; dsh orchestrates the toolchain itself.
+4. **Real speed**: simple tasks in seconds, complex multi-step tasks in 1–5 min (V4-Flash + high effort, measured).
+5. **Golden prompt rule**: tell dsh *what "done" looks like* ("run and verify") — more effective than describing the process.
 
-**Implementation** (4 files, all following the "pure function + routing + UI" layering):
+## 5.1 Scenario overview
 
-```
-src/git.ts              # Pure function layer: upstreamInfo / fetchRemote / pull / push
-src/index.ts            # Routing layer: git.upstream / git.fetch / git.pull / git.push
-src/client/GitView.tsx  # UI layer: upstream badge (↓behind ↑ahead) + three buttons
-tests/git-sync.spec.ts  # Integration tests: full chain with a local bare repo
-```
+| Scenario | Typical tasks | dsh tools | Measured |
+|---|---|---|---|
+| **Daily coding** | write functions, fix bugs, add tests | write / read / bash / grep | 5-bug fix + 49 tests: 94s |
+| **Data processing** | clean, analyze, visualize, report | read / write / bash / python | clean + visualize: 186s |
+| **Docs & knowledge** | API docs, tutorials, summaries, translation | read / write | API docs: 1m04s |
+| **Automation & ops** | batch, CI tasks, log analysis | bash / headless | headless scripting |
+| **Code understanding** | refactor, review, tech research | grep / glob / read / bash | refactor: 4m37s |
 
-**Key design** (worth copying):
+> All timings from real cases in [Chapter 10](./10-complex-cases.en.md) (synthetic data); see [benchmark](./benchmark.md).
 
-```ts
-// push only allows --force-with-lease, never bare --force — safety red line, documented
-export async function push(cwd: string, force = false): Promise<string> {
-  const args = ['push']
-  if (force) args.push('--force-with-lease')
-  return runGit(cwd, args)
-}
-```
+## 5.1.1 High cache-hit rate: dsh's hidden cost weapon
 
-**Tests** (local bare repo, no network, no global git config):
+**The most underrated advantage of the dsh ecosystem.** DeepSeek's API **context cache** bills repeated/similar input tokens at a discounted rate. Measured in real dsh sessions: **cache hit rate up to 97%**.
 
-```ts
-// Covers: upstream tracking / push / pull fast-forward / fetch doesn't move HEAD /
-//         force-with-lease refuses to clobber others' commits
-it('force push refuses to clobber unseen remote commits', async () => {
-  // Another clone pushed commits first; local rewrites history but doesn't fetch (lease is stale)
-  await expect(git.push(clone, true)).rejects.toThrow()
-  // Remote still holds the other party's commits — safety guarantee holds
-})
-```
+**Why dsh hits cache so often**:
 
-**Live verification** (Playwright driving a real dsh web instance):
-- Three buttons render correctly; pull/push are properly disabled when no upstream exists
-- Clicking "Fetch remote" → network request `git.fetch [200]` → panel auto-refreshes
+| Reason | Explanation |
+|---|---|
+| Session continuity | multi-turn conversations repeat system prompt / skill catalog / history |
+| Stable tool schema | every step carries the same tool definitions |
+| Agent workload | multi-step tool chains repeatedly carry the same context |
 
-> PR: https://github.com/omdsh-dev/DSH-better-sidebar/pull/10
+**Cost impact (98% cache discount)**:
 
-## 5.2 Case 2: HTML Preview — Supporting Unsaved Drafts
+| Charge | Miss | Cache hit | Discount |
+|---|---|---|---|
+| Input (Flash) | $0.14/M | **$0.0028/M** | **98%** |
+| Input (Pro) | $0.435/M | $0.003625/M | 99%+ |
 
-**Background:** After editing an HTML file, the preview only shows the **saved version** (a known limitation in the README). Seems simple, but there's a security constraint: **a non-sandboxed `srcdoc` iframe inherits the parent origin** (stated explicitly in official code comments).
+**Practical meaning**: in a long agent session, most input tokens hit cache — a 50-step tool chain with 2.4M input tokens costs far less than the miss-price estimate. For high-frequency / batch / long-session workloads this is an order-of-magnitude advantage.
 
-**Solution:** Extract a pure function for the "safety decision":
+> To raise hit rate: keep sessions alive, keep prompt prefixes stable (don't churn system prompt/skill catalog), batch within the same session/prefix.
 
-```ts
-// When sandbox is on, dirty drafts use srcdoc (opaque origin, safe);
-// when sandbox is off, refuse srcdoc and fall back to route-src (cross-origin guarantee)
-export function htmlPreviewTarget(input): HtmlPreviewTarget {
-  if (input.isHtml && input.dirty && input.draft !== null && !input.sandboxOff) {
-    return { srcDoc: input.draft }
-  }
-  return { src: input.routeUrl }
-}
+## 5.2 Scenario 1: Daily coding (best entry point)
+
+**Typical tasks**: write a function/module from a spec; fix bugs (locate → modify → verify); add unit tests.
+
+```bash
+dsh --profile headless "Review buggy_calculator.py: find all bugs, fix them, write complete tests, run and verify all pass"
+# measured: 5 bugs fixed + 49 tests pass (94s)
 ```
 
-**Lesson:** A UI feature may look like "just add a button," but the security model is a hard constraint. **Read the "why" in code comments first, then write code.**
+**Why dsh fits**: coding has the fullest toolchain — read files, write code, run commands, see results. Produced files are directly openable at the end of the conversation.
 
-> PR: https://github.com/omdsh-dev/DSH-better-sidebar/pull/11
+**Prompt tip**: always say "run and verify" — dsh closes the loop; "fix my bug" alone stops after editing.
 
-## 5.3 Case 3: tool-turbo Speed-Up Plugin
+## 5.3 Scenario 2: Data processing & analysis
 
-(Fully broken down in Chapter 4; here we just summarize results)
+```bash
+dsh --profile headless "Analyze sales_data.json for quality issues (missing/type/duplicate/outliers), write a cleaning script + visualization script, run and verify, summarize your approach"
+# measured: 52→35 rows zeroed + chart + trade-off notes (186s)
+```
 
-- **Decision logic:** Pure function `decideEffort`, 6/6 unit tests passing
-- **Injection pipeline:** `agent/request` waterfall; live logs confirm `high → low`
-- **Value proposition** (important correction): dsh is already fast on simple tasks. **The speed-up benefit is in long tool-chain tasks** — the cumulative effect of downgrading reasoning effort at every step
+**Highlight**: dsh doesn't just execute — it explains trade-offs ("median imputation creates a spike", "whether to drop outliers depends on business") — direct evidence of an agent that *thinks*.
 
-## 5.4 Shared Methodology Across All Three Cases
+## 5.4 Scenario 3: Documentation & knowledge work
 
-1. **Pure function isolation:** Decision/computation logic has zero dependencies → unit tests cover every branch
-2. **Extension point integration:** Routing/waterfall/events — never touch the core
-3. **Live verification loop:** Unit tests (logic) + real dsh logs/network requests (wiring) — dual evidence
+```bash
+dsh --profile headless "Generate complete Markdown API docs for user_module.py (8 functions): params, returns, exceptions, examples, edge cases"
+# measured: 423-line ReadTheDocs-style doc (1m04s), proactively flags contract-vs-implementation gaps
+```
+
+**Highlight**: defensive writing — notes calling traps (negative limit behavior, empty-argument behavior), flags where docs and code disagree.
+
+## 5.5 Scenario 4: Automation & ops (headless is the ace)
+
+```bash
+# cron daily digest
+dsh --profile headless "Read today's git log in the workspace and write a Chinese daily summary" > daily-report.md
+
+# batch: convert all .txt in docs/ to .md
+dsh --profile headless "Convert all .txt files under docs/ to .md (preserve structure)"
+```
+
+**Why headless is the ace**: full process-level tools + non-zero exit on failure + pipeable output — **an agent you can put in CI**.
+
+## 5.6 Scenario 5: Code understanding & refactoring
+
+```bash
+dsh --profile headless "Refactor legacy_orders.py to OOP with separated responsibilities, keep behavior identical, write tests verifying output parity"
+# measured: 17/17 tests pass incl. script-level artifact comparison (4m37s)
+```
+
+**Highlight**: engineering awareness — merges duplicated logic into one entry point, keeps backward compatibility, **notices a sandbox tempfile-permission issue and switches approach**.
+
+## 5.7 Three prompt rules that make scenarios work
+
+1. **State acceptance criteria, not process**: "run and verify" > "write a script" — dsh figures out the steps.
+2. **Give context**: one sentence of background (where files are, what the data looks like, who the audience is).
+3. **One task at a time**: split big goals into rounds of small closed loops.
+
+## 5.8 Your first real task (15 minutes)
+
+1. Make a test dir with a small file (code / data / notes).
+2. Run: `dsh --profile headless "Summarize this file and list 3 improvement points"`.
+3. Run: `dsh --profile headless "Write a test / generate docs for this file"`.
+4. Compare output — did it give a real artifact, or a vague answer? Were your acceptance criteria clear enough?
+
+## 5.9 Industry view: how dsh opens in different domains
+
+> Same toolchain, different industries. Generic scenarios only (no real business data); regulated fields (medical/legal) require human review.
+
+### Finance & research
+`dsh --profile headless "Read this financial data and generate a summary with YoY/MoM changes"` — data pipeline + high cache hit make long-session reports cheap.
+
+### Education & learning
+`dsh --profile headless "Turn this chapter into 10 self-test questions with explanations"` — document generation + structuring are strong; batch question generation.
+
+### Sales & support
+`dsh --profile headless "Group 100 customer feedback entries by issue type and suggest improvements"` — batch text processing + classification.
+
+### Operations & content
+`dsh --profile headless "Read this week's data files and generate an ops weekly report (with chart code)"` — data + docs + automation combined.
+
+### Research & review
+`dsh --profile headless "Compare the methods and conclusions of these 3 papers, output a comparison table"` — long-doc processing + structured output (1M context).
+
+### ⚠️ Compliance note
+High-risk domains (medical diagnosis, legal advice, financial advice): dsh output needs human review — tools are sandboxed, but **content responsibility is on the user**.
 
 ---
 
-**Next chapter**: [Chapter 6: Advanced & Performance Tuning](./06-advanced.en.md) (planned).
+## Hands-on exercises
+
+1. **Scenario mapping**: classify 3 of your daily tasks into the five scenarios.
+2. **Prompt comparison**: write two prompt versions for the same task — one describing process, one stating acceptance criteria — run both and compare.
+3. **Headless scripting**: turn "daily git digest" into one cron/bash command; verify output.
+4. **Multi-step task**: design a cross-scenario task (read code → generate docs → output report) and watch dsh orchestrate.
+5. **Think**: which scenarios is dsh NOT suitable for? (Hint: real-time interaction, sensitive operations needing human approval.)
+
+## FAQ
+
+- **Q: Is dsh just a coding assistant?** No — its toolchain (read/write/run/search) makes it general; data/docs/automation all verified.
+- **Q: How long do complex tasks take?** 1–5 min measured (V4-Flash); lower reasoning effort for speed (Ch.6).
+- **Q: What if a task fails?** Trace the tool calls in output; usually the acceptance criteria were unclear — rewrite and rerun.
+- **Q: Can it run automated?** Yes — headless + non-zero exit + pipeable output works in cron/CI.
+- **Q: Is it safe?** Tool execution has sandbox + approval layers; sensitive ops should be human-confirmed (Ch.8).
+- **Q: How is this different from using Claude Code directly?** Same-model capability is close, but dsh lets you customize toolchains/UI/plugins (Ch.1 matrix).
+
+---
+
+**Next**: [Chapter 6: Advanced & Performance Tuning](./06-advanced.en.md)

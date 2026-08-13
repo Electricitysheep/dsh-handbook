@@ -10,7 +10,7 @@
 <div align="center">
 
 ![dsh-handbook](https://img.shields.io/badge/dsh--handbook-白皮书-blue)
-![chapters](https://img.shields.io/badge/章节-13-green)
+![chapters](https://img.shields.io/badge/章节-14-green)
 ![pdf](https://img.shields.io/badge/PDF-3.9MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
 ![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.6-8A2BE2)
@@ -55,6 +55,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | 8 | [工具与上下文系统](./docs/08-tools-context.md) | 60+ 能力包地图、内置工具、上下文注入、compaction、安全模型 | ✅ |
 | 9 | [MCP、子代理与工作流](./docs/09-mcp-subagent-workflow.md) | 外部工具接入、并行子代理、多步编排、Agent 系统蓝图 | ✅ |
 | 10 | [复杂实战案例](./docs/10-complex-cases.md) | **dsh 真实跑出的**：数据清洗+可视化管线（186s）、5-bug 修复+49 测试（94s），含产物与判断力分析 | ✅ |
+| 11 | [未来展望](./docs/11-future.md) | 技术/生态/竞争/行业/机会/风险 六角度演进预测 + 时间线 | ✅ |
 | 附 | [术语表与命令速查](./docs/appendix-glossary.md) · [Benchmark](./docs/benchmark.md) | 30+ 术语、命令速查、3 Agent 实测 | ✅ |
 
 ## 内容精华速览（点开即看，不止链接）
