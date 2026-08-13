@@ -20,6 +20,18 @@
 | **MCP** | 模型上下文协议（接入外部工具服务器） |
 | **workflow** | 多步确定性工作流编排 |
 | **locations** | 工具返回的文件路径（驱动产物追踪） |
+| **extension point** | 官方钩子（agent/request 等），插件接入点 |
+| **waterfall** | 事件链：监听者可改配置传给下一个（agent/request 用此注入） |
+| **reasoning_effort** | 思考强度旋钮（low/high/max） |
+| **context cache** | DeepSeek 提示词缓存（重复输入按折扣价计费） |
+| **缓存命中率** | 输入 token 走缓存价的比例（dsh 实测可到 97%） |
+| **headless** | 一次性 CLI 任务模式 |
+| **TUI** | 终端 UI（官方未内置，需插件） |
+| **turn** | 对话的一轮（用户+助手+工具调用） |
+| **step** | turn 内的一个推理步骤 |
+| **guard** | 循环卫生/工具超时插件 |
+| **skill** | 技能（skill-catalog 注入上下文，模型按需调用） |
+| **inject** | cordis 依赖注入（插件声明所需服务） |
 | **产物文件** | 模型创建/修改的文件（对话末尾的可打开 chips） |
 | **sandbox** | 命令执行的隔离沙箱 |
 | **reasoning_effort** | 同「思考强度」 |

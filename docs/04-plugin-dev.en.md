@@ -4,6 +4,14 @@
 
 > **Goal of this chapter:** Build a **real, working host plugin** from scratch, one that automatically adjusts reasoning effort via the `agent/request` extension point. This is a full breakdown of the community project `dsh-tool-turbo`. All code is runnable and testable.
 
+## TL;DR (30-second version)
+
+1. **Core problem**: dsh re-thinks before every tool call; in a 50-step task, 90%+ of wall-clock time is thinking. Lowering the reasoning effort is the fastest speedup.
+2. **Three-step architecture**: pure function (decision logic, zero deps, unit-testable) → plugin body (hook into the waterfall) → live verification (logs prove the injection happened).
+3. **`agent/request` waterfall**: fires before every model request; listener return values flow to the next listener, enabling "keep original config + override one field."
+4. **`next()` is a Promise; you must `await` it**: spreading without awaiting yields an empty object, dropping the provider/model and causing errors.
+5. **Development discipline**: find the extension point first (90% of behaviors have official hooks), extract logic into pure functions, never skip live verification.
+
 ## 4.1 What We're Building
 
 **Problem:** Before every tool call, the dsh model re-thinks from scratch (`reasoning_effort`). In a 50-step tool-chain task, "thinking" accounts for 90%+ of wall-clock time.
@@ -184,6 +192,25 @@ First turn has no tool calls → stays at baseline `high`. After detecting the `
 1. **Find the extension point first:** 90% of behaviors you want to change have official hooks (`agent/request`, `settings`, `conversationEvents`, `slots`). Don't fork the core.
 2. **Extract logic into pure functions:** Decouple decision/computation logic from dsh. Unit tests run in milliseconds and cover every branch. Live verification only needs to confirm "the injection happened."
 3. **Never skip live verification:** Unit tests prove the logic; live logs prove the wiring. Both must pass before you're done.
+
+---
+
+## Hands-on exercises
+
+1. **Read the pure function**: open `src/effort-decision.ts`. Trace the logic: what does `ratio >= 0.75` mean? When does it return `'low'` vs `'max'`?
+2. **Write a unit test**: add a test case for "mixed tools with heavy arguments." What effort should it return? Run it.
+3. **Break it on purpose**: remove the `await` before `next()` in `src/index.ts`. Run the plugin live. What error do you see? Fix it.
+4. **Add a new rule**: extend `decideEffort` to always return `'max'` when the tool name is `'bash'` and the args exceed 2000 characters. Write a test for it.
+5. **Live verification**: mount the plugin (Chapter 3 method), restart `dsh web`, send a file-creation task, and watch the logs. Confirm you see `reasoningEffort=low` after the first tool call.
+6. **Think**: why extract the decision logic into a pure function instead of putting it directly in the `apply(ctx)` handler? What are the testing and maintenance implications?
+
+## FAQ
+
+- **Q: Why not just set `reasoningEffort: low` globally?** Because complex tasks (planning, debugging) benefit from `high` or `max`. The plugin dynamically adjusts per step, giving you the best of both worlds.
+- **Q: What if the plugin makes the wrong decision?** The plugin only downgrades when recent tool calls are simple (file ops, grep, etc.). If you're doing complex reasoning, the ratio drops and effort stays high. You can also disable downgrading via config.
+- **Q: Can I use this plugin with other models?** The plugin hooks into dsh's `agent/request` waterfall, which is model-agnostic. It should work with any model dsh supports, though the speedup depends on the model's thinking behavior.
+- **Q: Why is `next()` a Promise?** The waterfall is async: each listener may need to await the next one. Forgetting `await` breaks the chain and drops config.
+- **Q: Where do I find more extension points?** Check `packages/AGENTS.md` in the official repo. The most common ones are listed in Chapter 3, Section 3.4.
 
 ---
 
