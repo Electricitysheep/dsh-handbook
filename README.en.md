@@ -6,7 +6,7 @@
 <div align="center">
 
 ![dsh-handbook](https://img.shields.io/badge/dsh--handbook-handbook-blue)
-![chapters](https://img.shields.io/badge/chapters-7-green)
+![chapters](https://img.shields.io/badge/chapters-10-green)
 ![pdf](https://img.shields.io/badge/PDF-1.25MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
 ![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.6-8A2BE2)
@@ -32,13 +32,16 @@ dsh --profile headless "Hello, introduce yourself in one sentence"
 
 | # | Chapter | What you'll learn | Status |
 |---|---|---|---|
-| 1 | [Understanding DeepSeek Harness](./docs/01-intro.md) | What it is, why it matters, vs Claude Code | ✅ |
-| 2 | [5-Minute Quickstart](./docs/02-quickstart.md) | Install, web/headless modes, models & reasoning effort, troubleshooting | ✅ |
-| 3 | [Profiles & the Plugin System](./docs/03-profiles.md) | The customizable skeleton, mounting plugins, host/client halves, extension points, real pitfalls | ✅ |
-| 4 | [Plugin Development, Hands-On](./docs/04-plugin-dev.md) | Write your first plugin (full code + tests + live verification) | ✅ |
-| 5 | [Real-World Cases](./docs/05-cases.md) | Three real open-source PRs, end to end | ✅ |
-| 6 | [Advanced & Performance Tuning](./docs/06-advanced.md) | reasoning_effort strategy, latency analysis, pitfalls | ✅ |
-| 7 | [Ecosystem & Resources](./docs/07-ecosystem.md) | Official entry points, how to join, reading paths | ✅ |
+| 1 | [Understanding DeepSeek Harness](./docs/01-intro.en.md) | What it is, why it matters, vs Claude Code | ✅ EN |
+| 2 | [5-Minute Quickstart](./docs/02-quickstart.en.md) | Install, web/headless modes, models & reasoning effort, troubleshooting | ✅ EN |
+| 3 | [Profiles & the Plugin System](./docs/03-profiles.en.md) | The customizable skeleton, mounting plugins, host/client halves, extension points, real pitfalls | ✅ EN |
+| 4 | [Plugin Development, Hands-On](./docs/04-plugin-dev.en.md) | Write your first plugin (full code + tests + live verification) | ✅ EN |
+| 5 | [Real-World Cases](./docs/05-cases.en.md) | Three real open-source PRs, end to end | ✅ EN |
+| 6 | [Advanced & Performance Tuning](./docs/06-advanced.en.md) | reasoning_effort strategy, latency analysis, pitfalls | ✅ EN |
+| 7 | [Ecosystem & Resources](./docs/07-ecosystem.en.md) | Official entry points, how to join, reading paths | ✅ EN |
+| 8 | [Tools & Context System](./docs/08-tools-context.en.md) | 60+ capability packages, built-in tools, context injection, compaction, security model | ✅ EN |
+| 9 | [MCP, Subagents & Workflows](./docs/09-mcp-subagent-workflow.en.md) | External tool integration, parallel subagents, multi-step orchestration, agent system blueprint | ✅ EN |
+| 10 | [Complex Real-World Cases](./docs/10-complex-cases.en.md) | **Run live in dsh**: data cleaning + visualization pipeline (186s), 5-bug fix + 49 tests (94s), with artifact & judgment analysis | ✅ EN |
 
 ## Demo
 
@@ -70,7 +73,7 @@ Methodology comes from real open-source work:
 ## Contribute
 
 - Commands broken? rc releases iterate fast — open an issue
-- Want to help? See [Chapter 7: Ecosystem](./docs/07-ecosystem.md)
+- Want to help? See [Chapter 7: Ecosystem](./docs/07-ecosystem.en.md)
 
 ## Version
 
