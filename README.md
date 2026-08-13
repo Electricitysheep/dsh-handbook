@@ -20,6 +20,7 @@
 ## 这是什么
 
 **DeepSeek Harness（`dsh`）**是 DeepSeek 官方 2026-08-13 开源的 Agent 运行时——一个"一切皆插件"（everything is a plugin）的框架。
+
 <img width="614" height="230" alt="image" src="https://github.com/user-attachments/assets/19482c24-2208-468e-ad38-9096d9270f8d" />
 
 但官方文档以架构说明为主，**缺少一条从零上手的路径**。
