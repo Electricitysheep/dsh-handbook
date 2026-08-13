@@ -38,7 +38,7 @@ npx -y @deepseek-ai/dsh web
 dsh --profile headless "你好，请用一句话介绍自己"
 ```
 
-> 想系统学？看 [🗺 学习路径（3 天计划）](./docs/roadmap.md)；想先跑？[第 2 章：五分钟快速上手](./docs/02-quickstart.md)
+> 想系统学？看 [🗺 学习路径（3 天计划）](./docs/roadmap.md)；想先跑？[第 2 章：五分钟快速上手](./docs/02-quickstart.md)；想速查？[📇 一页速查卡](./docs/cheatsheet.md)
 
 ## 目录（从 0 到 1）
 
