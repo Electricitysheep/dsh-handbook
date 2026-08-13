@@ -34,12 +34,13 @@ npx -y @deepseek-ai/dsh web
 dsh --profile headless "你好，请用一句话介绍自己"
 ```
 
-> 详细步骤见 [第 2 章：五分钟快速上手](./docs/02-quickstart.md)
+> 想系统学？看 [🗺 学习路径（3 天计划）](./docs/roadmap.md)；想先跑？[第 2 章：五分钟快速上手](./docs/02-quickstart.md)
 
 ## 目录（从 0 到 1）
 
 | # | 章节 | 你将学会 | 状态 |
 |---|---|---|---|
+| 🗺 | [学习路径（3 天计划）](./docs/roadmap.md) | 从 0 到 1：每天目标 + 验收标准 + 学习原则 | ✅ |
 | 1 | [认识 DeepSeek Harness](./docs/01-intro.md) · [EN](./docs/01-intro.en.md) | 它是什么、为什么值得学、**与主流 Agent 全面对比**、FAQ | ✅ 双语 |
 | 2 | [五分钟快速上手](./docs/02-quickstart.md) · [EN](./docs/02-quickstart.en.md) | 安装、web/headless 双模式、模型与推理档位、排障 | ✅ |
 | 3 | [profile 与插件系统](./docs/03-profiles.md) | 可定制骨架、插件挂载、host/client 双半、扩展点、真实坑 | ✅ |
