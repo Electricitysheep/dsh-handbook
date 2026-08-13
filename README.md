@@ -47,6 +47,9 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | 5 | [实战案例](./docs/05-cases.md) | 三个真实开源 PR 的完整闭环 | ✅ |
 | 6 | [进阶与性能调优](./docs/06-advanced.md) | 推理档位策略、耗时分析、踩坑清单 | ✅ |
 | 7 | [生态与资源](./docs/07-ecosystem.md) | 官方入口、参与路径、阅读建议 | ✅ |
+| 8 | [工具与上下文系统](./docs/08-tools-context.md) | 60+ 能力包地图、内置工具、上下文注入、compaction、安全模型 | ✅ |
+| 9 | [MCP、子代理与工作流](./docs/09-mcp-subagent-workflow.md) | 外部工具接入、并行子代理、多步编排、Agent 系统蓝图 | ✅ |
+| 附 | [术语表与命令速查](./docs/appendix-glossary.md) · [Benchmark](./docs/benchmark.md) | 30+ 术语、命令速查、3 Agent 实测 | ✅ |
 
 ## 内容精华速览（点开即看，不止链接）
 
@@ -102,6 +105,33 @@ dsh --profile headless "你好，请用一句话介绍自己"
 - **档位策略**：简单轮次 low / 日常 high / 复杂 max——降档是最高杠杆提速
 - **7 个真实坑**：含"简单任务突然变快 = 缓存命中"的评测陷阱
 - **看成绩单三问**：谁测的 / 什么 harness / 验证器多严
+</details>
+
+<details>
+<summary><b>🧰 第 8 章：工具与上下文系统 —— 能力引擎</b></summary>
+
+- **60+ 官方能力包地图**：工具/上下文/会话/子代理/MCP/工作流/安全
+- **内置工具（实测）**：read/write/grep/glob/edit/bash/todo/skill
+- **产物追踪**：工具返回 locations → 对话末尾可打开产物
+- **上下文注入**：系统提示分层 + 技能目录
+- **长对话自动压缩**（compaction）+ 沙箱/权限/审批安全层
+</details>
+
+<details>
+<summary><b>🔗 第 9 章：MCP、子代理与工作流 —— Agent 系统化</b></summary>
+
+- **MCP**：接入外部工具服务器（社区已有 token 追踪插件）
+- **子代理**：并行委派任务（大仓库调研/长任务分解）
+- **工作流**：确定性多步编排（拉取→清洗→报表→校验）
+- **四阶段新手路径**：单 Agent → +MCP → +子代理 → +工作流
+</details>
+
+<details>
+<summary><b>📚 附录：术语表 + 命令速查</b></summary>
+
+- **30+ 术语**：harness/profile/bundle/cordis/扩展点/waterfall/compaction…
+- **命令速查**：dsh 核心 / 环境 / 排障 / 插件开发
+- **Benchmark**：同模型 3 Agent 实测（3 轮中位数）
 </details>
 
 <details>
