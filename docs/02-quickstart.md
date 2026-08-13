@@ -99,6 +99,8 @@ dsh web: http://127.0.0.1:3080
 | `high`（默认） | 中等 | 好 | 日常 Agent 任务 |
 | `max` | 最慢 | 最强 | 复杂推理、长链规划 |
 
+<!-- [fix] 技术准确性核验：上表档位为本白皮书实测环境（pi-ai / opencode-go 网关）所支持。DeepSeek 官方适配器（默认 provider=deepseek-official，llm-deepseek 插件）只接受 `off`（关闭思考，最快）/ `high` / `max` 三档，`low` 会抛 `UNSUPPORTED_REASONING_EFFORT`。在 settings.yaml 里对默认 provider 请使用 `off` / `high` / `max` -->
+
 > 💡 **性能关键认知**：模型在**每次工具调用前都会重新思考**。实测一个"创建文件"任务，思考占 ~90% 墙钟时间；50 步工具链任务思考累计可达数分钟到十几分钟。**调低推理档位是性价比最高的提速手段**（见第 6 章 + dsh-tool-turbo 插件）。
 
 ## 2.4 模式二：Headless（一次性任务，适合脚本/CI）
