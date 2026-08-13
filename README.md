@@ -44,12 +44,56 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | 6 | [进阶与性能调优](./docs/06-advanced.md) | 推理档位策略、耗时分析、踩坑清单 | ✅ |
 | 7 | [生态与资源](./docs/07-ecosystem.md) | 官方入口、参与路径、阅读建议 | ✅ |
 
-## 演示（Demo）
+## 演示（Demo）—— 直接看效果
 
-| 演示 | 说明 |
-|---|---|
-| [📺 30 秒看懂 dsh](./docs/demo.md) | 图文演示：安装 → Web UI → Headless → 插件（真实截图） |
-| [⚡ 社区插件演示](./docs/demo-plugin.md)（规划中） | Git 面板 / 工具加速插件实操 |
+### ① Web UI 对话（`dsh web`）
+
+```bash
+dsh web    # → http://127.0.0.1:3080
+```
+
+![dsh Web UI 对话](./docs/assets/demo-web-chat.png)
+
+### ② Headless CLI（一次性任务，适合脚本/CI）
+
+```bash
+dsh --profile headless "你好，请用一句话介绍你自己"
+# → 你好！我是 DeepSeek 驱动的 AI 编程助手，可以帮你写代码、调试问题、
+#    处理文件、搜索资料，以及完成各种开发和办公任务。
+```
+
+### ③ 插件生态（Git 面板，`dsh-better-sidebar`）
+
+![dsh Git 面板（better-sidebar 插件）](./docs/assets/demo-git-panel.png)
+
+> 完整图文演示见 [📺 30 秒看懂 dsh](./docs/demo.md)。
+
+## DSH vs 主流 Agent（能力矩阵）
+
+| 维度 | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI |
+|---|---|---|---|---|---|---|
+| 开源 | ✅ MIT | ❌ | ❌ | ✅ MIT | ❌ | ❌ |
+| 模型绑定 | 模型无关 | Claude 系 | GPT 系 | 任意 | Gemini 系 | Kimi 系 |
+| **插件体系** | **官方级：一切皆插件，60+ 官方包** | 配置/钩子 | 配置 | 配置 | 无 | 无 |
+| 自定义界面 | ✅（client 半） | ❌ | ❌ | 部分 | ❌ | ❌ |
+| 自动化/CI | ✅ headless | ✅ | ✅ | ✅ | ✅ | ✅ |
+| TUI | 插件可做 | ✅ 内置 | ✅ 内置 | ✅ 内置 | ✅ | ✅ |
+| 生态阶段 | 零日（2026-08-13） | 成熟 | 成熟 | 成熟 | 成熟 | 早期 |
+| 适合谁 | 深度定制+生态 | 开箱即用 | 开箱即用 | OpenCode 用户 | Google | Kimi |
+
+> 实测案例、同模型多 Agent 对比数据见 [第 1 章](./docs/01-intro.md) 与 benchmark 章节。
+
+## 同模型 × 不同 Agent 实测（2026-08-13）
+
+> 模型统一 `deepseek-v4-flash`（同一网关、同一 key），只对比 Agent 工程层。3 任务全部正确完成，差异在效率：
+
+| Agent | 总耗时 | 正确率 |
+|---|---|---|
+| **omp** | **31s** | 3/3 ✅ |
+| **dsh** | **49s** | 3/3 ✅ |
+| **opencode** | 87s | 3/3 ✅ |
+
+> 复杂任务差异放大至 3.8x（T3 修 bug：opencode 50s vs omp 13s）。完整方法/解读见 [📊 Benchmark 附录](./docs/benchmark.md)。
 
 ## 白皮书 PDF
 

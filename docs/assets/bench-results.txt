@@ -1,0 +1,9 @@
+dsh | dsh-t1 | 0 | 11s
+opencode | opencode-t1 | 0 | 18s
+omp | omp-t1 | 0 | 9s
+dsh | dsh-t2 | 0 | 11s
+opencode | opencode-t2 | 0 | 19s
+omp | omp-t2 | 0 | 9s
+dsh | dsh-t3 | 0 | 27s
+opencode | opencode-t3 | 0 | 50s
+omp | omp-t3 | 0 | 13s
