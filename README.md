@@ -16,6 +16,7 @@
 ![pdf](https://img.shields.io/badge/PDF-5.5MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
 ![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.6-8A2BE2)
+[![Star History](https://api.star-history.com/svg?repos=Electricitysheep/dsh-handbook&type=Date)](https://star-history.com/#Electricitysheep/dsh-handbook&Date)
 
 </div>
 
