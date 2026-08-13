@@ -202,14 +202,45 @@ dsh web    # → http://127.0.0.1:3080
 
 > 完整图文演示见 [📺 30 秒看懂 dsh](./docs/demo.md)。
 
-## 🧰 快速上手资产
+## 🧰 快速上手资产（精华直接看）
 
-| 资产 | 用途 |
-|---|---|
-| [📇 一页速查卡](./docs/cheatsheet.md) | 打印/收藏，日常不翻书 |
-| [🔧 插件模板（可克隆）](./examples/plugin-template/README.md) | 照抄就能跑的 host 插件骨架（第 4 章配套） |
-| [⚙️ 配置参考大全](./docs/config-reference.md) | settings/cordis.patch.yml/profile 全字段 |
-| [❓ FAQ 速查](./docs/faq.md) | 入门/安装/性能/插件/安全/生态 六类高频问题 |
+<details>
+<summary><b>📇 一页速查卡</b> —— 安装 · 命令 · 推理档位 · 排障</summary>
+
+
+推理档位：（最快/简单轮次）· （默认）· （最强/复杂推理）
+> 工具链任务 90% 时间在思考——降档是最高杠杆提速
+> 完整卡：[docs/cheatsheet.md](./docs/cheatsheet.md)
+</details>
+
+<details>
+<summary><b>🔧 插件模板</b> —— 挂载只需 2 步</summary>
+
+
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+Done in 310ms using pnpm v10.34.5
+> 可克隆模板（含纯函数+waterfall+测试）：[examples/plugin-template/](./examples/plugin-template/README.md)
+</details>
+
+<details>
+<summary><b>⚙️ 配置参考</b> —— settings.yaml 核心</summary>
+
+
+> 全字段（profile/cordis.patch.yml/常用场景）：[docs/config-reference.md](./docs/config-reference.md)
+</details>
+
+<details>
+<summary><b>❓ FAQ Top 5</b></summary>
+
+1. **dsh 是模型吗？** 不是——是运行时，模型通过 llm 插件接入
+2. **和 Claude Code 区别？** Claude Code 是整车，dsh 是乐高底座（开源可定制）
+3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存命中 98% 折扣，实测命中率 97%）
+4. **插件装不上 404？** rc.1 依赖断裂——用 `^0.1.0-rc.6` 线
+5. **能进生产吗？** rc 阶段有破坏性变更；生态玩法现在可入
+> 完整 FAQ（六类）：[docs/faq.md](./docs/faq.md)
+</details>
 
 ## ⚖️ DSH vs 主流 Agent（能力矩阵）
 
