@@ -33,7 +33,8 @@
 
 ### dsh 怎么做的（工具链）
 
-```
+<!-- [style] 工具链示意代码块统一补 text 语言标签 -->
+```text
 read(sales_data.json) → write(clean.py) → bash(python clean.py)
 → write(visualize.py) → bash(python visualize.py) → read(输出) → 总结
 ```

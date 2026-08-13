@@ -81,7 +81,7 @@
   - format_report() 输出完全一致（固定时间戳后）
   - export_json() 文本 + 解析后数据一致
   - 全部查询函数（get_customer_orders ×4、get_product_sales ×5、get_region_summary、get_pending_orders）一致
-  - calc_order_total(未知ID) 均返回 0.0
+  - calc_order_total(未知 ID) 均返回 0.0 <!-- [style] 中英混排：中文与英文之间补空格 -->
   - 脚本整体运行产物（report.txt、orders.json）一致
 - **结论**：重构前后行为完全一致
 
