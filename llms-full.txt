@@ -1,0 +1,28 @@
+# dsh-handbook (full)
+
+> Full handbook content is in docs/ (Chinese). For LLM consumption, read README.md first, then docs/*.md chapters in order.
+
+# dsh-handbook
+
+> DeepSeek Harness (dsh) from-zero-to-one Chinese handbook — 11 chapters covering install, profiles, plugin development, performance tuning, tools/context, MCP & subagents, plus a same-model multi-agent benchmark and quickstart assets (cheatsheet, plugin template, config reference, FAQ). English PDF also available.
+
+## Documentation
+
+- [Chinese README](README.md)
+- [English PDF / chapters](docs/)
+- [Cheatsheet (one-page quick card)](docs/cheatsheet.md)
+- [Plugin template (clone & run)](examples/plugin-template/README.md)
+- [Config reference (settings/cordis.patch.yml/profile)](docs/config-reference.md)
+- [FAQ](docs/faq.md)
+- [Benchmark: same model × 6 agents](docs/benchmark/)
+- [Chapter 1: Intro & capability matrix](docs/01-intro.md)
+- [Chapter 2: Install & onboarding](docs/02-install.md)
+- [Chapter 3: Profiles](docs/03-profiles.md)
+- [Chapter 4: Plugin development](docs/04-plugin-dev.md)
+- [Chapter 5: Use cases](docs/05-cases.md)
+- [Chapter 6: Advanced](docs/06-advanced.md)
+- [Chapter 7: Ecosystem](docs/07-ecosystem.md)
+- [Chapter 8: Tools & context](docs/08-tools-context.md)
+- [Chapter 9: MCP & subagent workflow](docs/09-mcp-subagent-workflow.md)
+- [Chapter 10: Complex cases](docs/10-complex-cases.md)
+- [Chapter 11: Future](docs/11-future.md)
