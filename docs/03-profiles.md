@@ -10,6 +10,14 @@
 4. **改行为找扩展点，别 fork 核心**：`agent/request` waterfall、`conversationEvents`、`ctx.slots.inject`、`settings` 服务是四大常用钩子
 5. **rc 阶段三大坑**：依赖版本用 `^0.1.0-rc.6` 线、`next()` 必须 await、client 测试需要 dsh 运行时
 
+<details><summary>本章导航</summary>
+- [3.1 profile：一个可启动的配置栈](#31-profile一个可启动的配置栈)
+- [3.2 挂载一个插件：两处改动](#32-挂载一个插件两处改动)
+- [3.3 host 半与 client 半：一个包，两副面孔](#33-host-半与-client-半一个包两副面孔)
+- [3.4 扩展点：改行为优先找钩子，别 fork 核心](#34-扩展点改行为优先找钩子别-fork-核心)
+- [3.5 常见坑（真实踩过）](#35-常见坑真实踩过)
+</details>
+
 ## 3.1 profile：一个可启动的配置栈
 
 dsh 用 **profile** 表示"一种可启动的形态"。官方内置两个，其余用插件创建：
