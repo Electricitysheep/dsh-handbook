@@ -9,7 +9,7 @@
 | 字段 | 示例 | 说明 |
 |---|---|---|
 | `agent-default-model.model` | `deepseek-v4-flash` | 默认模型（也可 `deepseek-v4-pro`） |
-| `agent-default-model.reasoningEffort` | `high` | 思考档位：`low` / `high` / `max` |
+| `agent-default-model.reasoningEffort` | `high` | 思考档位：`off`（关闭思考/最快）/ `high`（默认）/ `max`（最强）。注：官方 DeepSeek 适配器仅这三档，`low` 等为 pi-ai（opencode-go）网关档位 |
 | （其他命名空间） | — | 各插件的设置命名空间（如侧边栏 prefs） |
 
 > 完整字段以官方 settings 服务 schema 为准；`dsh --dump-config` 可看当前生效的合成配置。

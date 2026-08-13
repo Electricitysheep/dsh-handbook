@@ -13,10 +13,11 @@ dsh --profile headless "任务"          # 一次性任务（脚本/CI）
 
 ## 配置（~/.dsh/settings.yaml）
 
+<!-- [fix] 技术准确性核验：官方 DeepSeek 适配器（默认 provider=deepseek-official）仅接受 off / high / max；`low` 为 pi-ai（opencode-go）网关档位 -->
 ```yaml
 agent-default-model:
   model: deepseek-v4-flash     # 或 deepseek-v4-pro
-  reasoningEffort: high        # low / high / max
+  reasoningEffort: high        # off（关闭思考/最快）/ high（默认）/ max（最强）
 ```
 
 ## 推理档位
