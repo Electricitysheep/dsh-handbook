@@ -30,7 +30,8 @@ dsh 用 **profile** 表示"一种可启动的形态"。官方内置两个，其�
 
 一个 profile 目录长这样（`~/.dsh/profiles/<name>/`）：
 
-```
+<!-- [style] 目录树代码块统一补 text 语言标签 -->
+```text
 profiles/web/
 ├── package.json        # 插件依赖 + dsh.profile 清单（bundles 顺序）
 ├── cordis.patch.yml    # 你的补丁层：挂载/覆盖插件的声明

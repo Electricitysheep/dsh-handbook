@@ -23,7 +23,8 @@ npx -y @deepseek-ai/dsh --version
 
 First run downloads dsh (large package, 40+ plugin modules, 1-3 min). You're good when you see:
 
-```
+<!-- [style] 输出/目录类代码块统一补 text 语言标签 -->
+```text
 0.1.0-rc.6
 ```
 
@@ -44,7 +45,7 @@ dsh web
 
 Expected output:
 
-```
+```text
 dsh web: http://127.0.0.1:3080
 ```
 
@@ -96,7 +97,7 @@ dsh --profile headless "Hello, introduce yourself in one sentence"
 
 Expected output (prints result, process exits):
 
-```
+```text
 Hello! I'm a DeepSeek-powered AI coding assistant...
 ```
 
@@ -142,7 +143,7 @@ After restart, the sidebar gains file manager / terminal / **Git panel** / brows
 
 First run creates:
 
-```
+```text
 ~/.dsh/
 ├── settings.yaml          # global settings (model, reasoning effort)
 ├── profiles/              # profile dirs
