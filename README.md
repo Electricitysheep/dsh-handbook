@@ -93,11 +93,11 @@ dsh --profile headless "你好，请用一句话介绍你自己"
 
 | Agent | 总耗时 | 正确率 |
 |---|---|---|
-| **omp** | **31s** | 3/3 ✅ |
-| **dsh** | **49s** | 3/3 ✅ |
-| **opencode** | 87s | 3/3 ✅ |
+| **omp** | **36s** | 27/27 ✅ |
+| **dsh** | **85s** | 27/27 ✅ |
+| **opencode** | 114s | 27/27 ✅ |
 
-> 复杂任务差异放大至 3.8x（T3 修 bug：opencode 50s vs omp 13s）。完整方法/解读见 [📊 Benchmark 附录](./docs/benchmark.md)。
+> 3 轮采样中位数，27/27 全对。完整方法/解读见 [📊 Benchmark 附录](./docs/benchmark.md)。
 
 ## 白皮书 PDF
 
