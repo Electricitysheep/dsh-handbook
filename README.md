@@ -48,6 +48,70 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | 6 | [进阶与性能调优](./docs/06-advanced.md) | 推理档位策略、耗时分析、踩坑清单 | ✅ |
 | 7 | [生态与资源](./docs/07-ecosystem.md) | 官方入口、参与路径、阅读建议 | ✅ |
 
+## 内容精华速览（点开即看，不止链接）
+
+<details>
+<summary><b>📖 第 1 章：认识 DeepSeek Harness —— 三个直觉 + 能力矩阵</b></summary>
+
+- **三个直觉**：dsh = Agent 的乐高底座；harness = 套在模型外的工程层；2026 = Agent 可编程时代
+- **核心事实**：MIT 开源 · TypeScript · "一切皆插件" · 2026-08-13 发布
+- **dsh vs 6 个主流 Agent 能力矩阵**（Claude Code / Codex / OpenCode / Gemini / Kimi）：开源✅、模型无关✅、**官方级插件体系**（独有）、自定义界面✅、headless CI✅
+- **选型决策**：深度定制+生态 → dsh；开箱即用 → Claude Code
+</details>
+
+<details>
+<summary><b>⚡ 第 2 章：五分钟快速上手 —— 30 秒跑起来</b></summary>
+
+- **一条命令启动**：`npx -y @deepseek-ai/dsh web` → http://127.0.0.1:3080
+- **双模式**：web（对话 UI）/ headless（`dsh --profile headless "任务"`，CI 友好）
+- **推理档位三档**：low（最快/简单任务）· high（默认）· max（最强/复杂推理）——**性能关键：思考占工具链 90% 时间**
+- **第一个插件**：Git 面板 4 步挂载
+</details>
+
+<details>
+<summary><b>🧩 第 3 章：profile 与插件系统 —— 可定制骨架</b></summary>
+
+- **profile** = bundle 栈 + 你的 patch 层（`package.json` + `cordis.patch.yml`）
+- **挂载插件只需 2 处改动**（加依赖 + 加 insert 行）
+- **host/client 双半**：一个 npm 包 = Node 侧工具/服务 + 浏览器侧 UI
+- **5 大扩展点**：`agent/request` waterfall、`conversationEvents`、`ctx.slots`、`settings`、`ctx.provide`
+- **6 个真实踩坑**：rc.1 依赖断裂、插件缺 main、`next()` 忘 await、类型不识别、ModuleLoader、端口占用
+</details>
+
+<details>
+<summary><b>🛠 第 4 章：插件开发实战 —— 完整可运行代码</strong></summary>
+
+- **从零写提速插件**（`dsh-tool-turbo` 完整拆解）：纯函数决策 + `agent/request` waterfall 注入
+- **核心技巧**：决策逻辑抽纯函数（单测毫秒级）→ 实机只验证"注入是否发生"
+- **3 条开发纪律**：先找扩展点 / 逻辑抽纯函数 / 实机验证不能省
+- **实机日志证据**：`calls=[{name:"write"}] => reasoningEffort=low`
+</details>
+
+<details>
+<summary><b>📦 第 5 章：实战案例 —— 三个真实开源 PR 的完整闭环</strong></summary>
+
+- **Git 面板 push/pull/fetch**（PR #10）：`--force-with-lease` 安全红线 + 本地 bare-repo 集成测试 + Playwright 实机验证
+- **HTML 草稿预览**（PR #11）：沙箱安全约束下的 srcdoc 决策纯函数
+- **tool-turbo 提速插件**：长工具链每步思考降档
+</details>
+
+<details>
+<summary><b>🚀 第 6 章：进阶与性能调优 —— 时间花在哪</strong></summary>
+
+- **性能模型**：工具链任务 90% 时间在模型思考（每次工具调用前）
+- **档位策略**：简单轮次 low / 日常 high / 复杂 max——降档是最高杠杆提速
+- **7 个真实坑**：含"简单任务突然变快 = 缓存命中"的评测陷阱
+- **看成绩单三问**：谁测的 / 什么 harness / 验证器多严
+</details>
+
+<details>
+<summary><b>🌐 第 7 章：生态与资源 —— 加入 dsh 生态的地图</strong></summary>
+
+- **官方入口**：仓库 / API 文档 / Discord / Discussions
+- **当前状态**：官方暂不收外部 PR → **做 dsh-plugin 生态项目是官方点名的贡献方式**
+- **新手路径**：用起来 → 小 PR → 发插件 → 写内容
+</details>
+
 ## 演示（Demo）—— 直接看效果
 
 ### ① Web UI 对话（`dsh web`）
