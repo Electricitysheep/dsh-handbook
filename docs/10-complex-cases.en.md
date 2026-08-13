@@ -25,7 +25,8 @@ Give dsh a synthetic JSON file with dirty data (52 rows: missing values, type er
 
 ### How dsh Did It (Tool Chain)
 
-```
+<!-- [style] 工具链示意代码块统一补 text 语言标签 -->
+```text
 read(sales_data.json) → write(clean.py) → bash(python clean.py)
 → write(visualize.py) → bash(python visualize.py) → read(output) → summary
 ```

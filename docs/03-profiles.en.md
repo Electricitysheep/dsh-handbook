@@ -24,7 +24,8 @@ dsh uses **profiles** to represent "a launchable form factor." Two are built in;
 
 A profile directory looks like this (`~/.dsh/profiles/<name>/`):
 
-```
+<!-- [style] 目录树代码块统一补 text 语言标签 -->
+```text
 profiles/web/
 ├── package.json        # Plugin dependencies + dsh.profile manifest (bundles order)
 ├── cordis.patch.yml    # Your patch layer: mount/override plugin declarations
