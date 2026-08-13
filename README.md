@@ -207,8 +207,11 @@ dsh web    # → http://127.0.0.1:3080
 <details>
 <summary><b>📇 一页速查卡</b> —— 安装 · 命令 · 推理档位 · 排障</summary>
 
-
-推理档位：（最快/简单轮次）· （默认）· （最强/复杂推理）
+```bash
+npx -y @deepseek-ai/dsh web          # 安装即启动 Web UI
+dsh --profile headless "任务"        # 一次性任务（脚本/CI）
+```
+推理档位：`low`（最快/简单轮次）· `high`（默认）· `max`（最强/复杂推理）
 > 工具链任务 90% 时间在思考——降档是最高杠杆提速
 > 完整卡：[docs/cheatsheet.md](./docs/cheatsheet.md)
 </details>
@@ -216,18 +219,28 @@ dsh web    # → http://127.0.0.1:3080
 <details>
 <summary><b>🔧 插件模板</b> —— 挂载只需 2 步</summary>
 
-
-Lockfile is up to date, resolution step is skipped
-Already up to date
-
-Done in 310ms using pnpm v10.34.5
+```yaml
+# ① package.json 加依赖
+"my-plugin": "link:C:\path	o\my-plugin"
+# ② cordis.patch.yml 加挂载
+- insert:
+    - id: my-plugin
+      name: my-plugin
+```
+```bash
+cd ~/.dsh/profiles/web && pnpm install && dsh web
+```
 > 可克隆模板（含纯函数+waterfall+测试）：[examples/plugin-template/](./examples/plugin-template/README.md)
 </details>
 
 <details>
 <summary><b>⚙️ 配置参考</b> —— settings.yaml 核心</summary>
 
-
+```yaml
+agent-default-model:
+  model: deepseek-v4-flash    # 或 deepseek-v4-pro
+  reasoningEffort: high       # low / high / max
+```
 > 全字段（profile/cordis.patch.yml/常用场景）：[docs/config-reference.md](./docs/config-reference.md)
 </details>
 
@@ -235,7 +248,7 @@ Done in 310ms using pnpm v10.34.5
 <summary><b>❓ FAQ Top 5</b></summary>
 
 1. **dsh 是模型吗？** 不是——是运行时，模型通过 llm 插件接入
-2. **和 Claude Code 区别？** Claude Code 是整车，dsh 是乐高底座（开源可定制）
+2. **和 Claude Code 区别？** Claude Code 是"整车"，dsh 是"乐高底座"（开源可定制）
 3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存命中 98% 折扣，实测命中率 97%）
 4. **插件装不上 404？** rc.1 依赖断裂——用 `^0.1.0-rc.6` 线
 5. **能进生产吗？** rc 阶段有破坏性变更；生态玩法现在可入
