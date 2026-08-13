@@ -72,52 +72,72 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 ```
 
-| # | 章节 | 你将学会 |
-|---|---|---|
-| 🗺 | [学习路径（3 天计划）](./docs/roadmap.md) | 从 0 到 1：每天目标 + 验收标准 + 学习原则 |
+<div align="center">
+
+| 🗺️ **[学习路径（3 天计划）](./docs/roadmap.md)** | 从 0 到 1：每天目标 + 验收标准 + 学习原则 |
+|---|---|
+
+</div>
 
 ### 🟢 阶段 1 · 入门：认知与上手
 
-| # | 章节 | 你将学会 |
-|---|---|---|
-| 1 | [认识 DeepSeek Harness](./docs/01-intro.md) · [EN](./docs/01-intro.en.md) | 它是什么、为什么值得学、**与主流 Agent 全面对比**、FAQ |
-| 2 | [五分钟快速上手](./docs/02-quickstart.md) · [EN](./docs/02-quickstart.en.md) | 安装、web/headless 双模式、模型与推理档位、排障 |
+<div align="center">
+
+| 📖 **[第 1 章 · 认识 Harness](./docs/01-intro.md)** | ⚡ **[第 2 章 · 五分钟上手](./docs/02-quickstart.md)** |
+|---|---|
+| 与主流 Agent 全面对比 · FAQ · [EN](./docs/01-intro.en.md) | 安装 · web/headless 双模式 · 推理档位 · [EN](./docs/02-quickstart.en.md) |
+
+</div>
 
 ### 🔵 阶段 2 · 开发：骨架与插件
 
-| # | 章节 | 你将学会 |
-|---|---|---|
-| 3 | [profile 与插件系统](./docs/03-profiles.md) | 可定制骨架、插件挂载、host/client 双半、扩展点、真实坑 |
-| 4 | [插件开发实战](./docs/04-plugin-dev.md) | 从零写第一个插件（完整代码 + 测试 + 实机验证） |
+<div align="center">
+
+| 🧩 **[第 3 章 · profile 与插件系统](./docs/03-profiles.md)** | 🛠️ **[第 4 章 · 插件开发实战](./docs/04-plugin-dev.md)** |
+|---|---|
+| 可定制骨架 · 插件挂载 · 扩展点 · 真实坑 | 从零写第一个插件（完整代码 + 测试 + 实机验证） |
+
+</div>
 
 ### 🟠 阶段 3 · 实战：场景与调优
 
-| # | 章节 | 你将学会 |
-|---|---|---|
-| 5 | [dsh 应用场景](./docs/05-cases.md) | 5 大场景 + 高缓存命中率专题 + 5 行业视角 + 提示词法则 |
-| 6 | [进阶与性能调优](./docs/06-advanced.md) | 推理档位策略、耗时分析、踩坑清单 |
+<div align="center">
+
+| 📦 **[第 5 章 · dsh 应用场景](./docs/05-cases.md)** | 🚀 **[第 6 章 · 进阶与性能调优](./docs/06-advanced.md)** |
+|---|---|
+| 5 大场景 · 高缓存命中率专题 · 5 行业视角 | 推理档位策略 · 耗时分析 · 踩坑清单 |
+
+</div>
 
 ### 🟣 阶段 4 · 生态：能力与编排
 
-| # | 章节 | 你将学会 |
+<div align="center">
+
+| 🌐 **[第 7 章 · 生态与资源](./docs/07-ecosystem.md)** | 🧰 **[第 8 章 · 工具与上下文系统](./docs/08-tools-context.md)** | 🔗 **[第 9 章 · MCP 子代理与工作流](./docs/09-mcp-subagent-workflow.md)** |
 |---|---|---|
-| 7 | [生态与资源](./docs/07-ecosystem.md) | 官方入口、参与路径、阅读建议 |
-| 8 | [工具与上下文系统](./docs/08-tools-context.md) | 60+ 能力包地图、内置工具、上下文注入、compaction、安全模型 |
-| 9 | [MCP、子代理与工作流](./docs/09-mcp-subagent-workflow.md) | 外部工具接入、并行子代理、多步编排、Agent 系统蓝图 |
+| 官方入口 · 参与路径 · 阅读建议 | 60+ 能力包地图 · 内置工具 · compaction | 外部工具接入 · 并行子代理 · 多步编排 |
+
+</div>
 
 ### 🔴 阶段 5 · 进阶：复杂案例与展望
 
-| # | 章节 | 你将学会 |
+<div align="center">
+
+| 🧪 **[第 10 章 · 复杂实战案例](./docs/10-complex-cases.md)** | 🔮 **[第 11 章 · 未来展望](./docs/11-future.md)** | ⚠️ **[第 12 章 · 已知不足与边界](./docs/12-limitations.md)** |
 |---|---|---|
-| 10 | [复杂实战案例](./docs/10-complex-cases.md) | **dsh 真实跑出的**：数据清洗+可视化管线（186s）、5-bug 修复+49 测试（94s），含产物与判断力分析 |
-| 11 | [未来展望](./docs/11-future.md) | 技术/生态/竞争/行业/机会/风险 六角度演进预测 + 时间线 |
-| 12 | [已知不足与边界](./docs/12-limitations.md) | rc 版诚实版：不稳定性/生态早期/跨平台短板/策略风险 |
+| dsh 真实跑出：数据清洗管线 186s · 5-bug 修复 94s | 技术/生态/竞争/机会/风险 预测 + 时间线 | rc 版诚实版：不稳定性 · 生态早期 · 跨平台短板 |
+
+</div>
 
 ### 📎 附录
 
-| # | 章节 | 你将学会 |
-|---|---|---|
-| 附 | [术语表与命令速查](./docs/appendix-glossary.md) · [Benchmark](./docs/benchmark.md) | 30+ 术语、命令速查、3 Agent 实测 |
+<div align="center">
+
+| 📚 **[术语表与命令速查](./docs/appendix-glossary.md)** · **[Benchmark](./docs/benchmark.md)** |
+|---|
+| 30+ 术语 · 命令速查 · 同模型 3 Agent 实测 |
+
+</div>
 
 ## 💎 内容精华速览（点开即看，不止链接）
 
