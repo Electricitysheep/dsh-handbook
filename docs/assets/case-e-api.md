@@ -13,14 +13,15 @@
 - [模块概述](#模块概述)
 - [快速开始](#快速开始)
 - [函数参考](#函数参考)
-  - [create_user](#create_useruser_id-name-email-role--member---dict)
-  - [get_user](#get_useruser_id-user_db---optionaldict)
-  - [update_user](#update_useruser_id-updates-user_db---dict)
-  - [delete_user](#delete_useruser_id-user_db---bool)
-  - [list_users](#list_usersuser_db-role-none-status-none-limit-100-offset-0---tuplelistdict-int)
-  - [validate_user_email](#validate_user_emailemail---bool)
-  - [batch_create_users](#batch_create_usersusers_data-user_db---tuplelistdict-liststr)
-  - [get_user_statistics](#get_user_statisticsuser_db---dict)
+  <!-- [fix] 链接健康检查：8 个函数锚点与标题实际 slug 不一致（TOC 用简化签名，标题含 str:/Dict 类型标注），更新为 GitHub 渲染的完整 slug -->
+  - [create_user](#create_useruser_id-str-name-str-email-str-role-str--member---dict)
+  - [get_user](#get_useruser_id-str-user_db-dictstr-dict---optionaldict)
+  - [update_user](#update_useruser_id-str-updates-dict-user_db-dictstr-dict---dict)
+  - [delete_user](#delete_useruser_id-str-user_db-dictstr-dict---bool)
+  - [list_users](#list_usersuser_db-dictstr-dict-role-optionalstr--none-status-optionalstr--none-limit-int--100-offset-int--0---tuplelistdict-int)
+  - [validate_user_email](#validate_user_emailemail-str---bool)
+  - [batch_create_users](#batch_create_usersusers_data-listdict-user_db-dictstr-dict---tuplelistdict-liststr)
+  - [get_user_statistics](#get_user_statisticsuser_db-dictstr-dict---dict)
 - [通用约定与边界情况](#通用约定与边界情况)
 
 ---
