@@ -41,7 +41,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | # | 章节 | 你将学会 | 状态 |
 |---|---|---|---|
 | 1 | [认识 DeepSeek Harness](./docs/01-intro.md) · [EN](./docs/01-intro.en.md) | 它是什么、为什么值得学、**与主流 Agent 全面对比**、FAQ | ✅ 双语 |
-| 2 | [五分钟快速上手](./docs/02-quickstart.md) | 安装、web/headless 双模式、模型与推理档位、排障 | ✅ |
+| 2 | [五分钟快速上手](./docs/02-quickstart.md) · [EN](./docs/02-quickstart.en.md) | 安装、web/headless 双模式、模型与推理档位、排障 | ✅ |
 | 3 | [profile 与插件系统](./docs/03-profiles.md) | 可定制骨架、插件挂载、host/client 双半、扩展点、真实坑 | ✅ |
 | 4 | [插件开发实战](./docs/04-plugin-dev.md) | 从零写第一个插件（完整代码 + 测试 + 实机验证） | ✅ |
 | 5 | [实战案例](./docs/05-cases.md) | 三个真实开源 PR 的完整闭环 | ✅ |
