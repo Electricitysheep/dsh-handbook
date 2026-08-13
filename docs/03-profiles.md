@@ -2,6 +2,14 @@
 
 > 本章目标：理解 dsh 的可定制骨架——profile 怎么组织、插件怎么挂载、host/client 双半是什么。**这是从"用户"变成"开发者"的分水岭。**
 
+## TL;DR（本章核心，30 秒版）
+
+1. **profile = 一种可启动形态**：`~/.dsh/profiles/<name>/` 目录，由 `package.json`（插件清单）+ `cordis.patch.yml`（补丁层）组成
+2. **挂载插件只需两步**：`package.json` 加依赖 + `cordis.patch.yml` 加挂载行，然后 `pnpm install` 重启
+3. **host 半跑在 Node，client 半跑在浏览器**：一个 npm 包通过 `exports["."]` 和 `exports["./client"]` 同时携带两副面孔
+4. **改行为找扩展点，别 fork 核心**：`agent/request` waterfall、`conversationEvents`、`ctx.slots.inject`、`settings` 服务是四大常用钩子
+5. **rc 阶段三大坑**：依赖版本用 `^0.1.0-rc.6` 线、`next()` 必须 await、client 测试需要 dsh 运行时
+
 ## 3.1 profile：一个可启动的配置栈
 
 dsh 用 **profile** 表示"一种可启动的形态"。官方内置两个，其余用插件创建：
@@ -110,6 +118,43 @@ dsh web   # 重启后生效
 | 事件 handler 忘了 `await next()` | 请求丢失 provider/model 报错 | `agent/request` 的 `next()` 返回 **Promise**，必须 await 后 spread |
 | 类型报 `'agent/request' is not assignable to keyof Events` | npm 类型未 re-export 官方类型增强 | 用宽松签名（`ctx.on as unknown as ...`）在边界转换 |
 | client 包产物依赖 `window.__ModuleLoader__` | jsdom 无法直接跑 client 测试 | 组件级测试需 dsh web 运行时（官方 CI 跑） |
+
+---
+
+## 动手练习（检验你是否真懂了）
+
+1. **理解题**：不看原文，画出 `profiles/web/` 目录下的文件结构，并说出每个文件的作用
+   > 自查：参考本章 3.1 节"profile 目录长这样"
+2. **理解题**：解释"host 半"和"client 半"分别跑在哪里、各负责什么。一个插件可以只有 host 半吗？
+   > 自查：参考本章 3.3 节表格
+3. **动手题**：打开你的 `~/.dsh/profiles/web/package.json`，找到 `dsh.profile.bundles` 字段，说出 bundle 的加载顺序
+   > 自查：参考本章 3.1 节"加载顺序"段落
+4. **动手题**：假设你要挂载一个名为 `dsh-my-widget` 的插件，写出 `package.json` 和 `cordis.patch.yml` 各需要加什么内容
+   > 自查：参考本章 3.2 节的两处改动示例
+5. **动手题**：在 `cordis.patch.yml` 里加一行错误的挂载（比如拼错插件名），重启 dsh web，观察报错信息并记录
+   > 自查：对比本章 3.5 节"常见坑"表格
+6. **思考题**：官方原则说"Plugins, not loop changes"。如果你想改 dsh 的"模型回复后自动总结"行为，应该用哪个扩展点？为什么不该直接改 agent-loop 源码？
+   > 自查：参考本章 3.4 节扩展点表格 + "改行为优先找钩子"原则
+
+## 常见疑问 FAQ
+
+**Q1：profile 和 bundle 有什么区别？**
+profile 是"一种可启动形态"（如 web、headless），bundle 是"一组预配置的插件集合"。profile 通过 `dsh.profile.bundles` 指定要加载哪些 bundle，再叠加自己的 patch。简单说：bundle 是积木包，profile 是拼好的成品。
+
+**Q2：`cordis.patch.yml` 里的 `- insert:` 是什么意思？还有其他操作吗？**
+`insert` 是"在插件链中插入一个新插件"。patch 文件基于 cordis 的配置合并机制，支持 insert（插入）、override（覆盖已有插件配置）等操作。新手只需掌握 insert 即可挂载大部分插件。
+
+**Q3：插件状态是按 profile 隔离还是按会话隔离？**
+挂载是 profile 级的（装一次，该 profile 下所有会话都能用），但**状态是会话级的**。比如 `better-sidebar` 的标签布局按会话持久化，不同会话互不干扰。
+
+**Q4：我想写一个只有 client 半的插件（纯 UI），可以吗？**
+可以。`package.json` 里声明 `dsh.client` + `exports["./client"]`，不写 `exports["."]` 即可。但注意：client 半无法直接访问文件系统或跑命令，需要通过 host 半的服务（`ctx.provide`/`ctx.get`）桥接。
+
+**Q5：`agent/request` waterfall 和 `conversationEvents.register` 有什么区别？我该用哪个？**
+`agent/request` 是"改模型请求配置"的钩子（provider/model/tools/reasoningEffort），每次请求前触发，返回新配置。`conversationEvents.register` 是"订阅/注入对话事件"的钩子（tool/call、turn/start 等），用于监听或注入事件流。想改请求参数用前者，想监听对话流用后者。
+
+**Q6：为什么我的插件装上去没反应？怎么调试？**
+三步排查：① 确认 `pnpm install` 无报错且 `node_modules` 里有你的插件；② 确认 `cordis.patch.yml` 的 id/name 拼写正确；③ 重启 `dsh web` 后看进程日志有没有插件加载信息。如果 host 半有 `console.log`，日志里应该能看到输出。
 
 ---
 
