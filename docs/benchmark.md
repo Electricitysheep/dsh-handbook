@@ -64,7 +64,8 @@ omp "任务" --model deepseek-v4-flash --print
 
 T4/T5 任务原文（T1-T3 见上一版本记录）：
 
-```
+<!-- [style] 任务原文代码块统一补 text 语言标签 -->
+```text
 T4: 读取当前目录 data.json 中的数据，生成 markdown 报告 report.md：包含每行数据的表格（产品/销量/单价三列）和汇总（总销量、总营收、最畅销产品），生成后自己复核汇总数字与 data.json 一致，完成后回复 已生成
 T5: 重构 mathops.py：把 multiply 函数内的乘法逻辑提取为私有辅助函数 _multiply(a, b)，multiply 改为调用 _multiply；main.py 依赖 mathops.py 并包含断言测试，不得改动 main.py；重构后运行 python main.py 验证所有断言通过，完成后回复 已重构
 ```

@@ -59,7 +59,8 @@ dsh 的能力全部以包形式提供（`packages/<group>/<name>`）。新手最
 
 一次模型请求的上下文 = 系统提示 + 技能目录 + 对话历史 + 工具结果。实测在会话日志中可见：
 
-```
+<!-- [style] 示意图代码块统一补 text 语言标签 -->
+```text
 上下文注入 @deepseek-ai/dsh-system-prompt   ← 官方系统提示
 上下文注入 skill-catalog                    ← 技能目录
 ```

@@ -20,7 +20,8 @@
 
 ## 4.2 Project Skeleton
 
-```
+<!-- [style] 目录树代码块统一补 text 语言标签 -->
+```text
 dsh-tool-turbo/
 ├── package.json          # Host plugin declaration
 ├── tsconfig.json
@@ -178,7 +179,7 @@ it('downgrades to low for simple tool chains', () => {
 
 Mount the plugin (Chapter 3 method) → restart `dsh web` → send a file-creation task → watch the dsh process logs:
 
-```
+```text
 [tool-turbo] agent/request: calls=[]                    => reasoningEffort=high
 [tool-turbo] agent/request: calls=[{"name":"write",…}] => reasoningEffort=low
 ```

@@ -43,7 +43,8 @@
 
 ## 9.4 Putting It Together: What an "Agent System" Looks Like
 
-```
+<!-- [style] 流程图代码块统一补 text 语言标签 -->
+```text
 Your prompt (goal)
   ↓
 Parent Agent (planning)
