@@ -8,6 +8,9 @@
 
 <div align="center">
 
+<!-- 增长视角检查点②: 徽章行原缺 stars/release 徽章（仅有 license），补充这两枚 shields.io 动态徽章 -->
+![GitHub stars](https://img.shields.io/github/stars/Electricitysheep/dsh-handbook?style=flat&color=yellow)
+![GitHub release](https://img.shields.io/github/v/tag/Electricitysheep/dsh-handbook?label=release&color=success)
 ![dsh-handbook](https://img.shields.io/badge/dsh--handbook-白皮书-blue)
 ![chapters](https://img.shields.io/badge/章节-14-green)
 ![pdf](https://img.shields.io/badge/PDF-3.9MB-orange)
@@ -15,6 +18,10 @@
 ![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.6-8A2BE2)
 
 </div>
+
+<!-- 增长视角检查点④: 全文无 GitHub 原生警告框，在读者动手前补充 rc 版本风险提示 -->
+> [!WARNING]
+> dsh 当前为 `0.1.0-rc.6`（预发布阶段），API/配置存在破坏性变更风险；生产环境请谨慎评估，详见 [ℹ️ 版本说明](#版本说明)。
 
 ## 🚀 快速体验（30 秒）
 
@@ -59,6 +66,33 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | 📚 **要案例** | 5 个真实复杂案例（含耗时/产物/验证） |
 
 ## 📚 目录（从 0 到 1）
+
+<!-- 增长视角检查点①: 首屏/正文长期纯文字+emoji分区，缺可视化资产；补充 11 章知识体系 Mermaid 图（GitHub 原生渲染，无外部依赖） -->
+```mermaid
+flowchart TD
+    Roadmap["🗺 学习路径<br/>3 天计划"] --> C1
+    subgraph 入门["入门：认知与上手"]
+        C1["1 认识 Harness"] --> C2["2 五分钟上手"]
+    end
+    C2 --> C3
+    subgraph 开发["开发：骨架与插件"]
+        C3["3 profile 与插件系统"] --> C4["4 插件开发实战"]
+    end
+    C4 --> C5
+    subgraph 实战["实战：场景与调优"]
+        C5["5 应用场景"] --> C6["6 进阶与性能调优"]
+    end
+    C6 --> C7
+    subgraph 生态["生态：能力与编排"]
+        C7["7 生态与资源"] --> C8["8 工具与上下文系统"]
+        C8 --> C9["9 MCP/子代理/工作流"]
+    end
+    C9 --> C10
+    subgraph 进阶["进阶：复杂案例与展望"]
+        C10["10 复杂实战案例"] --> C11["11 未来展望"]
+    end
+    C11 --> Appendix["附 术语表 · 命令速查 · Benchmark"]
+```
 
 | # | 章节 | 你将学会 |
 |---|---|---|
