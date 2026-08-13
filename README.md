@@ -59,12 +59,13 @@ dsh --profile headless "你好，请用一句话介绍自己"
 ## 🎁 这本能给你什么
 
 <!-- [style] 中英混排：中文与数字之间补空格 -->
+<!-- [fix] 技术准确性核验：缓存命中率全仓实测值为 97%（05-cases/06-advanced/12-limitations/cheatsheet/faq/appendix 一致）；99% 是 Pro 档缓存*折扣*（99%+），不是命中率 -->
 | 如果你是… | 你会得到 |
 |---|---|
 | 🆕 **第一次接触 dsh** | 3 天从 0 到 1 学习路径（每天有目标+验收） |
 | 🛠 **开发者** | 可克隆的插件模板 + 配置参考大全（照抄能跑） |
 | ⚖️ **正在选型** | 14 个主流 Agent 对比（表格+文字）+ 同模型实测 benchmark |
-| ⚡ **要调优** | 推理档位策略 + 缓存命中率专题（实测 能接近 99%） |
+| ⚡ **要调优** | 推理档位策略 + 缓存命中率专题（实测 97%） |
 | 📚 **要案例** | 5 个真实复杂案例（含耗时/产物/验证） |
 
 ## 📚 目录（从 0 到 1）
@@ -152,6 +153,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 - **一条命令启动**：`npx -y @deepseek-ai/dsh web` → http://127.0.0.1:3080
 - **双模式**：web（对话 UI）/ headless（`dsh --profile headless "任务"`，CI 友好）
+<!-- [fix] 技术准确性核验：low 为 pi-ai（opencode-go）网关档位（本白皮书实测环境）；DeepSeek 官方适配器档位为 off（关闭思考/最快）/ high / max，见 02-quickstart 2.3 注 -->
 - **推理档位三档**：low（最快/简单任务）· high（默认）· max（最强/复杂推理）——**性能关键：思考占工具链 90% 时间**
 - **第一个插件**：Git 面板 4 步挂载
 </details>
@@ -271,6 +273,7 @@ dsh web    # → http://127.0.0.1:3080
 npx -y @deepseek-ai/dsh web          # 安装即启动 Web UI
 dsh --profile headless "任务"        # 一次性任务（脚本/CI）
 ```
+<!-- [fix] 技术准确性核验：同 02-quickstart 2.3 注——low 为 pi-ai（opencode-go）网关档位；官方 DeepSeek 适配器档位为 off / high / max -->
 推理档位：`low`（最快/简单轮次）· `high`（默认）· `max`（最强/复杂推理）
 > 工具链任务 90% 时间在思考——降档是最高杠杆提速
 > 完整卡：[docs/cheatsheet.md](./docs/cheatsheet.md)
@@ -279,9 +282,10 @@ dsh --profile headless "任务"        # 一次性任务（脚本/CI）
 <details>
 <summary><b>🔧 插件模板</b> —— 挂载只需 2 步</summary>
 
+<!-- [fix] 技术准确性核验：原行 `link:C:\path\to\my-plugin` 的 `\t` 被渲染成制表符（`link:C:\path<TAB>o\my-plugin`），复制即失效；修正为 JSON 转义形式 `link:C:\\path\\to\\my-plugin`（与 02-quickstart/03-profiles/cheatsheet/plugin-template 一致） -->
 ```yaml
 # ① package.json 加依赖
-"my-plugin": "link:C:\path	o\my-plugin"
+"my-plugin": "link:C:\\path\\to\\my-plugin"
 # ② cordis.patch.yml 加挂载
 - insert:
     - id: my-plugin
@@ -296,10 +300,11 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 <details>
 <summary><b>⚙️ 配置参考</b> —— settings.yaml 核心</summary>
 
+<!-- [fix] 技术准确性核验：官方 DeepSeek 适配器（llm-deepseek，默认 provider=deepseek-official）仅接受 off / high / max 三档，`low` 会抛 UNSUPPORTED_REASONING_EFFORT；`low` 是 pi-ai（opencode-go）网关档位，见 02-quickstart 2.3 注 -->
 ```yaml
 agent-default-model:
   model: deepseek-v4-flash    # 或 deepseek-v4-pro
-  reasoningEffort: high       # low / high / max
+  reasoningEffort: high       # off（关闭思考/最快）/ high（默认）/ max（最强）
 ```
 > 全字段（profile/cordis.patch.yml/常用场景）：[docs/config-reference.md](./docs/config-reference.md)
 </details>
