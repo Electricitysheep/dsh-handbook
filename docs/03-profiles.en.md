@@ -4,6 +4,14 @@
 
 > **Goal of this chapter:** Understand dsh's customizable skeleton, how profiles are organized, how plugins are mounted, and what the host/client dual halves are. **This is the watershed moment from "user" to "developer."**
 
+## TL;DR (30-second version)
+
+1. **Profile = a launchable form factor**: a `~/.dsh/profiles/<name>/` directory composed of `package.json` (plugin manifest) + `cordis.patch.yml` (patch layer).
+2. **Mounting a plugin takes two steps**: add a dependency in `package.json` + add a mount line in `cordis.patch.yml`, then `pnpm install` and restart.
+3. **Host half runs in Node, client half runs in the browser**: one npm package carries both faces via `exports["."]` and `exports["./client"]`.
+4. **To change behavior, look for extension points first, don't fork the core**: `agent/request` waterfall, `conversationEvents`, `ctx.slots.inject`, and the `settings` service are the four most common hooks.
+5. **Three rc-stage pitfalls**: use the `^0.1.0-rc.6` dependency line, always `await next()`, and client tests need the dsh runtime.
+
 ## 3.1 Profile: A Launchable Configuration Stack
 
 dsh uses **profiles** to represent "a launchable form factor." Two are built in; the rest are created via plugins:
@@ -112,6 +120,25 @@ Confirmed commonly-used extension points (each explored hands-on in later chapte
 | Event handler forgets `await next()` | Request loses provider/model and errors out | `next()` in `agent/request` returns a **Promise**; you must await it before spreading |
 | Type error: `'agent/request' is not assignable to keyof Events` | npm types don't re-export the official type augmentations | Use a relaxed signature (`ctx.on as unknown as ...`) at the boundary |
 | Client package depends on `window.__ModuleLoader__` | jsdom can't run client tests directly | Component-level tests need the dsh web runtime (run in official CI) |
+
+---
+
+## Hands-on exercises
+
+1. **Locate your profile**: find the `web` profile directory on your machine. Read `package.json` and `cordis.patch.yml`. Identify which plugins are currently mounted.
+2. **Mount a plugin**: follow Section 3.2 to mount `dsh-better-sidebar` (or any community plugin). Verify it appears after restart.
+3. **Trace the host/client split**: pick a plugin that has both halves. Find the `dsh.client` declaration in its `package.json` and the `apply(ctx)` function in its entry file.
+4. **Find an extension point**: read the `agent/request` waterfall description above. In the dsh source, search for where this waterfall is called. What other waterfalls or hooks can you spot?
+5. **Pitfall reproduction**: deliberately forget to `await next()` in a test plugin. Observe the error. Then fix it and confirm the config flows through.
+6. **Think**: why does dsh separate "profile" from "plugin"? What would break if plugins were global instead of profile-scoped?
+
+## FAQ
+
+- **Q: What's the difference between a profile and a plugin?** A profile is a *launchable form factor* (a directory with config + patch). A plugin is a *capability unit* mounted into a profile. You can think of a profile as a "container" and plugins as "modules inside it."
+- **Q: Do I need to create a new profile for every project?** No. Most users stick with `web` for interactive work and `headless` for scripting. Custom profiles are for advanced use cases (TUI, desktop, bots).
+- **Q: Why does `pnpm install` fail with 404 errors?** The rc.1 dependency chain is broken. Use the `^0.1.0-rc.6` line in `package.json` (see Section 3.5).
+- **Q: Can I use a plugin without modifying `cordis.patch.yml`?** No. Adding the dependency alone doesn't activate the plugin. You must declare it in the patch layer for Cordis to load it.
+- **Q: Why can't I run client-half tests with jsdom?** The client half depends on `window.__ModuleLoader__`, which is bootstrapped by the dsh web runtime. Component tests need the official CI environment.
 
 ---
 

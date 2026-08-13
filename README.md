@@ -189,6 +189,7 @@ dsh --profile headless "你好，请用一句话介绍你自己"
 | [📇 一页速查卡](./docs/cheatsheet.md) | 打印/收藏，日常不翻书 |
 | [🔧 插件模板（可克隆）](./examples/plugin-template/README.md) | 照抄就能跑的 host 插件骨架（第 4 章配套） |
 | [⚙️ 配置参考大全](./docs/config-reference.md) | settings/cordis.patch.yml/profile 全字段 |
+| [❓ FAQ 速查](./docs/faq.md) | 入门/安装/性能/插件/安全/生态 六类高频问题 |
 
 ## DSH vs 主流 Agent（能力矩阵）
 
