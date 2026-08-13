@@ -69,33 +69,6 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 ## 📚 目录（从 0 到 1）
 
-```mermaid
-flowchart TD
-    Roadmap["🗺 学习路径<br/>3 天计划"] --> C1
-    subgraph 入门["入门：认知与上手"]
-        C1["1 认识 Harness"] --> C2["2 五分钟上手"]
-    end
-    C2 --> C3
-    subgraph 开发["开发：骨架与插件"]
-        C3["3 profile 与插件系统"] --> C4["4 插件开发实战"]
-    end
-    C4 --> C5
-    subgraph 实战["实战：场景与调优"]
-        C5["5 应用场景"] --> C6["6 进阶与性能调优"]
-    end
-    C6 --> C7
-    subgraph 生态["生态：能力与编排"]
-        C7["7 生态与资源"] --> C8["8 工具与上下文系统"]
-        C8 --> C9["9 MCP/子代理/工作流"]
-    end
-    C9 --> C10
-    subgraph 进阶["进阶：复杂案例与展望"]
-        C10["10 复杂实战案例"] --> C11["11 未来展望"]
-        C11 --> C12["12 已知不足（诚实版）"]
-    end
-    C11 --> Appendix["附 术语表 · 命令速查 · Benchmark"]
-```
-
 <div align="center">
 
 | 🗺️ **[学习路径（3 天计划）](./docs/roadmap.md)** | 从 0 到 1：每天目标 + 验收标准 + 学习原则 |
