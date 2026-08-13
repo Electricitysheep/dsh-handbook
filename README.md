@@ -53,8 +53,8 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 ## 目录（从 0 到 1）
 
-| # | 章节 | 你将学会|
-|---|---|---|---|
+| # | 章节 | 你将学会 |
+|---|---|---|
 | 🗺 | [学习路径（3 天计划）](./docs/roadmap.md) | 从 0 到 1：每天目标 + 验收标准 + 学习原则|
 | 1 | [认识 DeepSeek Harness](./docs/01-intro.md) · [EN](./docs/01-intro.en.md) | 它是什么、为什么值得学、**与主流 Agent 全面对比**、FAQ|
 | 2 | [五分钟快速上手](./docs/02-quickstart.md) · [EN](./docs/02-quickstart.en.md) | 安装、web/headless 双模式、模型与推理档位、排障|
