@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="140" viewBox="0 0 720 140">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4dabf7"/>
+      <stop offset="100%" style="stop-color:#9775fa"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="140" fill="url(#bg)" rx="12"/>
+  <text x="36" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="700" fill="#ffffff">DeepSeek Harness 白皮书</text>
+  <text x="36" y="86" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#adb5bd">从 0 到 1 玩转官方开源 Agent 运行时 · 新手百科全书</text>
+  <rect x="36" y="100" width="300" height="4" fill="url(#accent)" rx="2"/>
+  <text x="520" y="60" font-family="monospace" font-size="14" fill="#69db7c">dsh-handbook</text>
+  <text x="520" y="82" font-family="monospace" font-size="12" fill="#868e96">7 章 · 中英双语 · PDF</text>
+  <text x="520" y="102" font-family="monospace" font-size="12" fill="#868e96">benchmark · demo · 插件实战</text>
+</svg>
