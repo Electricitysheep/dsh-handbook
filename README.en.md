@@ -3,6 +3,8 @@
 > **From zero to one with DeepSeek Harness — the beginner's encyclopedia for DeepSeek's open-source agent runtime.**
 > English · [中文](./README.md)
 
+**📖 [Read online](https://electricitysheep.github.io/dsh-handbook/) · 📄 [Download PDF](./DeepSeek-Harness-Handbook.pdf) · ⭐ [Star us](https://github.com/Electricitysheep/dsh-handbook/stargazers)**
+
 <p align="center">
   <img src="./docs/assets/banner.svg" alt="dsh-handbook banner" width="720"/>
 </p>
@@ -324,9 +326,6 @@ agent-default-model:
 </p>
 
 
-## 📄 Online docs & PDF
-
-- **📖 Read online**: [dsh-handbook docs site](https://electricitysheep.github.io/dsh-handbook/) — sidebar navigation + full-text search, mobile-friendly
 ## 📄 PDF
 
 - **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (12 chapters, ~120k chars, 5.5MB, professional typesetting: cover/TOC/styles)
