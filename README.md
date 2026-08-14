@@ -135,9 +135,13 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 </div>
 
+<div align="center">
+
 | 🛡️ **[第 13 章 · 安全与沙箱](./docs/13-security.md)** | 💰 **[第 14 章 · 缓存与成本](./docs/14-cost.md)** |
 |---|---|
 | 沙箱机制 · 权限模型 · 审批流 · 插件安全审计清单 | 缓存命中率实测 97% · 成本模型 · 推理档位联动 · 预算实战 |
+
+</div>
 
 ### 📎 附录
 
@@ -248,6 +252,37 @@ dsh --profile headless "你好，请用一句话介绍自己"
 - **30+ 术语**：harness/profile/bundle/cordis/扩展点/waterfall/compaction…
 - **命令速查**：dsh 核心 / 环境 / 排障 / 插件开发
 - **Benchmark**：同模型 3 Agent 实测（3 轮中位数）
+</details>
+
+<details>
+<summary><b>🔮 第 11 章：未来展望 —— 五个维度的预测</b></summary>
+
+- **技术/生态/竞争/机会/风险** 五维度预测 + 时间线
+- **机会点**：官方生态早期，做 dsh-plugin 项目是入场红利
+</details>
+
+<details>
+<summary><b>⚠️ 第 12 章：已知不足与边界 —— rc 版诚实说</b></summary>
+
+- **不稳定性**：rc 迭代快、破坏性变更频繁
+- **生态早期**：官方包 60+ 但插件生态刚起步
+- **跨平台短板**：Windows 家族踩坑记录（含 Node 版本红线）
+</details>
+
+<details>
+<summary><b>🛡️ 第 13 章：安全与沙箱模型 —— 敢上生产的关键</b></summary>
+
+- **沙箱机制**：进程隔离（bwrap/Landlock/Seatbelt）+ 权限分级 + 审批流
+- **社区审计边界**：node:vm 非安全边界、approval 回环、workspace-write 递归删除等真实逃逸面
+- **插件安全审计清单**：第三方审计方法论（[#454](https://github.com/deepseek-ai/deepseek-harness/discussions/454)）
+</details>
+
+<details>
+<summary><b>💰 第 14 章：缓存与成本工程 —— 把"便宜"变工程</b></summary>
+
+- **缓存机制**：上下文缓存 + 命中率实测 97%（Flash 折扣 98% / Pro 99%+）
+- **成本模型**：token 花在哪 + 推理档位联动 + 真实任务预算
+- **可视化**：session log / 余额插件看每笔成本
 </details>
 
 ## 🖥 演示（Demo）—— 直接看效果
