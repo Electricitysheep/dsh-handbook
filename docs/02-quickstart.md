@@ -5,8 +5,8 @@
 ## TL;DR（本章核心，30 秒版）
 
 1. **装**：`npx -y @deepseek-ai/dsh web` → http://127.0.0.1:3080
-2. **两种模式**：web（对话 UI）/ headless（`dsh --profile headless "任务"`，CI 友好）
-3. **推理档位三档**：off / low（关闭或弱思考/最快，官方 provider 用 `off`，网关用 `low`）/ high（默认）/ max（最强）——**工具链任务 90% 时间在思考，降档是最快提速**
+2. **两种常用模式**：web（对话 UI）/ headless（`dsh --profile headless "任务"`，CI 友好）——官方共四种运行模式（见 2.4.1 总览）
+3. **推理档位**：off / low（关闭或弱思考/最快，官方 provider 用 `off`，网关用 `low`）/ high（默认）/ max（最强）——**工具链任务 90% 时间在思考，降档是最快提速**
 4. **模型**：`deepseek-v4-flash`（默认，性价比）或 `deepseek-v4-pro`（旗舰）
 5. **配置**：`~/.dsh/settings.yaml`（模型 + 推理档位）
 
@@ -18,6 +18,7 @@
   - [安装坑（社区真实踩过）](#安装坑社区真实踩过)
 - [2.3 模式一：Web UI（`dsh web`）](#23-模式一web-uidsh-web)
 - [2.4 模式二：Headless（一次性任务，适合脚本/CI）](#24-模式二headless一次性任务适合脚本ci)
+  - [2.4.1 官方四种运行模式总览](#241-官方四种运行模式总览)
 - [2.5 你的第一个插件：给 web 加个 Git 面板](#25-你的第一个插件给-web-加个-git-面板)
 - [2.6 配置与目录速查](#26-配置与目录速查)
 - [2.7 命令速查](#27-命令速查)
@@ -161,6 +162,19 @@ dsh --profile headless "你好，请用一句话介绍你自己"
 dsh --profile headless "读取工作区今天的 git log，生成一份中文日报摘要" > daily-report.md
 echo "exit=$?"
 ```
+
+### 2.4.1 官方四种运行模式总览
+
+> 来源：官方站点 https://deepseek.com/harness/ 与官方仓库 `docs/`（2026-08 快照）。前两节（web / headless）是白皮书实测详讲的；后两种模式官方已公布但白皮书暂未逐项实测。
+
+| 模式 | 一句话 | 用途 | 白皮书覆盖 |
+|---|---|---|---|
+| **Standard mode**（标准） | 完整工具集 + 浏览器界面 | 日常对话/开发（`dsh web`） | ✅ 2.3 节实测 |
+| **Minimal mode**（极简） | 仅 `bash` + `str_replace_editor` 两个工具 | 基准测试、最小攻击面 | ⚠️ 未实测，见官方 docs |
+| **Code mode**（代码） | 模型写 TypeScript，在单次程序内编排多轮工具调用 | 长链路自动化、确定性执行 | ⚠️ 未实测，见官方 docs |
+| **Creator mode**（创造） | 运行时自检 + 内存内测试 Cordis 插件 + 组合新模式 | 插件开发、快速原型 | ⚠️ 未实测，见官方 docs |
+
+> 对新手：日常用 **Standard（web）**、脚本用 **Headless** 即可；Code/Creator 模式属于进阶能力，等官方文档稳定后再深挖。官方文档站（VitePress）：https://deepseek-harness.github.io/deepseek-harness/
 
 ## 2.5 你的第一个插件：给 web 加个 Git 面板
 
