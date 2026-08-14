@@ -370,7 +370,7 @@ agent-default-model:
 本白皮书的方法论来自真实开源实践：
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) —— 社区侧边栏插件（第 5 章案例）
 
-### 🧩 社区插件推荐（来自官方讨论区 / [awesome-dsh-plugin](https://github.com/lonelymoon87/awesome-dsh-plugin) 精选）
+### 🧩 社区插件推荐（来自官方讨论区 / [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 精选）
 
 | 插件 | 用途 |
 |---|---|
@@ -383,7 +383,7 @@ agent-default-model:
 | [dsh-data-agent](https://github.com/omdsh-dev/dsh-data-agent) | 连数据库写 SQL 的数据 Agent |
 | [dsh-balance-meter](https://github.com/Ghost011118/dsh-balance-meter) | 余额 + 会话成本实时显示 |
 
-> 完整列表见 [awesome-dsh-plugin](https://github.com/lonelymoon87/awesome-dsh-plugin)（122+ 插件）。想被收录？[社区案例征集](./discussions/12)
+> 完整列表见 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)（122+ 插件）。想被收录？[社区案例征集](./discussions/12)
 
 ### 📣 官方讨论区活跃响应
 
