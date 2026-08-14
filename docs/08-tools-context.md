@@ -9,6 +9,8 @@
 3. **工具返回 locations → 产物追踪**：模型改了什么文件，UI 能直接看到并可打开（对话末尾的产物 chips）
 4. **上下文 = 系统提示 + 技能目录 + 对话历史 + 工具结果**：分层注入，每步请求携带工具 schema
 5. **长对话自动压缩（compaction）**：检测溢出 → 修剪历史 → 可选摘要 → 失败路由到溢出代理。重要信息建议写进提示词
+6. **插件行为可零成本验证**：mock llm + headless + 审计 dump（#462）——没有 API key 也能验证 waterfall 透传与工具注入
+7. **工具链有两个已知坑**：code 模式 run_code/bash 的 description required 死循环（#558/#581/#689）；流式下工具名被抹空（#725 同族，见 FAQ）
 
 <details><summary>本章导航</summary>
 - [8.1 官方能力包地图（60+ 包一览）](#81-官方能力包地图60-包一览)
@@ -17,6 +19,8 @@
 - [8.4 长对话：compaction（压缩）](#84-长对话compaction压缩)
 - [8.5 权限与安全模型（了解即可）](#85-权限与安全模型了解即可)
 - [8.6 新手最该记住的三件事](#86-新手最该记住的三件事)
+- [8.7 插件运行时验证方法论（零成本）](#87-插件运行时验证方法论零成本)
+- [8.8 工具链踩坑](#88-工具链踩坑)
 </details>
 
 ## 8.1 官方能力包地图（60+ 包一览）
@@ -93,6 +97,44 @@ dsh 的上下文机制：
 1. **工具名是简短动词**（read/write/grep/glob/edit/bash）——写提示词/插件时直接说"读文件""搜索"即可
 2. **工具返回 locations → 产物追踪**——模型改的文件会出现在对话产物区
 3. **长对话自动压缩**——不必手动清理历史（但重要信息要写进提示词）
+
+## 8.7 插件运行时验证方法论（零成本）
+
+> 出处：官方讨论区 [#462](https://github.com/deepseek-ai/deepseek-harness/discussions/462)「DSH 插件运行时验证方法论：无 API Key 验证 waterfall 行为」（实证 74 事件 / 12 waterfall）。FAQ 已有一句话版本，本节展开。
+
+**痛点**：静态检查只能证明"插件能加载"，证明不了"插件在真实 agent 循环里不破坏行为"。尤其 waterfall 事件监听器（`tools/execute`、`approval/request`、`fs/write-intent` 等）必须正确透传 `next()`，否则会**静默吞掉下游默认行为**——这类错误只在运行时暴露；而传统验证要真实 LLM API key + token 成本。
+
+**零成本方案**（dsh 仓库自带，无需 API key）：
+1. **mock llm**：脚本化返回——让第一个请求返回"调用 bash 工具"、第二个正常回复（`--sequence tool_call_success,success`），以此注入工具调用
+2. **headless profile**：走真实 agent 循环，你的插件挂监听
+3. **审计 dump**：`DSH_EVENT_AUDIT_DUMP` 导出事件审计快照
+
+```sh
+# 1. 启动 mock-llm（脚本化注入"调用 bash 工具"）
+pnpm run mock:llm --port 8000 --api-key mock-key \
+  --sequence tool_call_success,success --repeat-last \
+  --tool-name bash --tool-arguments '{"command":"ls"}'
+
+# 2. 跑 headless agent（指向 mock-llm，导出审计）
+DEEPSEEK_BASE_URL=http://127.0.0.1:8000/v1 \
+DEEPSEEK_API_KEY=mock-key \
+DSH_EVENT_AUDIT_DUMP=/tmp/audit.json \
+pnpm dsh --profile headless "run the bash tool once and report"
+```
+
+**判定通过**：审计快照 `byMode` 同时含 emit + waterfall、waterfall 链完整出现、agent 正常跑完（`mock response recovered`）。实证：74 事件 / 12 waterfall 全部捕获，完整生命周期 `session/created → … → tools/pre-execute(wf) → tools/execute(wf) → tools/post-execute(wf) → tools/result`；关键安全证明是**所有 waterfall 监听器正确透传 `next()`、零副作用**——插件既不吞默认行为，mock 注入的工具调用也完整走完链路。
+
+**从源码跑的三点提醒**（#462 作者实测踩坑）：sparse clone 一次加全（缺 `vendor/` 会报 `Cannot find package '@deepseek-ai/cordis'`）；`build:lib:host` + `build:lib:client` + web-frontend dist 三层构建缺一不可；`mock:llm` 参数前不要多传 `--`（会被当位置参数）。
+
+## 8.8 工具链踩坑
+
+rc.6 时代的两个工具链已知坑（详见 [FAQ](./faq.md)）：
+
+**坑 1：code 模式 `run_code`/`bash` 的 description required 死循环**（[#558](https://github.com/deepseek-ai/deepseek-harness/discussions/558) [#581](https://github.com/deepseek-ai/deepseek-harness/discussions/581) [#689](https://github.com/deepseek-ai/deepseek-harness/discussions/689)）
+`code` 模式下 `run_code` 与 `bash` 都把 UI 摘要字段叫 `description` 且标成 required：模型常把内层 `bash.description` 当成已传过，外层 JSON 只剩 `{"code":"..."}` → 反复报 `missing required property "description"`，看起来像"随机丢参数"。`#581` 补根因：`ToolArgsError` 不带工具名，模型无法定位错在哪个工具 → 死循环重试（附可 cherry-pick 修复）；`#689` 显示同族问题让 run_code 内所有 `tools.*` 调用都被拒绝。规避：手动补外层 description 或换标准模式。
+
+**坑 2：流式下工具调用被抹空名**（[#725](https://github.com/deepseek-ai/deepseek-harness/discussions/725) 同族，已入 [FAQ](./faq.md)）
+现象：所有工具调用报 `Error: unknown tool ""`。根因：SSE 流式解析用覆盖赋值而非累加，把工具名/ID 抹成空串（[#725](https://github.com/deepseek-ai/deepseek-harness/discussions/725) 根因 + 修复；[#161](https://github.com/deepseek-ai/deepseek-harness/discussions/161) [#615](https://github.com/deepseek-ai/deepseek-harness/discussions/615) [#694](https://github.com/deepseek-ai/deepseek-harness/discussions/694) [#741](https://github.com/deepseek-ai/deepseek-harness/discussions/741) 同族）。官方修复前只能降级/等版本；模型会反复重试，注意及时中止。
 
 ---
 
