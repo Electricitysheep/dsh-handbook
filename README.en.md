@@ -124,7 +124,7 @@ But the official docs focus on architecture — **the beginner path is missing**
 
 <div align="center">
 
-| 🛡️ **[Ch. 13 · Security & Sandbox](./docs/13-security.md)** | 💰 **[Ch. 14 · Cache & Cost](./docs/14-cost.md)** |
+| 🛡️ **[Ch. 13 · Security & Sandbox](./docs/13-security.en.md)** | 💰 **[Ch. 14 · Cache & Cost](./docs/14-cost.en.md)** |
 |---|---|
 | sandbox model · permissions · approval flow · plugin audit checklist | cache hit 97% · cost model · reasoning-effort × cost · budget |
 
