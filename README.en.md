@@ -24,7 +24,7 @@
 > [!WARNING]
 > dsh is currently at `0.1.0-rc.6` (pre-release). API/config may change with breaking changes; evaluate carefully before production use.
 
-## 🚀 30-second quickstart
+## 🚀 30-Second Quickstart
 
 ```bash
 # 1. Install (needs Node.js ≥ 22)
@@ -43,7 +43,7 @@ dsh --profile headless "Hello, introduce yourself in one sentence"
 
 > Want the full path? [🗺 3-day learning path](./docs/roadmap.md) · Jump straight in: [Chapter 2: 5-min quickstart](./docs/02-quickstart.en.md) · Cheat sheet: [📇 one-page card](./docs/cheatsheet.md)
 
-## 🎯 What this is
+## 🎯 What Is DeepSeek Harness
 
 **DeepSeek Harness (`dsh`)** is the agent runtime open-sourced by DeepSeek on 2026-08-13 — an "everything is a plugin" framework built on Cordis, with `web` + `headless` profiles and a plugin ecosystem.
 
@@ -60,7 +60,7 @@ But the official docs focus on architecture — **the beginner path is missing**
 | English only | **Bilingual**, Chinese-first + English chapters |
 | No ecosystem practice | **Real plugin/PR breakdowns** (pitfalls & safety included) |
 
-## 🎁 What you get
+## 🎁 What You Get
 
 | If you are… | You get |
 |---|---|
@@ -70,7 +70,7 @@ But the official docs focus on architecture — **the beginner path is missing**
 | ⚡ **Tuning for speed** | Reasoning-effort strategy + cache-hit deep dive (measured ~97%) |
 | 📚 **Looking for cases** | 5 real complex cases (with timing / artifacts / verification) |
 
-## 📚 Table of contents (zero → one)
+## 📚 Table of Contents (Zero → One)
 
 ### 🟢 Stage 1 · Understand & Onboard
 
@@ -247,7 +247,7 @@ dsh --profile headless "Hello, introduce yourself in one sentence"
 
 ![dsh Git panel (better-sidebar plugin)](./docs/assets/demo-git-panel.png)
 
-## 🧰 Quick assets (essentials right here)
+## 🧰 Quick Assets (Essentials Right Here)
 
 <details>
 <summary><b>📇 One-page cheatsheet</b> — install · commands · reasoning effort · troubleshooting</summary>
@@ -271,6 +271,9 @@ Reasoning effort: `low` (fastest/simple) · `high` (default) · `max` (hardest)
     - id: my-plugin
       name: my-plugin
 ```
+```bash
+cd ~/.dsh/profiles/web && pnpm install && dsh web
+```
 > Clone-and-run template (pure functions + waterfall + tests): [examples/plugin-template/](./examples/plugin-template/README.md)
 </details>
 
@@ -280,7 +283,8 @@ Reasoning effort: `low` (fastest/simple) · `high` (default) · `max` (hardest)
 ```yaml
 agent-default-model:
   model: deepseek-v4-flash    # or deepseek-v4-pro
-  reasoningEffort: high       # low / high / max
+  reasoningEffort: high       # off (fastest/no thinking) / high (default) / max (strongest)
+                              # Note: 'low' is only for custom gateways (pi-ai); the official DeepSeek adapter accepts off/high/max only
 ```
 > Full reference (profile/cordis.patch.yml/scenarios): [docs/config-reference.md](./docs/config-reference.md)
 </details>
@@ -290,7 +294,7 @@ agent-default-model:
 
 1. **Is dsh a model?** No — a runtime; models plug in via the llm plugin
 2. **vs Claude Code?** Claude Code is the "whole car"; dsh is the "LEGO base" (open, customizable)
-3. **Does it cost money?** dsh is free/open-source; conversations billed per use (98% cache discount, ~97% hit rate measured)
+3. **Does it cost money?** dsh is free/open-source; conversations billed per use (cache discount: Flash tier 98% / Pro tier 99%+, ~97% session cache hit rate measured)
 4. **Plugin 404?** rc.1 dependency breakage — pin the `^0.1.0-rc.6` line
 5. **Production-ready?** rc stage has breaking changes; ecosystem play is fine now
 > Full FAQ: [docs/faq.md](./docs/faq.md)
@@ -329,17 +333,36 @@ agent-default-model:
 ## 📄 PDF
 
 - **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (12 chapters, ~120k chars, 3.2MB, professional typesetting: cover/TOC/styles)
-- **English full edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf)
+- **English edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf) (10 chapters, ~54k chars; the web docs cover all 12 chapters)
 
-## 🌐 Ecosystem links
+## 🌐 Ecosystem Links
 
 Methodology comes from real open-source work:
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) — community sidebar plugin (ch. 5 cases)
-- Active on the official repo discussions: deepseek-ai/deepseek-harness (#380 plugin pitfalls, #401 Windows path bugs, #392 TUI examples, #384 visionDS, #118)
+
+### 🧩 Recommended Community Plugins (from Official Discussions / [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin))
+
+| Plugin | Description |
+|---|---|
+| [dsh-specflow](https://github.com/lonelymoon87/dsh-specflow) | Spec-driven development: skills, commands, target tracking, progress context |
+| [dsh-gitflow](https://github.com/lonelymoon87/dsh-gitflow) | Approval-gated Git workflows (status/diff/commit/branch) |
+| [dsh-guardian](https://github.com/lonelymoon87/dsh-guardian) | Guardrails: dangerous operation policy check + output sanitization |
+| [dsh-code-intel](https://github.com/lonelymoon87/dsh-code-intel) | Tree-sitter code symbol indexing + hybrid search |
+| [dsh-tianshu-tui](https://github.com/huiliyi37/dsh-tianshu-tui) | Terminal UI (TUI) for dsh |
+| [dsh-computer-use](https://github.com/Anionex/dsh-computer-use) | Accessibility-first macOS computer control |
+| [dsh-data-agent](https://github.com/omdsh-dev/dsh-data-agent) | Database connection & SQL-writing agent |
+| [dsh-balance-meter](https://github.com/Ghost011118/dsh-balance-meter) | Real-time balance and session cost tracking |
+
+> Full list at [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) (122+ plugins). Want yours listed? [Community Case Submissions](https://github.com/Electricitysheep/dsh-handbook/discussions/12)
+
+### 📣 Active on Official Discussions
+
+Active on [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions — 8 threads: #380 plugin pitfalls / #401 Windows path bugs / #392 TUI suggestions / #384 visionDS / #118 / #655 community five projects / #735 token cost / #781 LSP proposal
 
 ## 🙏 Contribute
 
 - ⭐ Found it useful? Star it — it drives continued updates
+- 📝 **Run a real case?** Submit it to be featured in the handbook (with author credit + quarterly curated PDF): [Community Case Submissions](https://github.com/Electricitysheep/dsh-handbook/discussions/12) ← reply directly, template ready
 - Commands broken? rc releases iterate fast — open an issue
 - Want to help? See [CONTRIBUTING.md](./CONTRIBUTING.md) · [ROADMAP.md](./ROADMAP.md) · [Ch. 7: Ecosystem](./docs/07-ecosystem.en.md)
 
