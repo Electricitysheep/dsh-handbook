@@ -1,19 +1,90 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="720" height="140" viewBox="0 0 720 140">
   <defs>
+    <!-- Background gradient -->
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#1a1a2e"/>
       <stop offset="100%" style="stop-color:#16213e"/>
     </linearGradient>
+    <!-- Accent gradient (blue → purple) -->
     <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" style="stop-color:#4dabf7"/>
       <stop offset="100%" style="stop-color:#9775fa"/>
     </linearGradient>
+    <!-- Vertical accent gradient for icon -->
+    <linearGradient id="accent-v" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4dabf7"/>
+      <stop offset="100%" style="stop-color:#9775fa"/>
+    </linearGradient>
+    <!-- Glow filter for icon nodes -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
+
+  <!-- Background -->
   <rect width="720" height="140" fill="url(#bg)" rx="12"/>
-  <text x="36" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="700" fill="#ffffff">DeepSeek Harness 白皮书</text>
-  <text x="36" y="86" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#adb5bd">从 0 到 1 玩转官方开源 Agent 运行时 · 新手百科全书</text>
-  <rect x="36" y="100" width="300" height="4" fill="url(#accent)" rx="2"/>
-  <text x="520" y="60" font-family="monospace" font-size="14" fill="#69db7c">dsh-handbook</text>
-  <text x="520" y="82" font-family="monospace" font-size="12" fill="#868e96">14 章 · 中英双语 · PDF</text>
-  <text x="520" y="102" font-family="monospace" font-size="12" fill="#868e96">benchmark · demo · 插件实战</text>
+
+  <!-- Subtle grid pattern (harness/technical feel) -->
+  <g opacity="0.04" stroke="#4dabf7" stroke-width="0.5">
+    <line x1="0" y1="28" x2="720" y2="28"/>
+    <line x1="0" y1="56" x2="720" y2="56"/>
+    <line x1="0" y1="84" x2="720" y2="84"/>
+    <line x1="0" y1="112" x2="720" y2="112"/>
+    <line x1="80" y1="0" x2="80" y2="140"/>
+    <line x1="160" y1="0" x2="160" y2="140"/>
+    <line x1="240" y1="0" x2="240" y2="140"/>
+  </g>
+
+  <!-- ── Geometric harness icon: hub + 4 plugin nodes ── -->
+  <g transform="translate(62, 70)" filter="url(#glow)">
+    <!-- Connection lines (hub to plugins) -->
+    <line x1="0" y1="0" x2="-28" y2="-32" stroke="url(#accent)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="0" y1="0" x2="30" y2="-30" stroke="url(#accent)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="0" y1="0" x2="-30" y2="28" stroke="url(#accent)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="0" y1="0" x2="28" y2="30" stroke="url(#accent)" stroke-width="1.5" opacity="0.6"/>
+    <!-- Cross-connections between plugins -->
+    <line x1="-28" y1="-32" x2="30" y2="-30" stroke="#4dabf7" stroke-width="0.6" opacity="0.2" stroke-dasharray="3 2"/>
+    <line x1="30" y1="-30" x2="28" y2="30" stroke="#9775fa" stroke-width="0.6" opacity="0.2" stroke-dasharray="3 2"/>
+    <line x1="28" y1="30" x2="-30" y2="28" stroke="#9775fa" stroke-width="0.6" opacity="0.2" stroke-dasharray="3 2"/>
+    <line x1="-30" y1="28" x2="-28" y2="-32" stroke="#4dabf7" stroke-width="0.6" opacity="0.2" stroke-dasharray="3 2"/>
+
+    <!-- Central hub (the harness runtime) -->
+    <circle cx="0" cy="0" r="14" fill="none" stroke="url(#accent)" stroke-width="2.5"/>
+    <circle cx="0" cy="0" r="6" fill="url(#accent)" opacity="0.9"/>
+
+    <!-- Plugin nodes (4 corners) -->
+    <rect x="-34" y="-38" width="12" height="12" rx="3" fill="#4dabf7" opacity="0.85" transform="rotate(15 -28 -32)"/>
+    <rect x="24" y="-36" width="12" height="12" rx="3" fill="#6c7ce0" opacity="0.85" transform="rotate(-10 30 -30)"/>
+    <rect x="-36" y="22" width="12" height="12" rx="3" fill="#8470e8" opacity="0.85" transform="rotate(10 -30 28)"/>
+    <rect x="22" y="24" width="12" height="12" rx="3" fill="#9775fa" opacity="0.85" transform="rotate(-15 28 30)"/>
+  </g>
+
+  <!-- ── Text content ── -->
+  <!-- Title -->
+  <text x="120" y="55" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="30" font-weight="800" fill="#ffffff" letter-spacing="0.5">DeepSeek Harness 白皮书</text>
+
+  <!-- Subtitle -->
+  <text x="120" y="82" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="15" fill="#adb5bd" letter-spacing="0.3">从 0 到 1 玩转官方开源 Agent 运行时 · 新手百科全书</text>
+
+  <!-- Accent bar -->
+  <rect x="120" y="96" width="260" height="3" fill="url(#accent)" rx="1.5"/>
+
+  <!-- ── Right-side labels ── -->
+  <!-- Tag pill: dsh-handbook -->
+  <rect x="505" y="42" width="120" height="22" rx="11" fill="url(#accent)" opacity="0.15"/>
+  <text x="565" y="58" font-family="monospace" font-size="14" font-weight="600" fill="#69db7c" text-anchor="middle">dsh-handbook</text>
+
+  <!-- Info lines -->
+  <text x="508" y="80" font-family="monospace" font-size="12" fill="#868e96" letter-spacing="0.5">14 章 · 中英双语 · PDF</text>
+  <text x="508" y="98" font-family="monospace" font-size="12" fill="#868e96" letter-spacing="0.5">benchmark · demo · 插件实战</text>
+
+  <!-- Accent dot decoration (right edge) -->
+  <circle cx="690" cy="20" r="2" fill="#4dabf7" opacity="0.4"/>
+  <circle cx="700" cy="30" r="1.5" fill="#9775fa" opacity="0.3"/>
+  <circle cx="695" cy="120" r="2" fill="#9775fa" opacity="0.35"/>
+  <circle cx="705" cy="110" r="1.5" fill="#4dabf7" opacity="0.25"/>
 </svg>

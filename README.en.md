@@ -234,6 +234,37 @@ But the official docs focus on architecture — **the beginner path is missing**
 - Benchmark: same-model 3-agent (3-round median)
 </details>
 
+<details>
+<summary><b>🔮 Ch. 11 — future outlook across five dimensions</b></summary>
+
+- Tech / ecosystem / competition / opportunity / risk predictions + timeline
+- Opportunity: the ecosystem is day-zero — building dsh-plugin projects is the early-mover entry point
+</details>
+
+<details>
+<summary><b>⚠️ Ch. 12 — known limitations & boundaries (rc honest view)</b></summary>
+
+- Instability: fast rc iterations, frequent breaking changes
+- Early ecosystem: 60+ official packages but plugin ecosystem just starting
+- Cross-platform gaps: Windows-family pitfalls (incl. the Node version red line)
+</details>
+
+<details>
+<summary><b>🛡️ Ch. 13 — security & sandbox model</b></summary>
+
+- Sandboxing: process isolation (bwrap/Landlock/Seatbelt) + permission tiers + approval flow
+- Community-audited boundaries: node:vm is not a security boundary, approval loops, recursive workspace-write deletion
+- Plugin security audit checklist (third-party audit methodology, [#454](https://github.com/deepseek-ai/deepseek-harness/discussions/454))
+</details>
+
+<details>
+<summary><b>💰 Ch. 14 — cache & cost engineering</b></summary>
+
+- Caching: context cache + measured hit rate 97% (Flash discount 98% / Pro 99%+)
+- Cost model: where tokens go + reasoning-effort interplay + real-task budgets
+- Visibility: session logs / balance plugins to see every cent of spend
+</details>
+
 ## 🖥 Demo
 
 ### ① Web UI chat (`dsh web`)
