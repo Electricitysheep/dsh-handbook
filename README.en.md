@@ -114,7 +114,7 @@ But the official docs focus on architecture — **the beginner path is missing**
 
 <div align="center">
 
-| 🧪 **[Ch. 10 · Complex Real Cases](./docs/10-complex-cases.en.md)** | 🔮 **[Ch. 11 · Future Outlook](./docs/11-future.md)** | ⚠️ **[Ch. 12 · Known Limitations](./docs/12-limitations.md)** |
+| 🧪 **[Ch. 10 · Complex Real Cases](./docs/10-complex-cases.en.md)** | 🔮 **[Ch. 11 · Future Outlook](./docs/11-future.en.md)** | ⚠️ **[Ch. 12 · Known Limitations](./docs/12-limitations.en.md)** |
 |---|---|---|
 | Run live in dsh: data pipeline 186s, 5-bug fix 94s | Tech / ecosystem / competition / risk predictions | rc instability, Windows bugs, early ecosystem — honest edition |
 
