@@ -14,6 +14,6 @@
   <text x="36" y="86" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#adb5bd">从 0 到 1 玩转官方开源 Agent 运行时 · 新手百科全书</text>
   <rect x="36" y="100" width="300" height="4" fill="url(#accent)" rx="2"/>
   <text x="520" y="60" font-family="monospace" font-size="14" fill="#69db7c">dsh-handbook</text>
-  <text x="520" y="82" font-family="monospace" font-size="12" fill="#868e96">12 章 · 中英双语 · PDF</text>
+  <text x="520" y="82" font-family="monospace" font-size="12" fill="#868e96">14 章 · 中英双语 · PDF</text>
   <text x="520" y="102" font-family="monospace" font-size="12" fill="#868e96">benchmark · demo · 插件实战</text>
 </svg>
