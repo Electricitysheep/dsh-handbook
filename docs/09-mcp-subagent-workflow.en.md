@@ -67,7 +67,7 @@ Artifacts (openable / trackable)
 
 Community projects already appearing in the official Discussions:
 - `dsh-plugin-cost-tracker` — real-time token cost tracking (plugin/MCP hybrid)
-- Plugin development / speed-up tools (e.g. `dsh-tool-turbo`, the companion to this handbook)
+- Plugin development / speed-up tools (e.g. the example speed-up plugin in Chapter 4 of this handbook)
 
 The ecosystem is growing fast. **Now is a great time to start building.**
 

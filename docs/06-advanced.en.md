@@ -36,13 +36,13 @@ Measured latency breakdown for a "create a file" task:
 | `max` | Complex reasoning, long-chain planning, debugging |
 
 **Manual:** The "Reasoning Level" selector in the UI, or `reasoningEffort` in `~/.dsh/settings.yaml`.
-**Automatic:** A plugin dynamically downgrades per tool turn (`dsh-tool-turbo`, Chapter 4).
+**Automatic:** A plugin dynamically downgrades per tool turn (example speed-up plugin, Chapter 4).
 
 ## 6.3 Tool-Call Latency Visualization
 
 dsh's session stats line (at the bottom of the Web UI) shows: `N turns · M steps | LLM Xs · Tool calls Ys | Avg first token ...` — this is the fastest way to locate bottlenecks.
 
-Advanced: A host plugin can listen to tool events for per-tool timing (tool-turbo already includes a host-side logging version), surfacing "which tool is the slowest."
+Advanced: A host plugin can listen to tool events for per-tool timing (the example speed-up plugin already includes a host-side logging version), surfacing "which tool is the slowest."
 
 ## 6.4 Pitfall Checklist (Battle-Tested, with Fixes)
 
@@ -72,7 +72,7 @@ dsh's `agent/request` waterfall makes model benchmarks reproducible. That's an e
 1. **Measure your own task**: run a simple file-creation task in `dsh web`. Check the stats line at the bottom. What's the LLM time vs tool-call time? Does it match the 90% / <1% split?
 2. **Effort comparison**: run the same task twice, once with `reasoningEffort: low` and once with `high`. Compare wall-clock time and output quality. When is `low` good enough?
 3. **Pitfall hunt**: open the pitfall checklist (Section 6.4). For each of the 7 pitfalls, try to reproduce it (or find a log/example where it occurred). Write down the fix.
-4. **Plugin timing**: if you've built the `dsh-tool-turbo` plugin (Chapter 4), check its logs. How much time does each step save? Calculate the cumulative gain over a 50-step task.
+4. **Plugin timing**: if you've built the example speed-up plugin (Chapter 4), check its logs. How much time does each step save? Calculate the cumulative gain over a 50-step task.
 5. **Benchmark skepticism**: find an official DeepSeek benchmark scorecard. Ask the three evaluation questions (Section 6.5). What harness did they use? How strict was the verifier?
 6. **Think**: why does dsh re-think before every tool call? What would happen if it cached the reasoning across steps? What are the trade-offs?
 
