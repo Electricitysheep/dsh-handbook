@@ -329,7 +329,7 @@ agent-default-model:
 Methodology comes from real open-source work:
 - [dsh-tool-turbo](https://github.com/Electricitysheep/dsh-tool-turbo) — tool-call latency optimizer (source for ch. 4/6)
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) — community sidebar plugin (ch. 5 cases)
-- Active on the official repo discussions: deepseek-ai/deepseek-harness (#380 plugin pitfalls, #392 TUI examples, #401 Windows bugs)
+- Active on the official repo discussions: deepseek-ai/deepseek-harness (#380 plugin pitfalls, #401 Windows path bugs, #392 TUI examples, #384 visionDS, #118)
 
 ## 🙏 Contribute
 

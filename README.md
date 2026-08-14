@@ -72,7 +72,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | 🛠 **开发者** | 可克隆的插件模板 + 配置参考大全（照抄能跑） |
 | ⚖️ **正在选型** | 14 个主流 Agent 对比（表格+文字）+ 同模型实测 benchmark |
 | ⚡ **要调优** | 推理档位策略 + 缓存命中率专题（实测 97%） |
-| 📚 **要案例** | 5 个真实复杂案例（含耗时/产物/验证） |
+| 📚 **要案例** | 8 个真实复杂案例（含耗时/产物/验证） |
 
 ## 📚 目录（从 0 到 1）
 
@@ -363,7 +363,7 @@ agent-default-model:
 本白皮书的方法论来自真实开源实践：
 - [dsh-tool-turbo](https://github.com/Electricitysheep/dsh-tool-turbo) —— 工具调用提速插件（第 4/6 章源码）
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) —— 社区侧边栏插件（第 5 章案例）
-- 官方讨论区活跃响应 —— 已在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 回应 3 帖：[#380 插件踩坑](https://github.com/deepseek-ai/deepseek-harness/discussions/380)（本白皮书第 3/4 章结论）、[#392 TUI examples 建议](https://github.com/deepseek-ai/deepseek-harness/discussions/392)、[#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118)
+- 官方讨论区活跃响应 —— 已在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 回应 5 帖：[#380 插件踩坑](https://github.com/deepseek-ai/deepseek-harness/discussions/380)（本白皮书第 3/4 章结论）、[#401 Windows 路径 bug](https://github.com/deepseek-ai/deepseek-harness/discussions/401)（第 12 章记录）、[#392 TUI examples](https://github.com/deepseek-ai/deepseek-harness/discussions/392)、[#384 visionDS](https://github.com/deepseek-ai/deepseek-harness/discussions/384)、[#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118)
 
 ## 🙏 贡献与反馈
 
