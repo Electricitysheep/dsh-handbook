@@ -122,11 +122,19 @@ But the official docs focus on architecture — **the beginner path is missing**
 
 </div>
 
+<div align="center">
+
+| 🛡️ **[Ch. 13 · Security & Sandbox](./docs/13-security.md)** | 💰 **[Ch. 14 · Cache & Cost](./docs/14-cost.md)** |
+|---|---|
+| sandbox model · permissions · approval flow · plugin audit checklist | cache hit 97% · cost model · reasoning-effort × cost · budget |
+
+</div>
+
 ### 📎 Appendix
 
 <div align="center">
 
-| 📚 **[Glossary & Command Reference](./docs/appendix-glossary.md)** · **[Official Package Quick Reference](./docs/appendix-packages.md)** · **[Benchmark](./docs/benchmark.md)** |
+| 📚 **[App. A · Glossary](./docs/appendix-glossary.md)** · 📦 **[App. B · Official Packages](./docs/appendix-packages.md)** · 📊 **[App. C · Benchmark](./docs/benchmark.md)** |
 |---|
 | 30+ terms · command cheatsheet · official @deepseek-ai/* package list · same-model 3-agent benchmark |
 
