@@ -44,7 +44,10 @@ DeepSeek API 的 **context cache**（提示词缓存）：重复/相似的输入
 
 **缓存不只省钱，还提速**：冷启动首轮含上下文注入约 110s，热缓存约 1s（第 1 章实测）——命中时首 token 时间量级性缩短。
 
-> 细节说明：命中依赖"重复/相似前缀"，精确匹配规则由 API 侧决定（推断，待实测）；实操上只要做到"前缀稳定"，就能稳定吃到折扣。
+> **严格前缀缓存规则（社区分析，#1052 weijiafu14，官方文档 [kv_cache](https://api-docs.deepseek.com/guides/kv_cache/)）**：DeepSeek 是**严格的前缀缓存**——前缀单元在**用户输入结束、模型输出结束等位置持久化**；下一次请求只能命中"已经完整匹配"的前缀。关键推论：
+> - **工具结果天然 miss 一次**：工具结果是在"上一轮模型输出"之后才追加的，它**第一次进入下一次请求时必然是新后缀、必 miss 一次**——不论传原文还是压缩预览（这与截断方式无关）。
+> - **"截断会避开缓存"是误读**：只要截断是确定性的（同输入同输出），后续回放的是同一份字节，已有前缀照常命中；只有首次出现的压缩结果、以及之后主动读取 artifact 新增的内容各自 miss 一次。**压缩工具不会绕开 DeepSeek 缓存，反而把"必然首次 miss"的工具结果缩小**（#1052 weijiafu14 实测：原生工具输出 42,299 字符 → 压缩持久化 7,885 字符，后续 derive/replay 哈希一致）。
+> - **代价提醒（#1052 fnsii + weijiafu14）**：缓存本身是 best-effort、官方不承诺 100% 命中（weijiafu14 转述官方说明）；若完全不保留上下文前缀（如每轮重写/清空历史、换新会话丢全部前缀），则完全无法命中缓存，等于按新输入全价计算（fnsii）。**快封顶时优先做 summary 压缩再续**（保留前缀摘要），而不是直接开新会话丢全部前缀（fnsii 建议）。
 
 ## 14.2 命中率实测：97% 怎么来的
 
@@ -138,7 +141,9 @@ DeepSeek API 的 **context cache**（提示词缓存）：重复/相似的输入
 - 每轮结束行：`10:14 · 用时 9分34秒 · 首 token 1.7秒 · 79 tok/s`（[#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) 原帖截图）
 - 会话总览有总 token 统计；统计行可见"缓存命中 %"（第 6 章 6.6）
 
-**缺口（没有的）**：**每轮 token 数**。官方讨论区 [#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735)（2026-08-14 提出，标题「【友好显示】希望在每轮对话中加入本轮对话token消耗量」，2 条评论）正是这个需求——已在帖子中确认存在，官方尚未实现。
+**缺口（没有的）**：**每轮 token 数**。官方讨论区 [#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735)（2026-08-14 提出，标题「【友好显示】希望在每轮对话中加入本轮对话token消耗量」）正是这个需求——已在帖子中确认存在，官方尚未实现。
+
+**另一个缺口（#735 评论区 Jianye）**：希望在每轮显示中带 **provider 与 model id 标识**（原帖截图里 `xtoken：gpt-5.6-sol` 这类"provider + modelid"信息用户希望界面直接给出）——同一需求帖下的补充诉求。
 
 **社区建议（已同步到 #735 评论区）**：每轮显示应拆成**两个数**——① 本轮总 token（粗看消耗）；② 本轮缓存命中/未命中 token（看成本优化空间）。只看总 token 会误判：同样 10k token，命中率 90% 和 10% 成本差 7.6×（见 14.4）。
 
@@ -149,6 +154,23 @@ DeepSeek API 的 **context cache**（提示词缓存）：重复/相似的输入
 - **Settings → Usage 完整用量页**：总 token、输入、缓存命中、输出、调用次数及**预估费用**（需为 Provider/模型配置价格；缺 usage/价格时费用显示 `--`，对话底部省略 Cost，避免把不完整费用当总费用）
 - **52 周用量热力图**（GitHub Contributions 风格）+ 按模型/会话/单轮查看
 - 支持 DeepSeek Harness 中的其他模型和 Provider；`Cost` 为估算值，不代表供应商最终账单
+
+**记忆/压缩生态工具**（#1052 长会话降本专题评论区，2026-08-14）——针对"长会话 token 暴涨"（原帖实测 70M→100M），社区给出两个互补方案：
+
+| 工具 | 作者 | 定位 | 机制 |
+|---|---|---|---|
+| **dsh-sgme**（[freehul/sgme](https://github.com/freehul/sgme)，npm 包 `dsh-sgme`） | freehul | 记忆引擎（治本） | 「对话历史」与「长期记忆」分层：每轮零成本落盘（L0，不走 LLM）→ 会话结束提炼去重合并（L1/L1.5/L2，提炼前先**剪枝**剔除无用工具调用/中间产物，实测省 **65%～96%** 会话内容）→ 新会话按场景只注入相关记忆块（纯结构化查询，不烧 token）→ 需要细节时 `memory_search` 按需检索 |
+| **pi-quiet-tools**（经 [pi2dsh](https://github.com/weijiafu14/pi2dsh) 挂载） | weijiafu14 提供（freehul 亦推荐） | 工具输出压缩（治标） | 在**进入模型上下文前**压缩大工具结果：默认超过 12,000 字符或 240 行时只把确定性的头尾预览交给模型，完整结果存本地 artifact、需要时模型再读；阈值可用 `QUIET_TOOLS_MAX_CHARS` / `QUIET_TOOLS_MAX_LINES` 调整。对 MCP/Playwright 大返回体有效（作者实测 40,799 字符闭环压缩）。与缓存兼容：见 14.1 严格前缀缓存规则——不绕开缓存，反而缩小"必然首次 miss"的工具结果 |
+
+安装示例（pi-quiet-tools，摘自 #1052 作者实测）：
+
+```sh
+npm i -g pi2dsh
+pi2dsh host --packages pi-quiet-tools@0.2.0 --out ./dsh-pi-quiet
+dsh plugin --profile web add file:$PWD/dsh-pi-quiet
+```
+
+> 两者不冲突：pi-quiet-tools 解决"大工具结果反复进上下文"，dsh-sgme 解决"长会话越用越贵/延续性"——前者立即生效，后者适合需要跨会话迁移记忆的场景（#1052 评论区共识：把"对话历史"和"长期记忆"分开，历史该滚就滚、记忆按需注入）。
 
 ## 14.8 成本相关踩坑清单
 
@@ -196,7 +218,7 @@ DeepSeek API 的 **context cache**（提示词缓存）：重复/相似的输入
 简单确定性任务（文件操作、批量处理）几乎无差别；复杂推理、长链规划、debug 用 `low` 可能漏掉关键步骤（第 6 章 FAQ Q3）。建议日常 `high`，批量/简单任务切 `low`。
 
 **Q3：官方什么时候提供每轮 token 显示？**
-[#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) 是 2026-08-14 提出的需求帖（2 条评论），**尚未实现**。过渡期用：会话统计行命中 % + 社区 `dsh-plugin-cost-tracker`（第 9 章）。
+[#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) 是 2026-08-14 提出的需求帖（每轮 token + provider/model 标识，见 14.7），**尚未实现**。过渡期用：会话统计行命中 % + 社区 `dsh-plugin-cost-tracker`（第 9 章）或 `dsh-usage`（14.7）。
 
 **Q4：第三方网关/自建 provider 也吃缓存折扣吗？**
 缓存折扣是 DeepSeek API 侧能力（第 5 章定价表）；第三方网关的缓存支持与计费需查对应定价页（推断，待实测）。
