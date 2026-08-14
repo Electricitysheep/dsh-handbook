@@ -21,6 +21,18 @@
 | [#1153](https://github.com/deepseek-ai/deepseek-harness/discussions/1153) / [#1269](https://github.com/deepseek-ai/deepseek-harness/discussions/1269) 视觉方案 | 生态收录 | 生态章节（视觉桥家族） | ✅ 已沉淀 |
 | [#681](https://github.com/deepseek-ai/deepseek-harness/discussions/681) 安全开关插件 | 生态收录 + 章节呼应 | 生态章节 + 第 13 章审计理念 | ✅ 已沉淀 |
 
+## 2026-08-14 轮（第二轮：他人回复需求）
+
+| 来源帖 | 分类 | 沉淀位置 | 状态 |
+|---|---|---|---|
+| [#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118) WSL2 安装 | 章节补充 | 第 2 章 WSL 安装注意 | ✅ 已沉淀（PR #31） |
+| [#725](https://github.com/deepseek-ai/deepseek-harness/discussions/725) unknown tool null 根因 | FAQ 深化 | FAQ + typeof 校验 workaround | ✅ 已沉淀（PR #31） |
+| [#1052](https://github.com/deepseek-ai/deepseek-harness/discussions/1052) PTC 模式 | 章节补充 | 第 8 章 | ✅ 已沉淀（PR #31） |
+| [#1052](https://github.com/deepseek-ai/deepseek-harness/discussions/1052) KVCache 前缀缓存规则 | 章节补充（weijiafu14 分析） | 第 14 章缓存机制 | ✅ 已沉淀（PR #31） |
+| [#1052](https://github.com/deepseek-ai/deepseek-harness/discussions/1052) 记忆/压缩生态 | 生态收录 | 第 14 章 + 生态章节（dsh-sgme/pi-quiet-tools） | ✅ 已沉淀（PR #31） |
+| [#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) provider/model 标识 | 章节补充 | 第 14 章测量方法 | ✅ 已沉淀（PR #31） |
+| [#380](https://github.com/deepseek-ai/deepseek-harness/discussions/380) dsh-installers | 生态收录（作者提供） | 生态章节 | ✅ 已沉淀（PR #31） |
+
 ## 待沉淀（下周轮次）
 
 | 来源帖 | 分类 | 计划 |
