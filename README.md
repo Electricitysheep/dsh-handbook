@@ -429,12 +429,16 @@ agent-default-model:
 | [dsh-computer-use](https://github.com/Anionex/dsh-computer-use) | 无障碍优先的 macOS 电脑控制 |
 | [dsh-data-agent](https://github.com/omdsh-dev/dsh-data-agent) | 连数据库写 SQL 的数据 Agent |
 | [dsh-balance-meter](https://github.com/Ghost011118/dsh-balance-meter) | 余额 + 会话成本实时显示 |
+| [dsh-usage](https://github.com/kestiany/dsh-usage) | Token 用量 + 费用估算 + 52 周热力图（#1169） |
+| [dsh-sgme](https://github.com/freehul/sgme) | 记忆引擎：按场景注入 + 自动剪枝（省 65-96% 会话，#1052） |
+| [AgentSoul](https://github.com/yuhui-sama/dsh-agentsoul) | 本地人格 + 长期记忆 + 记忆蒸馏（#1478） |
+| [dsh-vault](https://github.com/akslcw/dsh-vault) | 加密凭据保险库：TOTP/API Key/SSH 加密存储（#1457） |
 
 > 完整列表见 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)（122+ 插件）。想被收录？[社区案例征集](https://github.com/Electricitysheep/dsh-handbook/discussions/12)
 
 ### 📣 官方讨论区活跃响应
 
-已在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 持续活跃响应（25+ 帖）：插件踩坑 #380 / Windows 路径 #401 / 安全审计 #817 / token 成本 #735 / 社区五项目 #655 / 生态洞察帖 #839 等
+已在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 持续活跃响应（100+ 帖）：插件踩坑 #380 / 安全审计 #817 / 缓存成本 #1052/#1234 / 生态洞察帖 #839 等（[沉淀流水线](./docs/research/feedback-pipeline.md) 持续收录反馈）
 
 ## 🙏 贡献与反馈
 
@@ -447,6 +451,11 @@ agent-default-model:
 
 - 基于 dsh `0.1.0-rc.6` / DeepSeek-V4-Flash-0731（2026-08-13 开源）
 - 示例环境：Windows 11 + Node 24
+
+### 🔄 最近更新
+
+- **14 章完整版**（第 13 安全沙箱 / 第 14 缓存成本）+ 附录 A/B/C
+- 讨论区反馈持续沉淀：FAQ 39 条 / KVCache 规则 / 内置 Agent 预设 / run_code 异步坑（[沉淀流水线](./docs/research/feedback-pipeline.md)）
 
 ## 📜 许可
 
