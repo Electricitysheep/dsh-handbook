@@ -144,6 +144,12 @@ DeepSeek API 的 **context cache**（提示词缓存）：重复/相似的输入
 
 **过渡期工具**：社区 `dsh-plugin-cost-tracker`（第 9 章 9.5/9.6，实时 token 成本追踪，插件/MCP 形态）——实现层面走第 4 章的插件扩展点，在请求/会话事件上统计 usage（推断，待实测）；或按会话日志/API usage 字段手工核算。第 11 章预测"缓存命中率工具化"是中期主线（11.2）——#735 落地后成本透明化闭环。
 
+**更完整的社区实测工具：dsh-usage**（作者 kestiany，[#1169](https://github.com/deepseek-ai/deepseek-harness/discussions/1169) 收录授权）。npm 已发布 `0.1.0`（`dsh plugin --profile web add dsh-usage` 即可安装），基于 Harness 持久化会话日志计算、无需独立统计数据库。核心能力：
+- **每轮对话结束位置固定展示**：`Total · Input · Cache · Output · Cost`——正好补齐 #735 缺的"每轮 token 数"，且区分输入/缓存命中/输出
+- **Settings → Usage 完整用量页**：总 token、输入、缓存命中、输出、调用次数及**预估费用**（需为 Provider/模型配置价格；缺 usage/价格时费用显示 `--`，对话底部省略 Cost，避免把不完整费用当总费用）
+- **52 周用量热力图**（GitHub Contributions 风格）+ 按模型/会话/单轮查看
+- 支持 DeepSeek Harness 中的其他模型和 Provider；`Cost` 为估算值，不代表供应商最终账单
+
 ## 14.8 成本相关踩坑清单
 
 | # | 坑 | 现象 | 解法 |
