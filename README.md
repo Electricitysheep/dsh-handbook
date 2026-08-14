@@ -10,7 +10,6 @@
 
 <div align="center">
 
-<!-- 增长视角检查点②: 徽章行原缺 stars/release 徽章（仅有 license），补充这两枚 shields.io 动态徽章 -->
 ![GitHub stars](https://img.shields.io/github/stars/Electricitysheep/dsh-handbook?style=flat&color=yellow)
 ![GitHub release](https://img.shields.io/github/v/tag/Electricitysheep/dsh-handbook?label=release&color=success)
 ![dsh-handbook](https://img.shields.io/badge/dsh--handbook-白皮书-blue)
@@ -21,9 +20,8 @@
 
 </div>
 
-<!-- 增长视角检查点④: 全文无 GitHub 原生警告框，在读者动手前补充 rc 版本风险提示 -->
 > [!WARNING]
-> <!-- [fix] 链接健康检查：锚点 #版本说明 → #ℹ️-版本说明（GitHub 对 ℹ️ 标题生成的 slug 含 emoji） -->
+
 > dsh 当前为 `0.1.0-rc.6`（预发布阶段），生产环境请谨慎评估，详见 [ℹ️ 版本说明](#ℹ️-版本说明)。
 
 ## 🚀 快速体验（30 秒）
@@ -66,8 +64,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 ## 🎁 这本能给你什么
 
-<!-- [style] 中英混排：中文与数字之间补空格 -->
-<!-- [fix] 技术准确性核验：缓存命中率全仓实测值为 97%（05-cases/06-advanced/12-limitations/cheatsheet/faq/appendix 一致）；99% 是 Pro 档缓存*折扣*（99%+），不是命中率 -->
+
 | 如果你是… | 你会得到 |
 |---|---|
 | 🆕 **第一次接触 dsh** | 3 天从 0 到 1 学习路径（每天有目标+验收） |
@@ -75,6 +72,16 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | ⚖️ **正在选型** | 6 个主流 Agent 对比（表格+文字）+ 同模型实测 benchmark |
 | ⚡ **要调优** | 推理档位策略 + 缓存命中率专题（实测 97%） |
 | 📚 **要案例** | 5 个真实复杂案例（含耗时/产物/验证） |
+
+## 🌟 社区认可（发布第 2 天）
+
+- ⭐ **170+ Stars**（16 → 170，**2 天 10x 增长**）——发布即被关注的 dsh 中文教程
+- 💬 **官方库 138 帖积极回应**（[deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 讨论区）：插件踩坑 / 安全审计 / 缓存成本 / Windows 兼容……
+- 🧠 **吸收 780 帖讨论区智慧**：FAQ 39 条真实高频问题 + 各章引用真实帖号（#380/#817/#1052…）
+- 📦 **收录于 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)**（社区插件列表）+ 阮一峰周刊自荐
+- 🤝 **20+ 社区项目互链**：dsh-usage / dsh-sgme / AgentSoul / dsh-vault / read-confine……
+
+> 白皮书内容随讨论区持续更新（[沉淀流水线](./docs/research/feedback-pipeline.md)，19 项已沉淀可追踪）
 
 ## 📚 目录（从 0 到 1）
 
@@ -169,7 +176,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 - **一条命令启动**：`npx -y @deepseek-ai/dsh web` → http://127.0.0.1:3080
 - **双模式**：web（对话 UI）/ headless（`dsh --profile headless "任务"`，CI 友好）
-<!-- [fix] 技术准确性核验：low 为 pi-ai（opencode-go）网关档位（本白皮书实测环境）；DeepSeek 官方适配器档位为 off（关闭思考/最快）/ high / max，见 02-quickstart 2.3 注 -->
+
 - **推理档位三档**：`low`（最快/简单任务）· `high`（默认）· `max`（最强/复杂推理）——**性能关键：思考占工具链 90% 时间**。>注：`low` 为本白皮书实测网关（pi-ai/opencode-go）档位；**DeepSeek 官方适配器为 `off`（关闭思考/最快）/ `high` / `max`**（见 02-quickstart 2.3 注）
 - **第一个插件**：Git 面板 4 步挂载
 </details>
@@ -297,7 +304,6 @@ dsh web    # → http://127.0.0.1:3080
 
 ### ② Headless CLI（一次性任务，适合脚本/CI）
 
-<!-- [fix] 链接健康检查：锚点 #快速体验30-秒 → #-快速体验30-秒（标题 emoji 🚀 去除后 slug 以 - 开头） -->
 运行 `dsh --profile headless "你好，请用一句话介绍你自己"`（命令见 [🚀 快速体验](#-快速体验30-秒)）：
 
 ```bash
@@ -320,7 +326,7 @@ dsh web    # → http://127.0.0.1:3080
 npx -y @deepseek-ai/dsh web          # 安装即启动 Web UI
 dsh --profile headless "任务"        # 一次性任务（脚本/CI）
 ```
-<!-- [fix] 技术准确性核验：同 02-quickstart 2.3 注——low 为 pi-ai（opencode-go）网关档位；官方 DeepSeek 适配器档位为 off / high / max -->
+
 推理档位：`low`（最快/简单轮次）· `high`（默认）· `max`（最强/复杂推理）——`low` 为实测网关（pi-ai）档位，**官方适配器用 `off`/`high`/`max`**
 > 工具链任务 90% 时间在思考——降档是最高杠杆提速
 > 完整卡：[docs/cheatsheet.md](./docs/cheatsheet.md)
@@ -329,7 +335,6 @@ dsh --profile headless "任务"        # 一次性任务（脚本/CI）
 <details>
 <summary><b>🔧 插件模板</b> —— 挂载只需 2 步</summary>
 
-<!-- [fix] 技术准确性核验：原行 `link:C:\path\to\my-plugin` 的 `\t` 被渲染成制表符（`link:C:\path<TAB>o\my-plugin`），复制即失效；修正为 JSON 转义形式 `link:C:\\path\\to\\my-plugin`（与 02-quickstart/03-profiles/cheatsheet/plugin-template 一致） -->
 ```yaml
 # ① package.json 加依赖
 "my-plugin": "link:C:\\path\\to\\my-plugin"
@@ -347,7 +352,6 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 <details>
 <summary><b>⚙️ 配置参考</b> —— settings.yaml 核心</summary>
 
-<!-- [fix] 技术准确性核验：官方 DeepSeek 适配器（llm-deepseek，默认 provider=deepseek-official）仅接受 off / high / max 三档，`low` 会抛 UNSUPPORTED_REASONING_EFFORT；`low` 是 pi-ai（opencode-go）网关档位，见 02-quickstart 2.3 注 -->
 ```yaml
 agent-default-model:
   model: deepseek-v4-flash    # 或 deepseek-v4-pro
