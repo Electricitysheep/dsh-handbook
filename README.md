@@ -402,7 +402,7 @@ agent-default-model:
 ## 📄 白皮书 PDF
 
 - **中文完整版**：[DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf)（14 章节，~120k+ 字符，4.2MB）
-- **英文完整版**：[DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf)（10 章，54k 字符）
+- **英文完整版**：[DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf)（14 章 + 附录，81 页，约 150k 字符，1.6MB）
 
 ## 🌐 与生态联动
 
