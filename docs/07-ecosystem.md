@@ -205,7 +205,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 | [#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118) | 通用讨论 | 沉淀进 FAQ（docs/faq.md 六类问答） | 高频问答 → 分类沉淀 → 给链接 |
 | [#655](https://github.com/deepseek-ai/deepseek-harness/discussions/655) | 社区五项目 | 梳理生态全景进第 7 章 7.3 节 | 整合碎片项目 → 形成生态地图 |
 | [#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) | token 成本 | 沉淀进第 6 章 6.6 节成本模型 | 成本测算 → 公式化沉淀 |
-| [#781](https://github.com/deepseek-ai/deepseek-harness/discussions/781) | LSP 提议 | 记录进第 11 章未来展望 | 前瞻特性 → 跟踪架构演进 |
+| [#781](https://github.com/deepseek-ai/deepseek-harness/discussions/781) | LSP 提议 | 记录进第 11 章未来展望 | 前瞻特性 → 跟踪架构演进 | (docs: 白皮书一致性修复（附录编号/章节数/案例数/档位注释/死链）)
 
 **有效参与的 3 个原则**：① 先自己跑通再回帖（带环境信息和报错日志）；② 把结论写成可引用内容（单条回复会沉底，写成章节/FAQ 才能持续产生价值）；③ 链接代替重复（回帖给链接，如"详见第 7 章 7.6 节"）。
 

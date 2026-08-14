@@ -25,6 +25,7 @@
 
 **📎 附录**
 * [术语表与命令速查](/docs/appendix-glossary.md)
+* [官方包速查大全](/docs/appendix-packages.md)
 * [Benchmark 实测](/docs/benchmark.md)
 * [FAQ 速查](/docs/faq.md)
 * [一页速查卡](/docs/cheatsheet.md)
