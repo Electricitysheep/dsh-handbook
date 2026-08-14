@@ -33,6 +33,14 @@
 | [#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) provider/model 标识 | 章节补充 | 第 14 章测量方法 | ✅ 已沉淀（PR #31） |
 | [#380](https://github.com/deepseek-ai/deepseek-harness/discussions/380) dsh-installers | 生态收录（作者提供） | 生态章节 | ✅ 已沉淀（PR #31） |
 
+## 2026-08-14 轮（第三轮：高价值技术线索）
+
+| 来源帖 | 分类 | 沉淀位置 | 状态 |
+|---|---|---|---|
+| [#739](https://github.com/deepseek-ai/deepseek-harness/discussions/739) 推理模式 reasoning 序列化 | 章节补充（根因确认） | 第 6 章推理档位坑位 | ✅ 已沉淀（PR #33） |
+| [#1420](https://github.com/deepseek-ai/deepseek-harness/discussions/1420) Windows 转发空格路径 | 章节补充（runPlugin shell:true） | 第 3 章 Windows 坑位 | ✅ 已沉淀（PR #33） |
+| [#1476](https://github.com/deepseek-ai/deepseek-harness/discussions/1476) run_code 异步回调丢弃 | 章节补充（执行模型） | 第 8 章工具链坑位 | ✅ 已沉淀（PR #33） |
+
 ## 待沉淀（下周轮次）
 
 | 来源帖 | 分类 | 计划 |
