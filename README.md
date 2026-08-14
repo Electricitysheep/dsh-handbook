@@ -73,15 +73,19 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | ⚡ **要调优** | 推理档位策略 + 缓存命中率专题（实测 97%） |
 | 📚 **要案例** | 5 个真实复杂案例（含耗时/产物/验证） |
 
-## 🌟 社区认可（发布第 2 天）
+## 🌟 感谢与社区
 
-- ⭐ **170+ Stars**（16 → 170，**2 天 10x 增长**）——发布即被关注的 dsh 中文教程
-- 💬 **官方库 138 帖积极回应**（[deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 讨论区）：插件踩坑 / 安全审计 / 缓存成本 / Windows 兼容……
-- 🧠 **吸收 780 帖讨论区智慧**：FAQ 39 条真实高频问题 + 各章引用真实帖号（#380/#817/#1052…）
-- 📦 **收录于 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)**（社区插件列表）+ 阮一峰周刊自荐
-- 🤝 **20+ 社区项目互链**：dsh-usage / dsh-sgme / AgentSoul / dsh-vault / read-confine……
+首先要感谢每一位 Star、回复和投稿——这本手册不是一个人的作品，是 dsh 社区一起"长"出来的。
 
-> 白皮书内容随讨论区持续更新（[沉淀流水线](./docs/research/feedback-pipeline.md)，19 项已沉淀可追踪）
+发布两天，很幸运得到了这些反馈：
+
+- ⭐ **170+ Stars**——对一份刚发布的教程来说远超预期，感谢大家认可
+- 💬 **官方库 138 帖回应**——我们持续在[讨论区](https://github.com/deepseek-ai/deepseek-harness/discussions)和大家一起踩坑、排障、交流
+- 🧠 **FAQ 里的 39 条问题大多来自真实提问**——社区问什么，我们沉淀什么（#380/#817/#1052…）
+- 📦 收录于 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)，阮一峰周刊自荐也已提交
+- 🤝 与 20+ 社区项目互链（dsh-usage / dsh-sgme / AgentSoul / dsh-vault 等）
+
+> 内容随讨论区持续更新（[沉淀流水线](./docs/research/feedback-pipeline.md)，19 项可追踪）。如果你觉得有用，Star 是对我们最大的支持。
 
 ## 📚 目录（从 0 到 1）
 
