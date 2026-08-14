@@ -333,7 +333,7 @@ agent-default-model:
 ## 📄 PDF
 
 - **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (12 chapters, ~120k chars, 3.2MB, professional typesetting: cover/TOC/styles)
-- **English edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf) (10 chapters, ~54k chars; the web docs cover all 12 chapters) (docs: 白皮书一致性修复（附录编号/章节数/案例数/档位注释/死链）)
+- **English edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf) (10 chapters, ~54k chars; the web docs cover all 12 chapters)
 
 ## 🌐 Ecosystem Links
 

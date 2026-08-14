@@ -4,7 +4,7 @@
 
 ## TL;DR（本章核心，30 秒版）
 
-1. **官方入口**：GitHub 仓库（源码 + issue）、API 文档、Discord、Discussions——当前贡献入口以 Discussions 为主
+1. **官方入口**：GitHub 仓库（源码 + issue）、官方文档站（VitePress）、API 文档、Discord、Discussions——当前贡献入口以 Discussions 为主
 2. **外部 PR 暂不接受**（2026-08-13 时点），但官方鼓励做 dsh-plugin 生态项目、写教程/博客——社区已自发形成"报告-复现-根因-修复分支"的贡献模板（见 7.2 节）
 3. **插件生态快照**：`DSH-better-sidebar`（最完整社区插件）、示例提速插件（第 4 章完整拆解）、本白皮书——发现插件搜 `topic:dsh-plugin`
 4. **新手参与路径**：用起来 → 小改进（给社区插件提 PR）→ 发插件 → 写内容
@@ -28,6 +28,8 @@
 | 资源 | 地址 | 用途 |
 |---|---|---|
 | 官方仓库 | https://github.com/deepseek-ai/deepseek-harness | 源码、架构文档、issue |
+| 官方文档站 | https://deepseek-harness.github.io/deepseek-harness/ | 官方 VitePress 文档站（guide/providers/development/reference，2026-08 上线） |
+| 产品站点 | https://deepseek.com/harness/ | 官方产品介绍（四种运行模式、轨迹视图等） |
 | API 文档 | https://api-docs.deepseek.com | 模型、定价、API 指南 |
 | Discord | 官方 README 内链接 | 社区讨论 |
 | Discussions | 官方仓库 Discussions | 提案/求助（官方当前建议的贡献入口） |
@@ -36,6 +38,8 @@
 - 在 Discussions 提建议（官方会评估）
 - **做 dsh-plugin 生态项目**（官方点名认可的方式）
 - 写教程/博客
+
+> 📚 **官方自建文档的补充**：除了上述入口，官方仓库还维护了系统化的内部文档——`packages/README.md`（包清单权威表）、`docs/subsystems/`（子系统设计）、`docs/cookbook/`（9 个开发指南）、`docs/tool-catalog.md` / `docs/config-catalog.md` / `docs/module-graph.md`（自动生成清单）。白皮书是"新手视角的补充"，官方文档是"架构权威"，两者搭配读。
 
 ## 7.2 社区贡献模式
 
@@ -186,7 +190,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 | **2026-08-13** | dsh 开源（零日） | MIT 协议发布，Agent 可编程时代起点 |
 | **2026-08-13** | 60+ 官方包同步放出 | `packages/` 下工具/上下文/会话/子代理/MCP/工作流/安全/模型/界面全覆盖 |
 | **2026-08-13 当天** | 社区插件爆发 | 官方讨论区单日 30+ 帖，含插件踩坑、TUI 示例、Windows 路径 bug 等 |
-| **2026-08-13 当周** | 本白皮书发布 | 12 章中文教程 + Benchmark + 插件模板，补零日文档缺口 |
+| **2026-08-13 当周** | 本白皮书发布 | 14 章中文教程 + Benchmark + 插件模板，补零日文档缺口 |
 | **进行中** | 官方讨论区持续活跃 | 每周 2-3 帖响应，已覆盖插件/路径/TUI/vision 等方向（见 7.10 节） |
 | **规划中** | 插件模板扩展 / 视频教程 / CI 校验 | ROADMAP.md P1 优先级 |
 
@@ -205,7 +209,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 | [#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118) | 通用讨论 | 沉淀进 FAQ（docs/faq.md 六类问答） | 高频问答 → 分类沉淀 → 给链接 |
 | [#655](https://github.com/deepseek-ai/deepseek-harness/discussions/655) | 社区五项目 | 梳理生态全景进第 7 章 7.3 节 | 整合碎片项目 → 形成生态地图 |
 | [#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) | token 成本 | 沉淀进第 6 章 6.6 节成本模型 | 成本测算 → 公式化沉淀 |
-| [#781](https://github.com/deepseek-ai/deepseek-harness/discussions/781) | LSP 提议 | 记录进第 11 章未来展望 | 前瞻特性 → 跟踪架构演进 | (docs: 白皮书一致性修复（附录编号/章节数/案例数/档位注释/死链）)
+| [#781](https://github.com/deepseek-ai/deepseek-harness/discussions/781) | LSP 提议 | 记录进第 11 章未来展望 | 前瞻特性 → 跟踪架构演进 |
 
 **有效参与的 3 个原则**：① 先自己跑通再回帖（带环境信息和报错日志）；② 把结论写成可引用内容（单条回复会沉底，写成章节/FAQ 才能持续产生价值）；③ 链接代替重复（回帖给链接，如"详见第 7 章 7.6 节"）。
 
