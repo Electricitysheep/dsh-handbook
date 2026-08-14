@@ -4,12 +4,225 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DeepSeek Harness 白皮书 · dsh-handbook</title>
-  <meta name="description" content="DeepSeek Harness (dsh) 从 0 到 1 深度手册：12 章中文教程 + 同模型多 Agent 实测 benchmark + 快速上手资产。">
+  <meta name="description" content="DeepSeek Harness (dsh) 从 0 到 1 深度手册：14 章中文教程 + 同模型多 Agent 实测 benchmark + 快速上手资产。">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <style>
-    .markdown-section { max-width: 900px; }
+    /* ── Brand tokens ─────────────────────────────────────────────── */
+    :root {
+      --dsh-blue:        #4dabf7;
+      --dsh-purple:      #9775fa;
+      --dsh-bg-deep:     #1a1a2e;
+      --dsh-bg-mid:      #16213e;
+      --dsh-text:        #212529;
+      --dsh-text-muted:  #868e96;
+      --dsh-surface:     #ffffff;
+      --dsh-surface-alt: #f8f9fa;
+      --dsh-border:      #e9ecef;
+      --dsh-link:        #339af0;
+      --dsh-link-hover:  #228be6;
+      --dsh-code-bg:     #f1f3f5;
+      --dsh-sidebar-bg:  #f8f9fa;
+      --dsh-sidebar-active: rgba(77, 171, 247, 0.08);
+      --dsh-quote-bg:    #f8f9fa;
+      --dsh-quote-border:#4dabf7;
+      --dsh-table-head:  #f1f3f5;
+      --dsh-radius:      6px;
+    }
+
+    /* ── Layout ───────────────────────────────────────────────────── */
+    .markdown-section {
+      max-width: 900px;
+      letter-spacing: 0.02em;
+      line-height: 1.85;
+      word-break: break-word;
+    }
     .sidebar-toggle { display: none; }
     @media (max-width: 768px) { .sidebar-toggle { display: block; } }
+
+    /* ── Typography ───────────────────────────────────────────────── */
+    .markdown-section h1,
+    .markdown-section h2,
+    .markdown-section h3,
+    .markdown-section h4 {
+      letter-spacing: 0.03em;
+      font-weight: 700;
+    }
+    .markdown-section h1 { border-bottom: 2px solid var(--dsh-border); padding-bottom: 0.4em; }
+    .markdown-section h2 { border-bottom: 1px solid var(--dsh-border); padding-bottom: 0.3em; }
+
+    /* ── Links & accent ───────────────────────────────────────────── */
+    .markdown-section a {
+      color: var(--dsh-link);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .markdown-section a:hover {
+      color: var(--dsh-link-hover);
+      border-bottom-color: var(--dsh-link-hover);
+    }
+    ::selection {
+      background: rgba(77, 171, 247, 0.25);
+    }
+
+    /* ── Code ─────────────────────────────────────────────────────── */
+    .markdown-section code {
+      background: var(--dsh-code-bg);
+      color: #c2255c;
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+      font-size: 0.88em;
+    }
+    .markdown-section pre {
+      background: var(--dsh-bg-deep) !important;
+      border-radius: var(--dsh-radius);
+      border: 1px solid var(--dsh-border);
+    }
+    .markdown-section pre code {
+      background: transparent;
+      color: #ced4da;
+      padding: 0;
+      font-size: 0.85em;
+      line-height: 1.7;
+    }
+
+    /* ── Tables ───────────────────────────────────────────────────── */
+    .markdown-section table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92em;
+      margin: 1.5em 0;
+    }
+    .markdown-section table th {
+      background: var(--dsh-table-head);
+      font-weight: 600;
+      text-align: left;
+      padding: 0.6em 1em;
+      border-bottom: 2px solid var(--dsh-border);
+    }
+    .markdown-section table td {
+      padding: 0.55em 1em;
+      border-bottom: 1px solid var(--dsh-border);
+      vertical-align: top;
+    }
+    .markdown-section table tr:hover td {
+      background: var(--dsh-sidebar-active);
+    }
+
+    /* ── Blockquotes / tips ───────────────────────────────────────── */
+    .markdown-section blockquote {
+      background: var(--dsh-quote-bg);
+      border-left: 4px solid var(--dsh-quote-border);
+      border-radius: 0 var(--dsh-radius) var(--dsh-radius) 0;
+      padding: 0.8em 1.2em;
+      margin: 1.2em 0;
+      color: var(--dsh-text-muted);
+    }
+    .markdown-section blockquote p {
+      margin: 0.3em 0;
+    }
+
+    /* ── Sidebar ──────────────────────────────────────────────────── */
+    .sidebar {
+      background: var(--dsh-sidebar-bg);
+      border-right: 1px solid var(--dsh-border);
+    }
+    .sidebar-nav a {
+      transition: background 0.15s, color 0.15s;
+      border-radius: 4px;
+      padding-left: 0.5em;
+    }
+    .sidebar-nav a:hover {
+      background: var(--dsh-sidebar-active);
+      color: var(--dsh-link-hover);
+    }
+    .sidebar-nav .active {
+      color: var(--dsh-link) !important;
+      font-weight: 600;
+      background: var(--dsh-sidebar-active);
+    }
+    .app-name a {
+      background: linear-gradient(135deg, var(--dsh-blue), var(--dsh-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+
+    /* ── Details / summary ────────────────────────────────────────── */
+    .markdown-section details {
+      border: 1px solid var(--dsh-border);
+      border-radius: var(--dsh-radius);
+      padding: 0.6em 1em;
+      margin: 1em 0;
+      background: var(--dsh-surface);
+    }
+    .markdown-section details summary {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 0.3em 0;
+    }
+    .markdown-section details[open] summary {
+      border-bottom: 1px solid var(--dsh-border);
+      margin-bottom: 0.6em;
+      padding-bottom: 0.4em;
+    }
+
+    /* ── Search highlight ─────────────────────────────────────────── */
+    .search .matching-post mark {
+      background: rgba(151, 117, 250, 0.2);
+      color: inherit;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    /* ── Dark mode ────────────────────────────────────────────────── */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --dsh-text:        #e9ecef;
+        --dsh-text-muted:  #868e96;
+        --dsh-surface:     #1e1e2e;
+        --dsh-surface-alt: #252536;
+        --dsh-border:      #343a40;
+        --dsh-link:        #74c0fc;
+        --dsh-link-hover:  #a5d8ff;
+        --dsh-code-bg:     #2b2b3d;
+        --dsh-sidebar-bg:  #181825;
+        --dsh-sidebar-active: rgba(77, 171, 247, 0.1);
+        --dsh-quote-bg:    #252536;
+        --dsh-table-head:  #252536;
+      }
+      body, .markdown-section {
+        color: var(--dsh-text);
+        background: var(--dsh-surface);
+      }
+      .sidebar {
+        background: var(--dsh-sidebar-bg);
+        border-right-color: var(--dsh-border);
+      }
+      .markdown-section code {
+        background: var(--dsh-code-bg);
+        color: #f783ac;
+      }
+      .markdown-section pre code {
+        color: #ced4da;
+      }
+      .markdown-section table td,
+      .markdown-section table th {
+        border-bottom-color: var(--dsh-border);
+      }
+      .markdown-section h1,
+      .markdown-section h2 {
+        border-bottom-color: var(--dsh-border);
+      }
+      .markdown-section details {
+        background: var(--dsh-surface-alt);
+        border-color: var(--dsh-border);
+      }
+      .markdown-section details[open] summary {
+        border-bottom-color: var(--dsh-border);
+      }
+    }
   </style>
 </head>
 <body>
