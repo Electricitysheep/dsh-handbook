@@ -139,9 +139,9 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 <div align="center">
 
-| 📚 **[术语表与命令速查](./docs/appendix-glossary.md)** · **[Benchmark](./docs/benchmark.md)** |
+| 📚 **[术语表与命令速查](./docs/appendix-glossary.md)** · **[官方包速查大全](./docs/appendix-packages.md)** · **[Benchmark](./docs/benchmark.md)** |
 |---|
-| 30+ 术语 · 命令速查 · 同模型 3 Agent 实测 |
+| 30+ 术语 · 命令速查 · 官方 @deepseek-ai/* 包清单 · 同模型 3 Agent 实测 |
 
 </div>
 
@@ -162,7 +162,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 - **一条命令启动**：`npx -y @deepseek-ai/dsh web` → http://127.0.0.1:3080
 - **双模式**：web（对话 UI）/ headless（`dsh --profile headless "任务"`，CI 友好）
 <!-- [fix] 技术准确性核验：low 为 pi-ai（opencode-go）网关档位（本白皮书实测环境）；DeepSeek 官方适配器档位为 off（关闭思考/最快）/ high / max，见 02-quickstart 2.3 注 -->
-- **推理档位三档**：low（最快/简单任务）· high（默认）· max（最强/复杂推理）——**性能关键：思考占工具链 90% 时间**
+- **推理档位三档**：`low`（最快/简单任务）· `high`（默认）· `max`（最强/复杂推理）——**性能关键：思考占工具链 90% 时间**。>注：`low` 为本白皮书实测网关（pi-ai/opencode-go）档位；**DeepSeek 官方适配器为 `off`（关闭思考/最快）/ `high` / `max`**（见 02-quickstart 2.3 注）
 - **第一个插件**：Git 面板 4 步挂载
 </details>
 
@@ -282,7 +282,7 @@ npx -y @deepseek-ai/dsh web          # 安装即启动 Web UI
 dsh --profile headless "任务"        # 一次性任务（脚本/CI）
 ```
 <!-- [fix] 技术准确性核验：同 02-quickstart 2.3 注——low 为 pi-ai（opencode-go）网关档位；官方 DeepSeek 适配器档位为 off / high / max -->
-推理档位：`low`（最快/简单轮次）· `high`（默认）· `max`（最强/复杂推理）
+推理档位：`low`（最快/简单轮次）· `high`（默认）· `max`（最强/复杂推理）——`low` 为实测网关（pi-ai）档位，**官方适配器用 `off`/`high`/`max`**
 > 工具链任务 90% 时间在思考——降档是最高杠杆提速
 > 完整卡：[docs/cheatsheet.md](./docs/cheatsheet.md)
 </details>
@@ -322,7 +322,7 @@ agent-default-model:
 
 1. **dsh 是模型吗？** 不是——是运行时，模型通过 llm 插件接入
 2. **和 Claude Code 区别？** Claude Code 是"整车"，dsh 是"乐高底座"（开源可定制）
-3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存折扣：Flash 档 98% / Pro 档 99%+，实测会话缓存命中率 97%）
+3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存折扣：Flash 档 98% / Pro 档 99%+，实测会话缓存命中率 97%） (docs: 白皮书一致性修复（附录编号/章节数/案例数/档位注释/死链）)
 4. **插件装不上 404？** rc.1 依赖断裂——用 `^0.1.0-rc.6` 线
 5. **能进生产吗？** rc 阶段有破坏性变更；生态玩法现在可入
 > 完整 FAQ（六类）：[docs/faq.md](./docs/faq.md)
