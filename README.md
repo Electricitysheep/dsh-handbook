@@ -179,7 +179,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 <details>
 <summary><b>🛠 第 4 章：插件开发实战 —— 完整可运行代码</b></summary>
 
-- **从零写提速插件**（`dsh-tool-turbo` 完整拆解）：纯函数决策 + `agent/request` waterfall 注入
+- **从零写提速插件**（完整拆解）：纯函数决策 + `agent/request` waterfall 注入
 - **核心技巧**：决策逻辑抽纯函数（单测毫秒级）→ 实机只验证"注入是否发生"
 - **3 条开发纪律**：先找扩展点 / 逻辑抽纯函数 / 实机验证不能省
 - **实机日志证据**：`calls=[{name:"write"}] => reasoningEffort=low`
@@ -190,7 +190,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 - **Git 面板 push/pull/fetch**（PR #10）：`--force-with-lease` 安全红线 + 本地 bare-repo 集成测试 + Playwright 实机验证
 - **HTML 草稿预览**（PR #11）：沙箱安全约束下的 srcdoc 决策纯函数
-- **tool-turbo 提速插件**：长工具链每步思考降档
+- **提速插件示例**：长工具链每步思考降档
 </details>
 
 <details>
@@ -368,7 +368,6 @@ agent-default-model:
 ## 🌐 与生态联动
 
 本白皮书的方法论来自真实开源实践：
-- [dsh-tool-turbo](https://github.com/Electricitysheep/dsh-tool-turbo) —— 工具调用提速插件（第 4/6 章源码）
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) —— 社区侧边栏插件（第 5 章案例）
 
 ### 🧩 社区插件推荐（来自官方讨论区 / [awesome-dsh-plugin](https://github.com/lonelymoon87/awesome-dsh-plugin) 精选）
