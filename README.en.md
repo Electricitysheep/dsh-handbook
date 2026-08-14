@@ -15,7 +15,7 @@
 ![GitHub release](https://img.shields.io/github/v/tag/Electricitysheep/dsh-handbook?label=release&color=success)
 ![dsh-handbook](https://img.shields.io/badge/dsh--handbook-handbook-blue)
 ![chapters](https://img.shields.io/badge/chapters-12-green)
-![pdf](https://img.shields.io/badge/PDF-5.5MB-orange)
+![pdf](https://img.shields.io/badge/PDF-3.2MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
 ![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.6-8A2BE2)
 
@@ -328,7 +328,7 @@ agent-default-model:
 
 ## 📄 PDF
 
-- **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (12 chapters, ~120k chars, 5.5MB, professional typesetting: cover/TOC/styles)
+- **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (12 chapters, ~120k chars, 3.2MB, professional typesetting: cover/TOC/styles)
 - **English full edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf)
 
 ## 🌐 Ecosystem links
