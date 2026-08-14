@@ -14,7 +14,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/Electricitysheep/dsh-handbook?style=flat&color=yellow)
 ![GitHub release](https://img.shields.io/github/v/tag/Electricitysheep/dsh-handbook?label=release&color=success)
 ![dsh-handbook](https://img.shields.io/badge/dsh--handbook-白皮书-blue)
-![chapters](https://img.shields.io/badge/章节-12-green)
+![chapters](https://img.shields.io/badge/章节-14-green)
 ![pdf](https://img.shields.io/badge/PDF-3.2MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
 ![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.6-8A2BE2)
@@ -135,11 +135,15 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 </div>
 
+| 🛡️ **[第 13 章 · 安全与沙箱](./docs/13-security.md)** | 💰 **[第 14 章 · 缓存与成本](./docs/14-cost.md)** |
+|---|---|
+| 沙箱机制 · 权限模型 · 审批流 · 插件安全审计清单 | 缓存命中率实测 97% · 成本模型 · 推理档位联动 · 预算实战 |
+
 ### 📎 附录
 
 <div align="center">
 
-| 📚 **[术语表与命令速查](./docs/appendix-glossary.md)** · **[官方包速查大全](./docs/appendix-packages.md)** · **[Benchmark](./docs/benchmark.md)** |
+| 📚 **[附录 A·术语表](./docs/appendix-glossary.md)** · 📦 **[附录 B·官方包速查](./docs/appendix-packages.md)** · 📊 **[附录 C·Benchmark](./docs/benchmark.md)** |
 |---|
 | 30+ 术语 · 命令速查 · 官方 @deepseek-ai/* 包清单 · 同模型 3 Agent 实测 |
 
@@ -322,7 +326,7 @@ agent-default-model:
 
 1. **dsh 是模型吗？** 不是——是运行时，模型通过 llm 插件接入
 2. **和 Claude Code 区别？** Claude Code 是"整车"，dsh 是"乐高底座"（开源可定制）
-3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存折扣：Flash 档 98% / Pro 档 99%+，实测会话缓存命中率 97%） (docs: 白皮书一致性修复（附录编号/章节数/案例数/档位注释/死链）)
+3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存折扣：Flash 档 98% / Pro 档 99%+，实测会话缓存命中率 97%）
 4. **插件装不上 404？** rc.1 依赖断裂——用 `^0.1.0-rc.6` 线
 5. **能进生产吗？** rc 阶段有破坏性变更；生态玩法现在可入
 > 完整 FAQ（六类）：[docs/faq.md](./docs/faq.md)
