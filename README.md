@@ -370,9 +370,25 @@ agent-default-model:
 本白皮书的方法论来自真实开源实践：
 - [dsh-tool-turbo](https://github.com/Electricitysheep/dsh-tool-turbo) —— 工具调用提速插件（第 4/6 章源码）
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) —— 社区侧边栏插件（第 5 章案例）
-- 官方讨论区活跃响应 —— 已在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 回应 5 帖：[#380 插件踩坑](https://github.com/deepseek-ai/deepseek-harness/discussions/380)（本白皮书第 3/4 章结论）、[#401 Windows 路径 bug](https://github.com/deepseek-ai/deepseek-harness/discussions/401)（第 12 章记录）、[#392 TUI examples](https://github.com/deepseek-ai/deepseek-harness/discussions/392)、[#384 visionDS](https://github.com/deepseek-ai/deepseek-harness/discussions/384)、[#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118)
 
-## 🙏 贡献与反馈
+### 🧩 社区插件推荐（来自官方讨论区 / [awesome-dsh-plugin](https://github.com/lonelymoon87/awesome-dsh-plugin) 精选）
+
+| 插件 | 用途 |
+|---|---|
+| [dsh-specflow](https://github.com/lonelymoon87/dsh-specflow) | 规格驱动开发：技能+命令+目标实现+进度上下文 |
+| [dsh-gitflow](https://github.com/lonelymoon87/dsh-gitflow) | 审批门控的 Git 工作流（status/diff/commit/branch） |
+| [dsh-guardian](https://github.com/lonelymoon87/dsh-guardian) | 危险操作策略检查 + 输出脱敏 + 安全审查 |
+| [dsh-code-intel](https://github.com/lonelymoon87/dsh-code-intel) | Tree-sitter 符号索引 + 混合搜索 |
+| [dsh-tianshu-tui](https://github.com/huiliyi37/dsh-tianshu-tui) | 终端 UI（TUI） |
+| [dsh-computer-use](https://github.com/Anionex/dsh-computer-use) | 无障碍优先的 macOS 电脑控制 |
+| [dsh-data-agent](https://github.com/omdsh-dev/dsh-data-agent) | 连数据库写 SQL 的数据 Agent |
+| [dsh-balance-meter](https://github.com/Ghost011118/dsh-balance-meter) | 余额 + 会话成本实时显示 |
+
+> 完整列表见 [awesome-dsh-plugin](https://github.com/lonelymoon87/awesome-dsh-plugin)（122+ 插件）。想被收录？[社区案例征集](./discussions/12)
+
+### 📣 官方讨论区活跃响应
+
+已在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 回应 8 帖：#380 插件踩坑 / #401 Windows 路径 / #392 TUI 建议 / #384 visionDS / #118 / #655 社区五项目 / #735 token 成本 / #781 LSP 提议## 🙏 贡献与反馈
 
 - ⭐ 觉得有帮助？点个 Star 支持持续更新
 - 📝 **跑过真实案例？** 投稿收录进白皮书（署名 + 季度精选 PDF）：[社区案例征集](./discussions/12) ← 直接回帖，模板已备好
