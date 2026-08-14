@@ -309,15 +309,15 @@ agent-default-model:
 
 ## 📊 Same model × different agents (measured 2026-08-13)
 
-> Same model `deepseek-v4-flash` (same gateway, same key) — only the agent engineering layer differs. All 3 tasks completed correctly; the difference is efficiency:
+> Same model `deepseek-v4-flash` (same gateway, same key) — only the agent engineering layer differs. All 5 tasks completed correctly; the difference is efficiency:
 
 | Agent | Total time | Correct |
 |---|---|---|
-| **omp** | **36s** | 27/27 ✅ |
-| **dsh** | **85s** | 27/27 ✅ |
-| **opencode** | 114s | 27/27 ✅ |
+| **omp** | **70s** | 45/45 ✅ |
+| **dsh** | **130s** | 45/45 ✅ |
+| **opencode** | 172s | 45/45 ✅ |
 
-> 3-round median, 27/27 all correct. Full methodology: [📊 Benchmark appendix](./docs/benchmark.md)
+> 5 tasks × 3 rounds, median; all 45/45 correct. Full methodology: [📊 Benchmark appendix](./docs/benchmark.md)
 
 ## 📄 PDF
 
