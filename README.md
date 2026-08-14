@@ -368,6 +368,7 @@ agent-default-model:
 ## 🙏 贡献与反馈
 
 - ⭐ 觉得有帮助？点个 Star 支持持续更新
+- 📝 **跑过真实案例？** 投稿收录进白皮书（署名 + 季度精选 PDF）：[社区案例征集](./discussions/12) ← 直接回帖，模板已备好
 - 章节/命令失效？rc 版本迭代所致，欢迎 issue 指正
 - 想参与？见 [🤝 贡献指南（CONTRIBUTING）](./CONTRIBUTING.md) · 想看计划？[🗺️ 路线图（ROADMAP）](./ROADMAP.md) · 生态参与见 [第 7 章](./docs/07-ecosystem.md)
 
