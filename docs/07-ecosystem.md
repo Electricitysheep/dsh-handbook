@@ -146,7 +146,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 cd ~/.dsh/profiles/web && pnpm install && dsh web
 ```
 
- 发一个"创建 3 个文件"的任务，观察日志是否出现 `[speed-plugin] calls=[...] => reasoningEffort=low`（参考第 4 章 4.5 节）。
+**④ 验证效果**：发一个"创建 3 个文件"的任务，观察日志是否出现 `[speed-plugin] calls=[...] => reasoningEffort=low`（参考第 4 章 4.5 节）。
 
 > ⚠️ 两个插件均要求 `@deepseek-ai/dsh-agent ^0.1.0-rc.6`，若 `pnpm install` 报 404，请检查版本线（见第 3 章 3.5 节）。
 
@@ -186,7 +186,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 | **2026-08-13** | dsh 开源（零日） | MIT 协议发布，Agent 可编程时代起点 |
 | **2026-08-13** | 60+ 官方包同步放出 | `packages/` 下工具/上下文/会话/子代理/MCP/工作流/安全/模型/界面全覆盖 |
 | **2026-08-13 当天** | 社区插件爆发 | 官方讨论区单日 30+ 帖，含插件踩坑、TUI 示例、Windows 路径 bug 等 |
-| **2026-08-13 当周** | 本白皮书发布 | 11 章中文教程 + Benchmark + 插件模板，补零日文档缺口 |
+| **2026-08-13 当周** | 本白皮书发布 | 12 章中文教程 + Benchmark + 插件模板，补零日文档缺口 |
 | **进行中** | 官方讨论区持续活跃 | 每周 2-3 帖响应，已覆盖插件/路径/TUI/vision 等方向（见 7.10 节） |
 | **规划中** | 插件模板扩展 / 视频教程 / CI 校验 | ROADMAP.md P1 优先级 |
 
@@ -194,7 +194,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 
 ## 7.10 与官方讨论区的联动
 
-本白皮书已在官方 Discussions 响应 5 帖，以下是**有效参与的实例**：
+本白皮书已在官方 Discussions 响应 8 帖，以下是**有效参与的实例**：
 
 | 帖子 | 主题 | 响应方式 | 可复用模式 |
 |---|---|---|---|
@@ -203,6 +203,9 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 | [#401](https://github.com/deepseek-ai/deepseek-harness/discussions/401) | Windows 路径 bug | 记录进第 12 章跨平台短板 | 平台 bug → 记录边界 → 帮官方分流 |
 | [#384](https://github.com/deepseek-ai/deepseek-harness/discussions/384) | visionDS | 更新能力矩阵中 vision 支持状态 | 新能力 → 调研 → 更新表格 → 确认 |
 | [#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118) | 通用讨论 | 沉淀进 FAQ（docs/faq.md 六类问答） | 高频问答 → 分类沉淀 → 给链接 |
+| [#655](https://github.com/deepseek-ai/deepseek-harness/discussions/655) | 社区五项目 | 梳理生态全景进第 7 章 7.3 节 | 整合碎片项目 → 形成生态地图 |
+| [#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) | token 成本 | 沉淀进第 6 章 6.6 节成本模型 | 成本测算 → 公式化沉淀 |
+| [#781](https://github.com/deepseek-ai/deepseek-harness/discussions/781) | LSP 提议 | 记录进第 11 章未来展望 | 前瞻特性 → 跟踪架构演进 |
 
 **有效参与的 3 个原则**：① 先自己跑通再回帖（带环境信息和报错日志）；② 把结论写成可引用内容（单条回复会沉底，写成章节/FAQ 才能持续产生价值）；③ 链接代替重复（回帖给链接，如"详见第 7 章 7.6 节"）。
 
@@ -250,7 +253,7 @@ Discord 适合实时讨论；Discussions 适合正式提案、功能建议、求
 从"自己的痛点"开始。比如：① 想要 TUI → 做 tui profile 插件；② 想要 token 追踪 → 做 cost-tracker 插件；③ 想要 diff 视图 → 做 diff 插件。参考本章 7.5 节阅读路径。
 
 **Q7：7.6 节的 `link:` 路径在 Windows 和 macOS 下写法一样吗？**
-不一样。Windows 用反斜杠（`link:C:\path\to\plugin`），macOS/Linux 用正斜杠（`link:/path/to/plugin`）。建议社区插件最终走 npm 发布，消除路径差异。
+不一样。Windows 用双反斜杠转义（`link:C:\\path\\to\\plugin`），macOS/Linux 用正斜杠（`link:/path/to/plugin`）。建议社区插件最终走 npm 发布，消除路径差异。
 
 **Q8：官方讨论区发帖有什么技巧，能让官方更快响应？**
 参考 7.10 节 3 个原则：带环境信息、带复现步骤、先搜索避免重复。功能建议说明"解决什么问题"比"怎么实现"更重要。
