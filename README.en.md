@@ -36,9 +36,9 @@ dsh --profile headless "Hello, introduce yourself in one sentence"
 ```
 
 <p align="center">
-  <img src="./docs/assets/demo-terminal.gif" alt="30s overview of dsh — terminal demo" width="720"/>
+  <img src="./docs/assets/demo-webui.gif" alt="dsh Web UI live demo" width="720"/>
   <br/>
-  <sub><b>30 seconds to "get it"</b>: install → Web UI → headless task → tool-chain loop (85s · 27/27)</sub>
+  <sub><b>30 seconds to "get it"</b>: new session → type a task → pick model → send → AI replies</sub>
 </p>
 
 > Want the full path? [🗺 3-day learning path](./docs/roadmap.md) · Jump straight in: [Chapter 2: 5-min quickstart](./docs/02-quickstart.en.md) · Cheat sheet: [📇 one-page card](./docs/cheatsheet.md)
