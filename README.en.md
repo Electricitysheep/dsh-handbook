@@ -324,6 +324,9 @@ agent-default-model:
 </p>
 
 
+## 📄 Online docs & PDF
+
+- **📖 Read online**: [dsh-handbook docs site](https://electricitysheep.github.io/dsh-handbook/) — sidebar navigation + full-text search, mobile-friendly
 ## 📄 PDF
 
 - **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (12 chapters, ~120k chars, 5.5MB, professional typesetting: cover/TOC/styles)
