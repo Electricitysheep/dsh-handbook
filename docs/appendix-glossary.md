@@ -13,7 +13,7 @@
 | **host 半 / client 半** | 插件在 Node 侧（工具/服务/事件）与浏览器侧（UI）的两副面孔 |
 | **扩展点** | 官方提供的钩子（agent/request、settings、conversationEvents、slots） |
 | **agent/request waterfall** | 每步模型请求前可改配置的事件链（插件在此注入 reasoningEffort 等） |
-| **reasoning_effort** | 思考强度（low/high/max）——速度与质量的权衡旋钮 |
+| **reasoning_effort** | 思考强度（官方适配器 off/high/max；`low` 为实测网关档位）——速度与质量的权衡旋钮 |
 | **headless** | 一次性 CLI 任务模式（`dsh --profile headless "任务"`） |
 | **compaction** | 长对话上下文压缩 |
 | **subagent** | 子代理（并行委派任务） |
@@ -22,10 +22,8 @@
 | **locations** | 工具返回的文件路径（驱动产物追踪） |
 | **extension point** | 官方钩子（agent/request 等），插件接入点 |
 | **waterfall** | 事件链：监听者可改配置传给下一个（agent/request 用此注入） |
-| **reasoning_effort** | 思考强度旋钮（low/high/max） |
 | **context cache** | DeepSeek 提示词缓存（重复输入按折扣价计费） |
 | **缓存命中率** | 输入 token 走缓存价的比例（dsh 实测可到 97%） |
-| **headless** | 一次性 CLI 任务模式 |
 | **TUI** | 终端 UI（官方未内置，需插件） |
 | **turn** | 对话的一轮（用户+助手+工具调用） |
 | **step** | turn 内的一个推理步骤 |
@@ -34,7 +32,6 @@
 | **inject** | cordis 依赖注入（插件声明所需服务） |
 | **产物文件** | 模型创建/修改的文件（对话末尾的可打开 chips） |
 | **sandbox** | 命令执行的隔离沙箱 |
-| **reasoning_effort** | 同「思考强度」 |
 | **rc** | 预发布版本（0.1.0-rc.6），迭代快、可能有破坏性变更 |
 
 ## 命令速查
@@ -88,4 +85,4 @@ agent-default-model:
 
 ---
 
-**附录 B**：[同模型多 Agent 实测](./benchmark.md)
+**附录 B**：[官方包速查大全](./appendix-packages.md) · **附录 C**：[同模型多 Agent 实测](./benchmark.md)

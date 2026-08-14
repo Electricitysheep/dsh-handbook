@@ -2,6 +2,8 @@
 
 > **本清单为「已知包」清单**：收录白皮书正文实测/提及过、且能在 npm registry 上核实的官方包（`@deepseek-ai/dsh-*` 与 `@deepseek-ai/cordis`），包描述来自 `npm view` 实测结果。dsh 处于 `0.1.0-rc` 快速迭代期，**包名与描述随版本更新**——若与官方仓库 `packages/AGENTS.md` 或 npm 最新描述不一致，以官方为准。未能核实的包标注「（待补全）」，不虚构包名。
 >
+> **包数口径**：本清单收录经 npm 核实的 **33 个核心包**（CLI 直接依赖 53 个 + 家族发布总量 221 个，见 [08 章 8.1 节](./08-tools-context.md) 说明）；白皮书/官方所称「60+ 能力包」指仓库 `packages/` 下全部子目录，完整列表见官方仓库 `packages/README.md`（47 组权威表）。
+>
 > 包名与仓库布局对应关系：npm 包 `@deepseek-ai/dsh-xxx` ≈ 官方仓库 `packages/<group>/xxx`（如 `dsh-tool-fs` ↔ `fs/tool-fs`）。
 >
 > 验证方式：`npm view @deepseek-ai/<name> description`（2026-08 快照）。

@@ -6,20 +6,20 @@
 
 | 条目 | 说明 | 佐证 |
 |---|---|---|
-| 11 章手册（中文） | 从 0 到 1：入门 → 开发 → 实战 → 生态 → 进阶，每章可运行、命令全实测 | [docs/](./docs/) |
+| 12 章手册（中文） | 从 0 到 1：入门 → 开发 → 实战 → 生态 → 进阶，每章可运行、命令全实测 | [docs/](./docs/) |
 | 英文版 | 前 10 章同步英文（EN 版 + 英文 PDF） | [docs/*.en.md](./docs/) |
-| Benchmark 附录 | 同模型 × 3 Agent 实测（3 轮中位数，27/27 全对） | [docs/benchmark.md](./docs/benchmark.md) |
+| Benchmark 附录 | 同模型 × 3 Agent 实测（5 任务 × 3 轮中位数，45/45 全对） | [docs/benchmark.md](./docs/benchmark.md) |
 | 快速上手资产 | 一页速查卡 / 插件模板 / 配置参考 / FAQ | [docs/cheatsheet.md](./docs/cheatsheet.md) 等 |
 | 双语 README | 中文 README + 英文 README（README.en.md） | [README.md](./README.md) |
 | 第 12 章 · 已知不足与边界 | rc 版诚实视角：不稳定性 / 生态早期 / 跨平台短板 | [docs/12-limitations.md](./docs/12-limitations.md) |
-| PDF 专业排版 | 中文完整版（16 章节，5.5MB）+ 英文版 | 仓库根目录 `*.pdf` |
+| PDF 专业排版 | 中文完整版（12 章节，3.2MB）+ 英文版 | 仓库根目录 `*.pdf` |
 | llms.txt | 面向 LLM 的索引（llms.txt + llms-full.txt） | [llms.txt](./llms.txt) |
 
 ## 🚧 进行中
 
 | 条目 | 内容 | 状态 |
 |---|---|---|
-| QC 核验轮次 | 对 14 章逐一做链接健康检查 / 数据一致性 / 渲染检查（对照 README-REVIEW.md 遗留项） | 逐章推进中 |
+| QC 核验轮次 | 对 12 章 + 附录逐一做链接健康检查 / 数据一致性 / 渲染检查（对照 README-REVIEW.md 遗留项） | 逐章推进中 |
 | 官方讨论区推广 | 在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 响应新手提问并同步白皮书内容（已响应 #380 插件踩坑 / #392 TUI examples / #118） | 每周 2-3 帖 |
 
 ## 🔭 规划中
