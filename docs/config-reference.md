@@ -58,7 +58,7 @@
 
 ```yaml
 - override:
-    - id: tool-turbo
+    - id: speed-plugin
       config:
         baseline: low         # 覆盖插件默认配置
 ```

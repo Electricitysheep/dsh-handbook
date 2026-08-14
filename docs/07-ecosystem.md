@@ -6,7 +6,7 @@
 
 1. **官方入口**：GitHub 仓库（源码 + issue）、API 文档、Discord、Discussions——当前贡献入口以 Discussions 为主
 2. **外部 PR 暂不接受**（2026-08-13 时点），但官方鼓励做 dsh-plugin 生态项目、写教程/博客
-3. **插件生态快照**：`DSH-better-sidebar`（最完整社区插件）、`dsh-tool-turbo`（提速插件）、本白皮书——发现插件搜 `topic:dsh-plugin`
+3. **插件生态快照**：`DSH-better-sidebar`（最完整社区插件）、示例提速插件（第 4 章完整拆解）、本白皮书——发现插件搜 `topic:dsh-plugin`
 4. **新手参与路径**：用起来 → 小改进（给社区插件提 PR）→ 发插件 → 写内容
 5. **生态零日 = 先发优势**：每个早期生态都有"第一个吃螃蟹的人"的红利，现在入场正是时候
 
@@ -41,7 +41,7 @@
 | 项目 | 定位 | 状态 |
 |---|---|---|
 | `DSH-better-sidebar` | 文件管理/终端/Git/浏览器侧边栏 | 社区最完整插件 |
-| `dsh-tool-turbo` | 工具调用提速（reasoning_effort 自动调节） | 社区提速插件 |
+| 示例提速插件 | 工具调用提速（reasoning_effort 自动调节） | 教学示例（第 4 章） |
 | `dsh-handbook`（本白皮书） | 新手教程 | 生态文档 |
 
 **发现插件**：GitHub 搜 `topic:dsh-plugin`。
@@ -60,7 +60,7 @@
 |---|---|
 | 快速上手 | 第 2 章 → 装 better-sidebar → 日常用 |
 | 开发插件 | 第 3 章 → 第 4 章 → 抄第 5 章案例 |
-| 性能调优 | 第 6 章 → tool-turbo 源码 |
+| 性能调优 | 第 6 章 → 第 4 章示例源码 |
 | 深度定制 | 官方 AGENTS.md（架构）→ docs/architecture.md → packages/ 源码 |
 
 ## 7.5 真实插件安装实操
@@ -95,14 +95,14 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 
 重启后观察左侧是否出现文件管理/终端/Git/浏览器四个标签页。
 
-### 安装 `dsh-tool-turbo`
+### 安装示例提速插件
 
 **① `package.json` 加依赖**：
 
 ```json
 {
   "dependencies": {
-    "dsh-tool-turbo": "link:C:\\path\\to\\dsh-tool-turbo"
+    "dsh-speed-plugin": "link:C:\\path\\to\\dsh-speed-plugin"
   }
 }
 ```
@@ -111,8 +111,8 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 
 ```yaml
 - insert:
-    - id: tool-turbo
-      name: dsh-tool-turbo
+    - id: speed-plugin
+      name: dsh-speed-plugin
 ```
 
 **③ 安装并验证**：
@@ -121,7 +121,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 cd ~/.dsh/profiles/web && pnpm install && dsh web
 ```
 
-发一个"创建 3 个文件"的任务，观察日志是否出现 `[tool-turbo] calls=[...] => reasoningEffort=low`（参考第 4 章 4.5 节）。
+ 发一个"创建 3 个文件"的任务，观察日志是否出现 `[speed-plugin] calls=[...] => reasoningEffort=low`（参考第 4 章 4.5 节）。
 
 > ⚠️ 两个插件均要求 `@deepseek-ai/dsh-agent ^0.1.0-rc.6`，若 `pnpm install` 报 404，请检查版本线（见第 3 章 3.5 节）。
 
@@ -197,9 +197,9 @@ dsh 是 2026-08-13 才开源的项目——**生态的每一天都是"早期"**�
    > 自查：参考本章 7.1 节"但鼓励"段落
 3. **动手题**：在 GitHub 搜索 `topic:dsh-plugin`，列出你找到的 3 个社区插件，说出每个插件的定位
    > 自查：参考本章 7.2 节"发现插件"段落 + 7.6 节搜索渠道表格
-4. **动手题**：按本章 7.5 节的步骤，完整挂载 `DSH-better-sidebar` 或 `dsh-tool-turbo`，记录 `pnpm install` 的输出和验证结果
+4. **动手题**：按本章 7.5 节的步骤，完整挂载 `DSH-better-sidebar` 或按第 4 章示例自己写一个提速插件，记录 `pnpm install` 的输出和验证结果
    > 自查：参考本章 7.5 节两处改动的完整代码片段
-5. **动手题**：给 `DSH-better-sidebar` 或 `dsh-tool-turbo` 的 README 提一个改进 PR（比如加一个安装步骤、修一个 typo），体验社区 PR 流程
+5. **动手题**：给 `DSH-better-sidebar` 或自己写的提速插件的 README 提一个改进 PR（比如加一个安装步骤、修一个 typo），体验社区 PR 流程
    > 自查：参考本章 7.3 节第 2 步 + 第 5 章案例的 PR 范式
 6. **思考题**：本章 7.8 节时间线显示"60+ 官方包同步放出"和"社区插件爆发"发生在同一天。这对开源项目的生态策略有什么启示？
    > 自查：参考本章 7.8 节时间线表格 + 7.9 节联动模式

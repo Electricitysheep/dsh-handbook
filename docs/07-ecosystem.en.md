@@ -8,7 +8,7 @@
 
 1. **Official entry points**: GitHub repo (source + issues), API docs, Discord, Discussions. The current contribution entry is primarily via Discussions.
 2. **External PRs are not accepted yet** (as of 2026-08-13), but the official team encourages dsh-plugin ecosystem projects, tutorials, and blog posts.
-3. **Plugin ecosystem snapshot**: `DSH-better-sidebar` (most complete community plugin), `dsh-tool-turbo` (speed-up plugin), this handbook. Search `topic:dsh-plugin` to discover more.
+3. **Plugin ecosystem snapshot**: `DSH-better-sidebar` (most complete community plugin), an example speed-up plugin (Chapter 4 full breakdown), this handbook. Search `topic:dsh-plugin` to discover more.
 4. **Beginner participation path**: use it → make small improvements (PRs to community plugins) → publish your own plugin → write content.
 5. **Ecosystem day-zero = first-mover advantage**: every early ecosystem has a "first crab" bonus. Now is the time to get in.
 
@@ -31,7 +31,7 @@
 | Project | Focus | Status |
 |---|---|---|
 | `DSH-better-sidebar` | File management / terminal / Git / browser sidebar | Most complete community plugin |
-| `dsh-tool-turbo` | Tool-call speed-up (automatic reasoning_effort adjustment) | Community speed-up plugin |
+| Example speed-up plugin | Tool-call speed-up (automatic reasoning_effort adjustment) | Teaching example (Chapter 4) |
 | `dsh-handbook` (this handbook) | Beginner tutorial | Ecosystem documentation |
 
 **Discovering plugins:** Search GitHub for `topic:dsh-plugin`.
@@ -50,7 +50,7 @@
 |---|---|
 | Quick start | Chapter 2 → install better-sidebar → use daily |
 | Plugin development | Chapter 3 → Chapter 4 → follow the Chapter 5 cases |
-| Performance tuning | Chapter 6 → tool-turbo source code |
+| Performance tuning | Chapter 6 → Chapter 4 example source |
 | Deep customization | Official AGENTS.md (architecture) → docs/architecture.md → packages/ source code |
 
 ## Closing Words
@@ -63,7 +63,7 @@ dsh was open-sourced on 2026-08-13. **Every day of the ecosystem is "early days.
 
 1. **Explore the official repo**: go to https://github.com/deepseek-ai/deepseek-harness. Read the README, then open `packages/AGENTS.md`. What architecture insights can you find?
 2. **Join the community**: join the Discord or browse the Discussions tab. What topics are people talking about? What questions are unanswered?
-3. **Install a community plugin**: if you haven't already, install `dsh-better-sidebar` or `dsh-tool-turbo`. Use it for a day. What works well? What could be improved?
+3. **Install a community plugin**: if you haven't already, install `dsh-better-sidebar` or build the example speed-up plugin from Chapter 4. Use it for a day. What works well? What could be improved?
 4. **Submit a suggestion**: go to the official Discussions tab. Write a proposal for a feature or improvement. Be specific: what problem does it solve? How would it work?
 5. **Publish a plugin**: start from the minimal host plugin in Chapter 4. Add a feature (e.g. a new tool, a UI tweak). Tag it with `dsh-plugin` and publish to npm.
 6. **Think**: why does the official team encourage ecosystem projects instead of accepting PRs? What are the advantages and risks of this approach?
