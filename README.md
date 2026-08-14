@@ -40,9 +40,9 @@ dsh --profile headless "你好，请用一句话介绍自己"
 > 想系统学？看 [🗺 学习路径（3 天计划）](./docs/roadmap.md)；想先跑？[第 2 章：五分钟快速上手](./docs/02-quickstart.md)；想速查？[📇 一页速查卡](./docs/cheatsheet.md)
 
 <p align="center">
-  <img src="./docs/assets/demo-terminal.gif" alt="30 秒看懂 dsh 终端演示" width="720"/>
+  <img src="./docs/assets/demo-webui.gif" alt="dsh Web UI 实测演示" width="720"/>
   <br/>
-  <sub><b>30 秒看懂 dsh</b>：安装 → Web UI → headless 任务 → 工具链闭环（85s · 27/27）</sub>
+  <sub><b>30 秒看懂 dsh Web UI</b>：新建会话 → 输入任务 → 模型选择 → 发送 → AI 回复</sub>
 </p>
 
 ## 🎯 这是什么
