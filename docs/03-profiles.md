@@ -12,6 +12,7 @@
 
 <details><summary>本章导航</summary>
 - [3.1 profile：一个可启动的配置栈](#31-profile一个可启动的配置栈)
+  - [内置 Agent 预设：标准 / PTC / 极简 / 创造](#内置-agent-预设标准-ptc-极简-创造)
 - [3.2 挂载一个插件：两处改动](#32-挂载一个插件两处改动)
 - [3.3 host 半与 client 半：一个包，两副面孔](#33-host-半与-client-半一个包两副面孔)
 - [3.4 扩展点：改行为优先找钩子，别 fork 核心](#34-扩展点改行为优先找钩子别-fork-核心)
@@ -44,6 +45,19 @@ profiles/web/
 ```
 
 **加载顺序**（官方文档原文）：内置 bundle（`dsh-base` → `dsh-web-app`）→ profile 的 `cordis.patch.yml` → 用户级 `~/.dsh/cordis.patch.yml` → `--patch` 覆盖层。
+
+### 内置 Agent 预设：标准 / PTC / 极简 / 创造
+
+profile 解决"**以什么形态启动**"，Agent 预设解决"**以什么方式跑 Agent**"。dsh 内置了四种 Agent 预设（源码在官方仓库 `apps/cli/config/agent-presets/` 的 `agent.cordis.yml`），每种预设默认加载不同的插件集合：
+
+| 预设 | 定位 | 加载内容 | 典型场景 |
+|---|---|---|---|
+| **标准** | 默认预设 | 完整工具组合 | 日常 Agent 工作 |
+| **PTC**（Code mode） | 代码驱动工具链 | 程序化工具调用——模型生成一段代码组合多轮工具调用 | 复杂多步骤工具工作流 |
+| **极简** | 基准测试 | 仅 `bash` + 一个文件编辑工具 | 最小环境下的模型基准测试 |
+| **创造** | 插件开发用 | 检查当前运行时、在内存中试验 Cordis 插件、组合新预设 | 构建与测试新的插件组合 |
+
+**PTC 命名澄清**（[#1052](https://github.com/deepseek-ai/deepseek-harness/discussions/1052) 评论区社区详解）：PTC = **Programmatic Tool Calling（程序化工具调用）**。官方中文站只用了「PTC 模式」这个营销名（官方站点原文："PTC 模式通过模型生成的一段代码组合多轮工具调用"），官方英文页面对应 **Code mode**；「Programmatic Tool Calling」的完整扩写出自社区详解（[cnblogs 指南](https://www.cnblogs.com/sing1ee/p/22455466)），与源码实现完全吻合。机制与收益详见第 8 章 8.3.1；四种运行模式总览见第 2 章 2.4.1。
 
 ## 3.2 挂载一个插件：两处改动
 
