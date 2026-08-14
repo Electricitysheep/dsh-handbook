@@ -61,6 +61,17 @@ rc.6 流式解析 bug：SSE 分块覆盖赋值把工具名/ID 抹成空串（[#7
 **Q：插件装不上（404）？**
 rc.1 依赖断裂——确认用 `^0.1.0-rc.6` 线（第 3 章坑 #1）。
 
+**Q：写第一个插件最容易踩哪些坑？（社区六坑）**
+来源：官方讨论区 [#380](https://github.com/deepseek-ai/deepseek-harness/discussions/380)「写第一个 dsh 插件踩的六个坑」（作者 codeAnqiang-ma 授权收录，dsh `0.1.0-rc.6` 本机复核，致谢 @codeAnqiang-ma）。忠实提炼：
+1. **`@deepseek-ai/*` 能否 import 取决于插件装在哪**：dev `link` 进 profile 时，Node 沿软链接真实路径解析，走不到兜底目录 `~/.dsh/profiles/node_modules`（只有 registry 安装才能撞上）→ 报 `ERR_MODULE_NOT_FOUND`。解法：插件不 import 任何 `@deepseek-ai/*`，全从 `ctx` 上拿；要用 schemastery 写 config schema 就走 peer dependency（registry 形态下通）。
+2. **`inject` 只能是字符串数组**：写成 `{ required: [...], optional: [...] }` 会把 `required`/`optional` 当成两个服务名，启动卡在 `pending (waiting for services: required, optional)`。官方包全是数组写法（`["skills"]`、`["systemPrompt"]`、`["agents","tools","skills"]`）。
+3. **想成为一层 profile 必须声明 `dsh.bundle`**：`package.json` 加 `"dsh": { "bundle": { "patch": "./cordis.patch.yml" } }`，否则 `dsh plugin add` 装完只是普通依赖、插件毫无动静（警告夹在 pnpm 输出里易漏）。改包名要同步 patch 里的 `name`，否则报 `plugin(s) failed to load`。
+4. **prompt section 压缩之后还在（好消息）**：`ctx.systemPrompt.section()` 注册的内容在上下文压缩后依然在——每步从注册表重新组装，不用监听会话事件反复注入、不用写去重守卫。`order` 有约定分段（`-100` harness identity / `0` persona / `100-199` 工具指导），同一 order 按插件加载顺序排（不稳定，自己挑不撞的数）。
+5. **Web 面不用改 preset，但 persona 是例外**：skill 注册表与 prompt section 都是「全局层 + scope 链」合并读，全局层注册的每个 agent 都拿得到；但 preset 自挂的 `persona`（`deployment:persona`）按 scope 层同名遮蔽全局，改 profile patch 里的 persona 对 Web 默认会话无效，得改 preset。插件 section 名字带自己前缀就不会被遮。
+6. **发 npm 的两个坑**：registry 指国内镜像（只读）时 `npm login`/`npm publish` 都要显式 `--registry=https://registry.npmjs.org`；`npm publish` 只认 `--otp`（没有 `--auth-type` 选项），2FA 只绑 passkey/Touch ID 时拿不出 OTP，得用 TOTP 验证码或恢复码。
+
+> 作者仓库：[dsh-superpowers](https://github.com/codeAnqiang-ma/dsh-superpowers)（Superpowers 方法论插件）。rc 迭代快，若条目失效欢迎指正。
+
 **Q：`agent/request` 的 `next()` 要 await 吗？**
 **必须**。不 await 会丢 provider/model 报错（第 4 章坑）。
 
