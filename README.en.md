@@ -126,9 +126,9 @@ But the official docs focus on architecture — **the beginner path is missing**
 
 <div align="center">
 
-| 📚 **[Glossary & Command Reference](./docs/appendix-glossary.md)** · **[Benchmark](./docs/benchmark.md)** |
+| 📚 **[Glossary & Command Reference](./docs/appendix-glossary.md)** · **[Official Package Quick Reference](./docs/appendix-packages.md)** · **[Benchmark](./docs/benchmark.md)** |
 |---|
-| 30+ terms · command cheatsheet · same-model 3-agent benchmark |
+| 30+ terms · command cheatsheet · official @deepseek-ai/* package list · same-model 3-agent benchmark |
 
 </div>
 
@@ -333,7 +333,7 @@ agent-default-model:
 ## 📄 PDF
 
 - **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (12 chapters, ~120k chars, 3.2MB, professional typesetting: cover/TOC/styles)
-- **English edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf) (10 chapters, ~54k chars; the web docs cover all 12 chapters)
+- **English edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf) (10 chapters, ~54k chars; the web docs cover all 12 chapters) (docs: 白皮书一致性修复（附录编号/章节数/案例数/档位注释/死链）)
 
 ## 🌐 Ecosystem Links
 

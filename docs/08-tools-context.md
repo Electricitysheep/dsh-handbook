@@ -35,12 +35,14 @@ dsh 的能力全部以包形式提供（`packages/<group>/<name>`）。新手最
 | **子代理（subagent）** | `subagent/*` | 委派子任务 |
 | **MCP** | `mcp/*` | MCP 客户端（外部工具服务器） |
 | **工作流（workflow）** | `workflow/*` | 多步工作流编排 |
-| **安全（safety）** | `sandbox/*`、`guard/*`、`interaction/*` | 沙箱、循环卫生、权限/审批 |
+| **安全（safety）** | `sandbox/*`、`guard/*`、`interaction/*`、`credentials/*` | 沙箱、循环卫生、权限/审批、凭证隔离（注：官方无独立 `safety/` 组，安全策略分散在多个包组） |
 | **模型（llm）** | `llm/*`、`llm-deepseek`、`llm-retry` | 模型接入、重试 |
 | **技能（skill）** | `skill/*` | 技能提供者注册表 |
 | **界面（client）** | `client/*`（ui-conversation、ui-tool…） | Web UI 各部件 |
 
-> 完整清单见官方仓库 `packages/AGENTS.md`。
+> **完整清单与包数口径**：官方仓库 `packages/README.md` 是包清单权威表（47 组）；`@deepseek-ai/dsh` CLI 的 0.1.0-rc.6 声明 **53 个 `@deepseek-ai/dsh-*` 直接依赖**（+CLI 自身 = 54），家族发布总量约 **221 个**（含 devDeps 与历史 0.0.1-rc.1 列车，官方构建 commit 提及）。白皮书/官方所称"60+"指 `packages/` 下全部子目录。**npm 包名写法**（`@deepseek-ai/dsh-*`）与**仓库路径写法**（`fs/tool-fs`）的对应关系，以及每个包的实测描述，见 [附录 B：官方包速查大全](./appendix-packages.md)。
+>
+> 📚 **想深入架构**：官方 `docs/subsystems/`（session / system-prompt / tools / agent / agent-loop / scope / llm-streaming / subagent）是各子系统的设计文档，比本节的"能力域分组"更系统化；自动生成的权威清单见官方 `docs/tool-catalog.md`、`docs/config-catalog.md`、`docs/module-graph.md`。
 
 ## 8.2 内置工具（实测观察）
 
@@ -154,6 +156,8 @@ rc.6 时代的两个工具链已知坑（详见 [FAQ](./faq.md)）：
    > 自查：参考本章 8.5 节"交互审批" + `interaction/*` 包说明
 
 ## 常见疑问 FAQ
+
+> 本章针对工具/上下文的高频问答见下；更多通用问题见 [FAQ 速查](./faq.md)。
 
 **Q1：工具名是 `read`/`write` 这些简短动词，我写提示词时也要用这些名字吗？**
 不需要。你写"读一下这个文件""搜索包含 foo 的行"，模型会自动映射到对应工具。简短动词名是插件内部实现细节，提示词用自然语言即可。

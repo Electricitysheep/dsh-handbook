@@ -22,11 +22,12 @@ agent-default-model:
 
 ## 推理档位
 
-| 档位 | 用途 |
-|---|---|
-| `low` | 简单/批量/工具链廉价轮（最快） |
-| `high` | 日常默认 |
-| `max` | 复杂推理/长链规划 |
+| 档位 | 用途 | 备注 |
+|---|---|---|
+| `low` | 简单/批量/工具链廉价轮（最快） | 仅实测网关（pi-ai/opencode-go）支持 |
+| `high` | 日常默认 | 官方适配器默认 |
+| `max` | 复杂推理/长链规划 | 官方适配器支持 |
+| `off` | 关闭思考/最快 | **DeepSeek 官方适配器档位**（替代 `low`） |
 
 > 工具链任务 90% 时间在思考——降档是最快提速。
 
@@ -81,4 +82,4 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 
 ---
 
-完整教程见 [dsh-handbook 白皮书](https://github.com/Electricitysheep/dsh-handbook)。
+完整教程见 [dsh-handbook 白皮书](https://github.com/Electricitysheep/dsh-handbook) · [配置参考](./config-reference.md) · [术语表与命令速查](./appendix-glossary.md)

@@ -1,4 +1,4 @@
-# 附录：同模型 × 不同 Agent 实测对比（Benchmark）
+# 附录 C：同模型 × 不同 Agent 实测对比（Benchmark）
 
 > 实测日期：2026-08-13 ｜ 模型：deepseek-v4-flash（同一 opencode-go 网关，同一 API key）｜ Agent：dsh / opencode / omp
 > 目的：**控制模型变量，对比 Agent 工程层的差异**（提示词、工具链、轮次管理）。
@@ -31,7 +31,7 @@
 
 > 总计 = 5 任务中位数相加；扩展前（仅 T1-T3）为 omp 36s / dsh 85s / opencode 114s。
 
-![benchmark 柱状图](../docs/assets/benchmark-bar.svg)
+![benchmark 柱状图](./assets/benchmark-bar.svg)
 
 原始 3 轮（秒）：
 
