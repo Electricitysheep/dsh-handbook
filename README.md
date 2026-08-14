@@ -358,6 +358,9 @@ agent-default-model:
 </p>
 
 
+## 📄 在线文档 & PDF
+
+- **📖 在线阅读（在线文档站）**：[dsh-handbook 文档](https://electricitysheep.github.io/dsh-handbook/) —— 侧边栏导航 + 全文搜索，移动端友好
 ## 📄 白皮书 PDF
 
 - **中文完整版**：[DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf)（12 章节，~120k 字符，5.5MB）
