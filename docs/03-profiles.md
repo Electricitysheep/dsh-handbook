@@ -16,6 +16,9 @@
 - [3.3 host 半与 client 半：一个包，两副面孔](#33-host-半与-client-半一个包两副面孔)
 - [3.4 扩展点：改行为优先找钩子，别 fork 核心](#34-扩展点改行为优先找钩子别-fork-核心)
 - [3.5 常见坑（真实踩过）](#35-常见坑真实踩过)
+  - [依赖解析坑](#依赖解析坑)
+  - [插件安装格式坑](#插件安装格式坑)
+  - [其他常见坑](#其他常见坑)
 </details>
 
 ## 3.1 profile：一个可启动的配置栈
@@ -120,9 +123,30 @@ dsh web   # 重启后生效
 
 ## 3.5 常见坑（真实踩过）
 
+### 依赖解析坑
+
+| 坑 | 现象 | 解决 | 帖号 |
+|---|---|---|---|
+| **rc.1 依赖断裂** | `pnpm install` 报 `@deepseek-ai/dsh-type-meta@0.0.1-rc.1` 404 | 官方 rc.1 时代多个包从未发布；升级到 `^0.1.0-rc.6` 线 | — |
+| **全局 `core.hooksPath` 冲突** | 全局设过 `core.hooksPath`（如 Codex/Claude Code）→ `pnpm install` 时 lefthook postinstall 失败 | 临时取消全局 hooksPath：`git config --global --unset core.hooksPath`，装完再恢复 | [#139](https://github.com/deepseek-ai/deepseek-harness/discussions/139) |
+| **macOS 全局安装解析不到插件** | `pnpm add -g @deepseek-ai/dsh` 后启动报 ~88 个插件包 `ERR_MODULE_NOT_FOUND` | pnpm 全局安装的模块解析策略与 npm 不同；macOS 建议用 `npm i -g` 或 npx | [#204](https://github.com/deepseek-ai/deepseek-harness/discussions/204) |
+| **koffi 预编译损坏（Windows）** | koffi 3.1.3/3.1.4 的 `win32-x64` 预编译 binary 损坏 → 目录选择器崩溃/服务静默挂 | 锁死 koffi@3.1.2：`pnpm add koffi@3.1.2` 或改 `package.json` resolution | [#293](https://github.com/deepseek-ai/deepseek-harness/discussions/293) |
+| **koffi 原生崩溃（Windows）** | 选择器 worker 崩溃（`0xC0000005` 访问冲突）或启动后直接挂掉 | 同上一行锁 3.1.2；若仍崩，检查是否 STA 线程 CoUninitialize 段错误（社区有补丁） | [#197](https://github.com/deepseek-ai/deepseek-harness/discussions/197) |
+
+### 插件安装格式坑
+
+| 格式 | 写法 | 注意 | 帖号 |
+|---|---|---|---|
+| **npm 包名** | `dsh plugin add dsh-better-sidebar` | 需已发布到 npm；rc 阶段很多社区插件未发布 | — |
+| **GitHub 仓库** | `dsh plugin add github:作者/仓库` | **只加依赖，不自动 append 到 `cordis.patch.yml`**，需手动补挂载行 | [#656](https://github.com/deepseek-ai/deepseek-harness/discussions/656) |
+| **本地路径** | `link:/path/to/plugin`（macOS/Linux）<br>`link:C:\path\to\plugin`（Windows） | 开发调试用；路径斜杠按平台区分 | — |
+
+> 社区踩坑总结：用 `github:` 格式装插件后，记得手动去 `cordis.patch.yml` 补 `- insert:` 挂载行，否则插件依赖装了但 dsh 不加载。
+
+### 其他常见坑
+
 | 坑 | 现象 | 解决 |
 |---|---|---|
-| **rc.1 依赖断裂** | `pnpm install` 报 `@deepseek-ai/dsh-type-meta@0.0.1-rc.1` 404 | 官方 rc.1 时代多个包从未发布；升级到 `^0.1.0-rc.6` 线 |
 | 插件缺 `main` | `dsh: No "exports" main defined` | host 插件 `package.json` 要暴露 `.` 入口（`"main": "src/index.ts"` 可被 tsx 直接加载） |
 | 事件 handler 忘了 `await next()` | 请求丢失 provider/model 报错 | `agent/request` 的 `next()` 返回 **Promise**，必须 await 后 spread |
 | 类型报 `'agent/request' is not assignable to keyof Events` | npm 类型未 re-export 官方类型增强 | 用宽松签名（`ctx.on as unknown as ...`）在边界转换 |

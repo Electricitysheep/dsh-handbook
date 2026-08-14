@@ -13,7 +13,9 @@
 <!-- [fix] 结构核验：补齐本章导航（第 2 章原缺失，与第 3-11 章结构保持一致） -->
 <details><summary>本章导航</summary>
 - [2.1 准备工作（30 秒检查）](#21-准备工作30-秒检查)
+  - [Node 版本红线（≥22.19）](#node-版本红线2219)
 - [2.2 安装（两种方式）](#22-安装两种方式)
+  - [安装坑（社区真实踩过）](#安装坑社区真实踩过)
 - [2.3 模式一：Web UI（`dsh web`）](#23-模式一web-uidsh-web)
 - [2.4 模式二：Headless（一次性任务，适合脚本/CI）](#24-模式二headless一次性任务适合脚本ci)
 - [2.5 你的第一个插件：给 web 加个 Git 面板](#25-你的第一个插件给-web-加个-git-面板)
@@ -26,12 +28,23 @@
 
 | 需要 | 检查命令 | 通过标准 |
 |---|---|---|
-| Node.js ≥ 22 | `node --version` | `v22.x` 或更高（推荐 24） |
+| **Node.js ≥ 22.19** | `node --version` | `v22.19.0` 或更高（**红线**，见下） |
 | npm（随 Node 附带） | `npm --version` | 有版本号即可 |
 | 网络 | 能访问 npm registry | 能装包 |
 | （可选）DeepSeek API Key | https://platform.deepseek.com | 用于真实对话 |
 
 > 没有 API Key 也能启动 dsh（界面能开），但对话需要 Key。本白皮书示例假设已配置。
+
+### Node 版本红线（≥22.19）
+
+社区实测发现 **Node < 22.19 会触发两个致命缺失**：
+
+| 缺失 API | 报错示例 | 触发帖号 |
+|---|---|---|
+| `node:zlib` 无 `createZstdDecompress` | `TypeError: zlib.createZstdDecompress is not a function` | [#100](https://github.com/deepseek-ai/deepseek-harness/discussions/100) |
+| `AbortSignal.timeout` 未实现 | `AbortSignal.timeout is not a function` | [#311](https://github.com/deepseek-ai/deepseek-harness/discussions/311) |
+
+**Workaround**：用 nvm/volta/fnm 切换到 `22.19.0+`。Node 24 早期版本（如 v24.15）也可能触发 `install-lefthook failed`——若遇此错，pin 到 `22.19.0` 最稳 ([#748](https://github.com/deepseek-ai/deepseek-harness/discussions/748))。
 
 ## 2.2 安装（两种方式）
 
@@ -54,6 +67,16 @@ npx -y @deepseek-ai/dsh --version
 npm install -g @deepseek-ai/dsh
 dsh --version
 ```
+
+### 安装坑（社区真实踩过）
+
+| 坑 | 现象 | 解决 | 帖号 |
+|---|---|---|---|
+| **首次 npx 极慢（Windows）** | `npx dsh web` 首次在 Windows 上 8+ 分钟零反馈，npm 需下载 500+ 包 | 耐心等待；改用 `npm i -g @deepseek-ai/dsh` 后秒启 | [#176](https://github.com/deepseek-ai/deepseek-harness/discussions/176) |
+| **pnpm dlx 404** | `pnpm dlx @deepseek-ai/dsh web` 报 `@deepseek-ai/dsh-pty@0.0.1-rc.2` 未发布 | 用 `npx` 或 `npm i -g` 替代 `pnpm dlx` | [#369](https://github.com/deepseek-ai/deepseek-harness/discussions/369) |
+| **pnpm 全局装后找不到插件** | `pnpm add -g @deepseek-ai/dsh` 后启动报 `Cannot find package 'cordis-plugin-timer'` | pnpm 全局安装的依赖解析策略与 npm 不同；建议用 `npm i -g` 或 npx | [#55](https://github.com/deepseek-ai/deepseek-harness/discussions/55) |
+
+> 全局安装方式对比：**`npm i -g`** 最稳（社区验证最多）；**`npx`** 适合尝鲜；**`pnpm dlx`** 暂不建议（rc 阶段 pty 包未发布到 pnpm 可见 registry）。
 
 ## 2.3 模式一：Web UI（`dsh web`）
 
