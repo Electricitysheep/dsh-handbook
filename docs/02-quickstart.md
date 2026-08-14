@@ -84,7 +84,10 @@ dsh --version
 | **首次 npx 极慢（Windows）** | `npx dsh web` 首次在 Windows 上 8+ 分钟零反馈，npm 需下载 500+ 包 | 耐心等待；改用 `npm i -g @deepseek-ai/dsh` 后秒启 | [#176](https://github.com/deepseek-ai/deepseek-harness/discussions/176) |
 | **pnpm dlx 404** | `pnpm dlx @deepseek-ai/dsh web` 报 `@deepseek-ai/dsh-pty@0.0.1-rc.2` 未发布 | 用 `npx` 或 `npm i -g` 替代 `pnpm dlx` | [#369](https://github.com/deepseek-ai/deepseek-harness/discussions/369) |
 | **pnpm 全局装后找不到插件** | `pnpm add -g @deepseek-ai/dsh` 后启动报 `Cannot find package 'cordis-plugin-timer'` | pnpm 全局安装的依赖解析策略与 npm 不同；建议用 `npm i -g` 或 npx | [#55](https://github.com/deepseek-ai/deepseek-harness/discussions/55) |
+| **WSL2 上 npx 装不上** | 在 WSL2（Ubuntu 等发行版）里 `npx -y @deepseek-ai/dsh` 安装失败 | 先确认 npm 代理配置；仍不行就**改用源码安装**（社区实测可行） | [#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118) |
 
+> **WSL2 安装注意**：社区在 [#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118) 反映 WSL2 上 `npx` 安装可能失败（Windows 原生侧正常，见该帖"win 上都装好开始玩了"的对照）。排查顺序：① 确认 npm 代理/registry 配置；② 若 `npx` 仍装不上，**先试源码安装**（clone 官方仓库后 `pnpm install`，社区实测可行）。详见该帖评论区。
+>
 > 全局安装方式对比：**`npm i -g`** 最稳（社区验证最多）；**`npx`** 适合尝鲜；**`pnpm dlx`** 暂不建议（rc 阶段 pty 包未发布到 pnpm 可见 registry）。
 
 ## 2.3 模式一：Web UI（`dsh web`）
