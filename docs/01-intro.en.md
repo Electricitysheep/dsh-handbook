@@ -76,7 +76,7 @@ A model (DeepSeek V4) only "replies with text." To make it work in your reposito
 
 | Agent | How you do it |
 |---|---|
-| dsh (web) | `dsh web` → type → model uses Grep/Read/Edit tools; add plugin sidebars (Git panel, tool-turbo) |
+| dsh (web) | `dsh web` → type → model uses Grep/Read/Edit tools; add plugin sidebars (Git panel, speed-up plugin) |
 | dsh (headless) | `dsh --profile headless "task"` → prints result, exits — **CI-friendly** |
 | Claude Code / Codex / OpenCode / Kimi | open the TUI → type → model does it |
 

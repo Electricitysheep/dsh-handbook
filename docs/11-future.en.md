@@ -62,14 +62,14 @@
 |---|---|---|
 | **Tutorial/content authors** | Chinese tutorial vacuum (this handbook is the first) | **Now** (biggest dividend) |
 | **Plugin developers** | Directions the official repo lacks: TUI, remote access, mobile, cache tooling | **Now** |
-| **Tool-type projects** | Speedup, latency visualization, MCP toolkits | Now (we validated with tool-turbo) |
+| **Tool-type projects** | Speedup, latency visualization, MCP toolkits | Now (we validated with the speed-up plugin experiment) |
 | **Ecosystem infrastructure** | Plugin marketplace, template generators, benchmark tooling | Mid term |
 | **Industry solutions** | Finance/education industry plugin bundles | Mid term |
 
 ## 11.6 Risks & uncertainty (honest edition)
 
 1. **Breaking changes**: rc-stage API may change frequently — plugins/tutorials need ongoing follow-up (this handbook updates in sync)
-2. **Ecosystem fragmentation**: plugin quality varies, standards missing — early stage needs "high-quality showcase projects" (this handbook + tool-turbo are showcases)
+2. **Ecosystem fragmentation**: plugin quality varies, standards missing — early stage needs "high-quality showcase projects" (this handbook + the Chapter 4 example are showcases)
 3. **Official strategy shifts**: the official team may pull back directions (e.g., built-in TUI) — ecosystem projects need differentiated moats
 4. **Model competition**: other models' iterations may weaken DeepSeek's appeal — but dsh's model-agnostic design (OpenAI-compatible endpoints) is a buffer
 5. **Heat cooling**: if the dsh ecosystem doesn't take off, early investment may be "wasted" — but tutorials/skills themselves are transferable assets
@@ -79,7 +79,7 @@
 - **Content**: continuously updated as dsh iterates (version-aligned with rc/stable releases)
 - **Bilingual**: English edition catches up with Chinese
 - **Cases**: more real industry cases (compliance-first)
-- **Ecosystem**: link with dsh-tool-turbo, awesome lists, and official Discussions to become one of the ecosystem's content hubs
+- **Ecosystem**: link with awesome lists and official Discussions to become one of the ecosystem's content hubs
 
 ## 11.8 Final advice to readers
 

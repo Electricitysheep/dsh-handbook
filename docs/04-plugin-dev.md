@@ -1,6 +1,6 @@
 # 第 4 章：插件开发实战
 
-> 本章目标：从零写一个**真实可用的 host 插件**——通过 `agent/request` 扩展点自动调节推理档位。这是社区项目 `dsh-tool-turbo` 的完整拆解，所有代码可运行、可测试。
+> 本章目标：从零写一个**真实可用的 host 插件**——通过 `agent/request` 扩展点自动调节推理档位。这是一个提速插件的完整拆解，所有代码可运行、可测试。
 
 ## TL;DR（本章核心，30 秒版）
 
@@ -29,7 +29,7 @@
 
 <!-- [style] 目录树代码块统一补 text 语言标签 -->
 ```text
-dsh-tool-turbo/
+dsh-speed-plugin/
 ├── package.json          # host 插件声明
 ├── tsconfig.json
 ├── src/
@@ -43,7 +43,7 @@ dsh-tool-turbo/
 
 ```json
 {
-  "name": "dsh-tool-turbo",
+  "name": "dsh-speed-plugin",
   "type": "module",
   "main": "src/index.ts",
   "exports": {
@@ -106,14 +106,14 @@ export function decideEffort(input: EffortDecisionInput): EffortId {
 import type { Context } from '@deepseek-ai/cordis'
 import { decideEffort, type ToolCallSample } from './effort-decision.ts'
 
-export interface ToolTurboConfig {
+export interface SpeedPluginConfig {
   enabled: boolean
   allowDowngrade: boolean
   allowUpgrade: boolean
   baseline: 'low' | 'high' | 'max'
 }
 
-export const DEFAULT_CONFIG: ToolTurboConfig = {
+export const DEFAULT_CONFIG: SpeedPluginConfig = {
   enabled: true, allowDowngrade: true, allowUpgrade: false, baseline: 'high',
 }
 
@@ -133,7 +133,7 @@ function recentToolCalls(agent: unknown): ToolCallSample[] {
   return out.reverse()
 }
 
-export function apply(ctx: Context, config: ToolTurboConfig = DEFAULT_CONFIG): void {
+export function apply(ctx: Context, config: SpeedPluginConfig = DEFAULT_CONFIG): void {
   if (!config.enabled) return
 
   // 边界适配：npm 包未 re-export 官方事件类型增强，这里放宽签名（第 3 章常见坑）
@@ -151,7 +151,7 @@ export function apply(ctx: Context, config: ToolTurboConfig = DEFAULT_CONFIG): v
       allowDowngrade: config.allowDowngrade,
       allowUpgrade: config.allowUpgrade,
     })
-    console.log(`[tool-turbo] calls=${JSON.stringify(calls)} => reasoningEffort=${effort}`)
+    console.log(`[speed-plugin] calls=${JSON.stringify(calls)} => reasoningEffort=${effort}`)
     return { ...seed, reasoningEffort: effort }
   })
 }
@@ -185,13 +185,13 @@ it('downgrades to low for simple tool chains', () => {
 挂载插件（第 3 章方法）→ 重启 `dsh web` → 发一个创建文件的任务 → 观察 dsh 进程日志：
 
 ```text
-[tool-turbo] agent/request: calls=[]                    => reasoningEffort=high
-[tool-turbo] agent/request: calls=[{"name":"write",…}] => reasoningEffort=low
+[speed-plugin] agent/request: calls=[]                    => reasoningEffort=high
+[speed-plugin] agent/request: calls=[{"name":"write",…}] => reasoningEffort=low
 ```
 
 第一轮无工具调用 → 保持基线 `high`；检测到 `write` 工具 → 下一轮降为 `low`。**注入链路完整工作。**
 
-> 完整可运行代码：https://github.com/Electricitysheep/dsh-tool-turbo
+> 完整可运行代码：参考本章各节代码片段组合即可运行。
 
 ## 4.6 给新手的三条开发纪律
 
@@ -203,7 +203,7 @@ it('downgrades to low for simple tool chains', () => {
 
 ## 动手练习（检验你是否真懂了）
 
-1. **理解题**：不看原文，说出 `dsh-tool-turbo` 的三层架构（纯函数层 / 插件主体层 / 测试层）各自负责什么
+1. **理解题**：不看原文，说出这个提速插件的三层架构（纯函数层 / 插件主体层 / 测试层）各自负责什么
    > 自查：参考本章 4.2-4.5 节的文件结构
 2. **理解题**：解释为什么 `decideEffort` 要设计成纯函数而不是直接在 `apply(ctx)` 里写逻辑。如果决策逻辑依赖了 `ctx.session`，还能单测吗？
    > 自查：参考本章 4.3 节"为什么拆成纯函数"段落
@@ -213,7 +213,7 @@ it('downgrades to low for simple tool chains', () => {
    > 自查：参考本章 4.4 节"三个关键点"第 1 条
 5. **动手题**：假设你要写一个类似的插件，但改为根据"当前会话的工具调用总次数"来决定档位（超过 20 次自动降为 low），写出纯函数签名和核心逻辑
    > 自查：参考本章 4.3 节纯函数设计模式，关键是输入输出类型定义
-6. **思考题**：`agent/request` waterfall 可以有多个监听者。如果 tool-turbo 和另一个插件都监听了 `agent/request`，谁先执行？返回值怎么传递？
+6. **思考题**：`agent/request` waterfall 可以有多个监听者。如果提速插件和另一个插件都监听了 `agent/request`，谁先执行？返回值怎么传递？
    > 自查：参考本章 4.4 节"waterfall 语义"段落 + 第 3 章 3.4 节扩展点说明
 
 ## 常见疑问 FAQ
@@ -231,7 +231,7 @@ seed 是当前 waterfall 链上游累积的请求配置，通常包含 `provider
 几种可能：① 用户的 `settings.yaml` 里 `reasoningEffort` 是 `low`，降档无效果（已经最低了）；② 用户的任务全是简单工具，本来就快，感知不到差异；③ waterfall 里有其他插件覆盖了你的返回值。建议加日志记录每步的输入/输出档位。
 
 **Q5：我想给插件加一个用户可配置的开关（设置页里能开关），怎么做？**
-用 `settings` 服务注册一个命名空间（如 `tool-turbo`），声明配置项（enabled、baseline 等）。dsh 的设置页会自动渲染表单，用户修改后通过 `ctx.get` 读取。具体 API 参考官方 `dsh-settings` 包文档。
+用 `settings` 服务注册一个命名空间（如 `speed-plugin`），声明配置项（enabled、baseline 等）。dsh 的设置页会自动渲染表单，用户修改后通过 `ctx.get` 读取。具体 API 参考官方 `dsh-settings` 包文档。
 
 **Q6：`recentToolCalls` 函数里为什么要 `reverse()`？**
 因为从 events 数组末尾往前遍历（取最近的 N 个），结果是倒序的（最新的在前）。reverse 后恢复时间正序（最旧的在前），和实际调用顺序一致，方便决策逻辑按"最近窗口"理解。

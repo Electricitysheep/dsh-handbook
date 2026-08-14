@@ -111,7 +111,7 @@ dsh web   # 重启后生效
 
 | 扩展点 | 位置 | 用途 |
 |---|---|---|
-| `agent/request` waterfall | `agent-loop` | **每次模型请求前改配置**（provider/model/reasoningEffort/tools）——tool-turbo 用这个 |
+| `agent/request` waterfall | `agent-loop` | **每次模型请求前改配置**（provider/model/reasoningEffort/tools）——提速插件示例用这个 |
 | `agent/request-error` | `agent-loop` | 请求失败时干预（官方 compaction 插件用这个做上下文溢出恢复） |
 | `conversationEvents.register` | client runtime | 订阅/注入对话事件（tool/call、turn/start 等） |
 | `ctx.slots.inject` | client ui-slots | 在界面槽位注入 UI（如 turnTail 显示产物文件行） |

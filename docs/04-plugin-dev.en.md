@@ -2,7 +2,7 @@
 
 # Chapter 4: Plugin Development, Hands-On
 
-> **Goal of this chapter:** Build a **real, working host plugin** from scratch, one that automatically adjusts reasoning effort via the `agent/request` extension point. This is a full breakdown of the community project `dsh-tool-turbo`. All code is runnable and testable.
+> **Goal of this chapter:** Build a **real, working host plugin** from scratch, one that automatically adjusts reasoning effort via the `agent/request` extension point. This is a full breakdown of an example speed-up plugin. All code is runnable and testable.
 
 ## TL;DR (30-second version)
 
@@ -22,7 +22,7 @@
 
 <!-- [style] 目录树代码块统一补 text 语言标签 -->
 ```text
-dsh-tool-turbo/
+dsh-speed-plugin/
 ├── package.json          # Host plugin declaration
 ├── tsconfig.json
 ├── src/
@@ -36,7 +36,7 @@ Key fields in `package.json`:
 
 ```json
 {
-  "name": "dsh-tool-turbo",
+  "name": "dsh-speed-plugin",
   "type": "module",
   "main": "src/index.ts",
   "exports": {
@@ -99,14 +99,14 @@ export function decideEffort(input: EffortDecisionInput): EffortId {
 import type { Context } from '@deepseek-ai/cordis'
 import { decideEffort, type ToolCallSample } from './effort-decision.ts'
 
-export interface ToolTurboConfig {
+export interface SpeedPluginConfig {
   enabled: boolean
   allowDowngrade: boolean
   allowUpgrade: boolean
   baseline: 'low' | 'high' | 'max'
 }
 
-export const DEFAULT_CONFIG: ToolTurboConfig = {
+export const DEFAULT_CONFIG: SpeedPluginConfig = {
   enabled: true, allowDowngrade: true, allowUpgrade: false, baseline: 'high',
 }
 
@@ -126,7 +126,7 @@ function recentToolCalls(agent: unknown): ToolCallSample[] {
   return out.reverse()
 }
 
-export function apply(ctx: Context, config: ToolTurboConfig = DEFAULT_CONFIG): void {
+export function apply(ctx: Context, config: SpeedPluginConfig = DEFAULT_CONFIG): void {
   if (!config.enabled) return
 
   // Boundary adaptation: npm package doesn't re-export official event type augmentations,
@@ -145,7 +145,7 @@ export function apply(ctx: Context, config: ToolTurboConfig = DEFAULT_CONFIG): v
       allowDowngrade: config.allowDowngrade,
       allowUpgrade: config.allowUpgrade,
     })
-    console.log(`[tool-turbo] calls=${JSON.stringify(calls)} => reasoningEffort=${effort}`)
+    console.log(`[speed-plugin] calls=${JSON.stringify(calls)} => reasoningEffort=${effort}`)
     return { ...seed, reasoningEffort: effort }
   })
 }
@@ -180,13 +180,13 @@ it('downgrades to low for simple tool chains', () => {
 Mount the plugin (Chapter 3 method) → restart `dsh web` → send a file-creation task → watch the dsh process logs:
 
 ```text
-[tool-turbo] agent/request: calls=[]                    => reasoningEffort=high
-[tool-turbo] agent/request: calls=[{"name":"write",…}] => reasoningEffort=low
+[speed-plugin] agent/request: calls=[]                    => reasoningEffort=high
+[speed-plugin] agent/request: calls=[{"name":"write",…}] => reasoningEffort=low
 ```
 
 First turn has no tool calls → stays at baseline `high`. After detecting the `write` tool → next turn drops to `low`. **The injection pipeline works end to end.**
 
-> Full runnable code: https://github.com/Electricitysheep/dsh-tool-turbo
+> Full runnable code: combine the code snippets in this chapter to run it.
 
 ## 4.6 Three Development Disciplines for Newcomers
 

@@ -105,7 +105,7 @@ Confirmed commonly-used extension points (each explored hands-on in later chapte
 
 | Extension Point | Location | Purpose |
 |---|---|---|
-| `agent/request` waterfall | `agent-loop` | **Modify config before every model request** (provider/model/reasoningEffort/tools). This is what tool-turbo uses. |
+| `agent/request` waterfall | `agent-loop` | **Modify config before every model request** (provider/model/reasoningEffort/tools). This is what the speed-up plugin example uses. |
 | `agent/request-error` | `agent-loop` | Intervene on request failure (the official compaction plugin uses this for context-window overflow recovery) |
 | `conversationEvents.register` | Client runtime | Subscribe to / inject conversation events (tool/call, turn/start, etc.) |
 | `ctx.slots.inject` | Client UI slots | Inject UI into interface slots (e.g. turnTail to display artifact file lines) |

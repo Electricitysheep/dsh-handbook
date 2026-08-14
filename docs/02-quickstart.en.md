@@ -87,7 +87,7 @@ Click the model selector next to the input:
 | `high` (default) | medium | good | daily agent tasks |
 | `max` | slowest | best | hard reasoning, long planning |
 
-> 💡 **Key performance insight**: the model re-thinks **before every tool call**. Measured: a "create file" task spends ~90% of wall-clock in thinking; a 50-step tool chain accumulates minutes. **Lowering the reasoning effort is the highest-leverage speedup** (Ch.6 + the `dsh-tool-turbo` plugin).
+> 💡 **Key performance insight**: the model re-thinks **before every tool call**. Measured: a "create file" task spends ~90% of wall-clock in thinking; a 50-step tool chain accumulates minutes. **Lowering the reasoning effort is the highest-leverage speedup** (Ch.6 + the example speed-up plugin).
 
 ## 2.4 Mode 2: Headless (one-shot tasks, scripts/CI)
 
