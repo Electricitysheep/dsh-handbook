@@ -162,7 +162,7 @@ But the official docs focus on architecture — **the beginner path is missing**
 <details>
 <summary><b>🛠 Ch. 4 — plugin development, full working code</b></summary>
 
-- From-scratch speed-up plugin (`dsh-tool-turbo`): pure-function decision + `agent/request` waterfall injection
+- From-scratch speed-up plugin (full walkthrough): pure-function decision + `agent/request` waterfall injection
 - Key trick: extract decision logic into pure functions (millisecond unit tests) → verify only "did injection happen" on real hardware
 - Live log evidence: `calls=[{name:"write"}] => reasoningEffort=low`
 </details>
@@ -172,7 +172,7 @@ But the official docs focus on architecture — **the beginner path is missing**
 
 - Git panel push/pull/fetch (PR #10): `--force-with-lease` safety line + local bare-repo integration tests + Playwright verification
 - HTML draft preview (PR #11): srcdoc decision pure function under sandbox constraints
-- tool-turbo speed plugin: step-by-step reasoning downgrade
+- Speed-up plugin example: step-by-step reasoning downgrade
 </details>
 
 <details>
@@ -334,7 +334,6 @@ agent-default-model:
 ## 🌐 Ecosystem links
 
 Methodology comes from real open-source work:
-- [dsh-tool-turbo](https://github.com/Electricitysheep/dsh-tool-turbo) — tool-call latency optimizer (source for ch. 4/6)
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) — community sidebar plugin (ch. 5 cases)
 - Active on the official repo discussions: deepseek-ai/deepseek-harness (#380 plugin pitfalls, #401 Windows path bugs, #392 TUI examples, #384 visionDS, #118)
 
