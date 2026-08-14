@@ -10,7 +10,7 @@
 4. **上下文 = 系统提示 + 技能目录 + 对话历史 + 工具结果**：分层注入，每步请求携带工具 schema
 5. **长对话自动压缩（compaction）**：检测溢出 → 修剪历史 → 可选摘要 → 失败路由到溢出代理。重要信息建议写进提示词
 6. **插件行为可零成本验证**：mock llm + headless + 审计 dump（#462）——没有 API key 也能验证 waterfall 透传与工具注入
-7. **工具链有两个已知坑**：code 模式 run_code/bash 的 description required 死循环（#558/#581/#689）；流式下工具名被抹空（#725 同族，见 FAQ）
+7. **工具链有三个已知坑**：code 模式 run_code/bash 的 description required 死循环（#558/#581/#689）；流式下工具名被抹空（#725 同族，见 FAQ）；run_code 内交互式工具异步结果被丢弃（#1476）
 
 <details><summary>本章导航</summary>
 - [8.1 官方能力包地图（60+ 包一览）](#81-官方能力包地图60-包一览)
@@ -152,13 +152,16 @@ pnpm dsh --profile headless "run the bash tool once and report"
 
 ## 8.8 工具链踩坑
 
-rc.6 时代的两个工具链已知坑（详见 [FAQ](./faq.md)）：
+rc.6 时代的工具链已知坑（坑 1/2 已入 [FAQ](./faq.md)）：
 
 **坑 1：code 模式 `run_code`/`bash` 的 description required 死循环**（[#558](https://github.com/deepseek-ai/deepseek-harness/discussions/558) [#581](https://github.com/deepseek-ai/deepseek-harness/discussions/581) [#689](https://github.com/deepseek-ai/deepseek-harness/discussions/689)）
 `code` 模式下 `run_code` 与 `bash` 都把 UI 摘要字段叫 `description` 且标成 required：模型常把内层 `bash.description` 当成已传过，外层 JSON 只剩 `{"code":"..."}` → 反复报 `missing required property "description"`，看起来像"随机丢参数"。`#581` 补根因：`ToolArgsError` 不带工具名，模型无法定位错在哪个工具 → 死循环重试（附可 cherry-pick 修复）；`#689` 显示同族问题让 run_code 内所有 `tools.*` 调用都被拒绝。规避：手动补外层 description 或换标准模式。
 
 **坑 2：流式下工具调用被抹空名**（[#725](https://github.com/deepseek-ai/deepseek-harness/discussions/725) 同族，已入 [FAQ](./faq.md)）
 现象：所有工具调用报 `Error: unknown tool ""`。根因：SSE 流式解析用覆盖赋值而非累加，把工具名/ID 抹成空串（[#725](https://github.com/deepseek-ai/deepseek-harness/discussions/725) 根因 + 修复；[#161](https://github.com/deepseek-ai/deepseek-harness/discussions/161) [#615](https://github.com/deepseek-ai/deepseek-harness/discussions/615) [#694](https://github.com/deepseek-ai/deepseek-harness/discussions/694) [#741](https://github.com/deepseek-ai/deepseek-harness/discussions/741) 同族）。官方修复前只能降级/等版本；模型会反复重试，注意及时中止。
+
+**坑 3：`run_code` 内调用交互式工具被"吞"**（[#1476](https://github.com/deepseek-ai/deepseek-harness/discussions/1476)）
+`run_code` 程序内调用交互式工具（如 `ask_user_question`）时：同步执行不等异步——4ms 就返回空；异步结果约 12s 后回来时会话帧已结束，被直接丢弃。判断为 `run_code` 执行模型的问题（应支持异步工具回调或返回 pending 状态），AGENTS.md 里"别在代码里调交互式工具"的约定只能治标。
 
 ---
 
