@@ -31,6 +31,8 @@
 
 > 总计 = 5 任务中位数相加；扩展前（仅 T1-T3）为 omp 36s / dsh 85s / opencode 114s。
 
+![benchmark 柱状图](../docs/assets/benchmark-bar.svg)
+
 原始 3 轮（秒）：
 
 | Agent | 轮次 | T1 | T2 | T3 | T4 | T5 |

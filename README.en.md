@@ -319,6 +319,11 @@ agent-default-model:
 
 > 5 tasks × 3 rounds, median; all 45/45 correct. Full methodology: [📊 Benchmark appendix](./docs/benchmark.md)
 
+<p align="center">
+  <img src="./docs/assets/benchmark-bar.svg" alt="benchmark bar chart: omp 70s / dsh 130s / opencode 172s" width="720"/>
+</p>
+
+
 ## 📄 PDF
 
 - **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (12 chapters, ~120k chars, 5.5MB, professional typesetting: cover/TOC/styles)

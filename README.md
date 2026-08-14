@@ -353,6 +353,11 @@ agent-default-model:
 
 > 5 任务 × 3 轮采样中位数（T1 创建文件 → T5 多文件重构），45/45 全对。完整方法/解读见 [📊 Benchmark 附录](./docs/benchmark.md)。
 
+<p align="center">
+  <img src="./docs/assets/benchmark-bar.svg" alt="benchmark 柱状图：omp 70s / dsh 130s / opencode 172s" width="720"/>
+</p>
+
+
 ## 📄 白皮书 PDF
 
 - **中文完整版**：[DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf)（12 章节，~120k 字符，5.5MB）
