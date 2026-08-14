@@ -51,7 +51,11 @@ Windows 上 3080 可能落在 Hyper-V/WSL2/Docker Desktop 的保留端口区间�
 rc.6 的 llm-pi-ai 只暴露 `thinkingFormat`/`supportsReasoningEffort`，且手写 provider 的 reasoningEfforts 需在 settings.yaml 手动声明（[#122](https://github.com/deepseek-ai/deepseek-harness/discussions/122) [#302](https://github.com/deepseek-ai/deepseek-harness/discussions/302) [#736](https://github.com/deepseek-ai/deepseek-harness/discussions/736)）。声明后报 `400 unknown variant developer` 是网关不认 developer role——需配 `compat.supportsDeveloperRole: false`（[#280](https://github.com/deepseek-ai/deepseek-harness/discussions/280) [#614](https://github.com/deepseek-ai/deepseek-harness/discussions/614) [#636](https://github.com/deepseek-ai/deepseek-harness/discussions/636)）。社区有自动探测网关方言的插件（[#559](https://github.com/deepseek-ai/deepseek-harness/discussions/559)）。
 
 **Q：所有工具调用都报 `Error: unknown tool ""`？**
-rc.6 流式解析 bug：SSE 分块覆盖赋值把工具名/ID 抹成空串（[#725](https://github.com/deepseek-ai/deepseek-harness/discussions/725) 根因 + 修复；[#161](https://github.com/deepseek-ai/deepseek-harness/discussions/161) 同族）。官方修复前只能降级/等版本；模型会反复重试，注意及时中止。
+rc.6 流式解析 bug：SSE 分块覆盖赋值把工具名/ID 抹成空串（[#725](https://github.com/deepseek-ai/deepseek-harness/discussions/725) 根因 + 修复；[#161](https://github.com/deepseek-ai/deepseek-harness/discussions/161) 同族）。**两类触发根因**：
+1. **覆盖赋值**：`translate.ts` 对 `block.name`/`block.callId` 逐分块覆盖而非累加，后续分块带空 `function.name` 时把已解析的工具名抹成空串（帖内主修复：改为 `(block.name ?? '') + ...` 累加）；
+2. **null 隐式转字符串**：部分模型（如 hy3、longcat-2.0）在流式 delta 中给 `id`/`name` 填 `null`——`null !== undefined` 恒真，原判断会把 `null` 隐式转成字符串拼接，产出破坏性工具名（如 `"Glob" + null → "Globnull"`）。更彻底的修复是**严格类型校验**：`typeof call.id === 'string'` / `typeof call.function?.name === 'string'` 才累加（#725 评论区补充方案）。
+
+因官方当前关闭 Issue/PR 提交（#725 评论区确认），**需自行修改** `packages/llm/llm-deepseek/src/translate.ts`（对应函数逐分块累加 + 严格类型校验）后 `pnpm run build` 再重启 dsh。官方修复前亦可降级/等版本；模型会反复重试，注意及时中止。
 
 **Q：超长会话打不开，报 `Maximum call stack size exceeded`？**
 超长回复（20 万+ token）的 `sourceEventSeqs` 数组被展开成函数参数，超出 V8 参数上限（[#317](https://github.com/deepseek-ai/deepseek-harness/discussions/317) [#370](https://github.com/deepseek-ai/deepseek-harness/discussions/370) [#508](https://github.com/deepseek-ai/deepseek-harness/discussions/508)）。会话文件本身没坏；属 rc 已知缺陷，等修复或找社区补丁。
