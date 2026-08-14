@@ -72,9 +72,9 @@ dsh --profile headless "你好，请用一句话介绍自己"
 |---|---|
 | 🆕 **第一次接触 dsh** | 3 天从 0 到 1 学习路径（每天有目标+验收） |
 | 🛠 **开发者** | 可克隆的插件模板 + 配置参考大全（照抄能跑） |
-| ⚖️ **正在选型** | 14 个主流 Agent 对比（表格+文字）+ 同模型实测 benchmark |
+| ⚖️ **正在选型** | 6 个主流 Agent 对比（表格+文字）+ 同模型实测 benchmark |
 | ⚡ **要调优** | 推理档位策略 + 缓存命中率专题（实测 97%） |
-| 📚 **要案例** | 8 个真实复杂案例（含耗时/产物/验证） |
+| 📚 **要案例** | 5 个真实复杂案例（含耗时/产物/验证） |
 
 ## 📚 目录（从 0 到 1）
 
@@ -322,7 +322,7 @@ agent-default-model:
 
 1. **dsh 是模型吗？** 不是——是运行时，模型通过 llm 插件接入
 2. **和 Claude Code 区别？** Claude Code 是"整车"，dsh 是"乐高底座"（开源可定制）
-3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存命中 98% 折扣，实测命中率 97%）
+3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存折扣：Flash 档 98% / Pro 档 99%+，实测会话缓存命中率 97%）
 4. **插件装不上 404？** rc.1 依赖断裂——用 `^0.1.0-rc.6` 线
 5. **能进生产吗？** rc 阶段有破坏性变更；生态玩法现在可入
 > 完整 FAQ（六类）：[docs/faq.md](./docs/faq.md)
@@ -383,7 +383,7 @@ agent-default-model:
 | [dsh-data-agent](https://github.com/omdsh-dev/dsh-data-agent) | 连数据库写 SQL 的数据 Agent |
 | [dsh-balance-meter](https://github.com/Ghost011118/dsh-balance-meter) | 余额 + 会话成本实时显示 |
 
-> 完整列表见 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)（122+ 插件）。想被收录？[社区案例征集](./discussions/12)
+> 完整列表见 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)（122+ 插件）。想被收录？[社区案例征集](https://github.com/Electricitysheep/dsh-handbook/discussions/12)
 
 ### 📣 官方讨论区活跃响应
 
@@ -392,7 +392,7 @@ agent-default-model:
 ## 🙏 贡献与反馈
 
 - ⭐ 觉得有帮助？点个 Star 支持持续更新
-- 📝 **跑过真实案例？** 投稿收录进白皮书（署名 + 季度精选 PDF）：[社区案例征集](./discussions/12) ← 直接回帖，模板已备好
+- 📝 **跑过真实案例？** 投稿收录进白皮书（署名 + 季度精选 PDF）：[社区案例征集](https://github.com/Electricitysheep/dsh-handbook/discussions/12) ← 直接回帖，模板已备好
 - 章节/命令失效？rc 版本迭代所致，欢迎 issue 指正
 - 想参与？见 [🤝 贡献指南（CONTRIBUTING）](./CONTRIBUTING.md) · 想看计划？[🗺️ 路线图（ROADMAP）](./ROADMAP.md) · 生态参与见 [第 7 章](./docs/07-ecosystem.md)
 
