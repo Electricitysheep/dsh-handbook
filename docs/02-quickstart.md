@@ -14,7 +14,7 @@
 <details><summary>本章导航</summary>
 - [2.1 准备工作（30 秒检查）](#21-准备工作30-秒检查)
   - [Node 版本红线（≥22.19）](#node-版本红线2219)
-- [2.2 安装（两种方式）](#22-安装两种方式)
+- [2.2 安装（三种方式）](#22-安装三种方式)
   - [安装坑（社区真实踩过）](#安装坑社区真实踩过)
 - [2.3 模式一：Web UI（`dsh web`）](#23-模式一web-uidsh-web)
 - [2.4 模式二：Headless（一次性任务，适合脚本/CI）](#24-模式二headless一次性任务适合脚本ci)
@@ -47,7 +47,7 @@
 
 **Workaround**：用 nvm/volta/fnm 切换到 `22.19.0+`。Node 24 早期版本（如 v24.15）也可能触发 `install-lefthook failed`——若遇此错，pin 到 `22.19.0` 最稳 ([#748](https://github.com/deepseek-ai/deepseek-harness/discussions/748))。
 
-## 2.2 安装（两种方式）
+## 2.2 安装（三种方式）
 
 **方式一：直接运行（推荐新手）**
 
@@ -68,6 +68,14 @@ npx -y @deepseek-ai/dsh --version
 npm install -g @deepseek-ai/dsh
 dsh --version
 ```
+
+**方式三：免装 Node 的安装包（新手可选）**
+
+不想装 Node？社区作者 codeAnqiang-ma（[#380](https://github.com/deepseek-ai/deepseek-harness/discussions/380) 插件踩坑帖作者，已授权收录）提供了**免装 Node 的安装包**——mac DMG / Windows exe，底层官方 dsh 原样打包、自带 Node 运行时，零前置依赖：
+
+> [dsh-installers](https://github.com/codeAnqiang-ma/dsh-installers)（非官方，随官方 rc 版本发布对应安装包，含 SHA256 校验）
+
+适合「不想折腾 Node 环境、双击即用」的尝鲜用户；需要插件开发/频繁升级的话仍建议方式一或二。
 
 ### 安装坑（社区真实踩过）
 
