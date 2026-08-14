@@ -154,6 +154,7 @@ dsh web   # 重启后生效
 | **npm 包名** | `dsh plugin add dsh-better-sidebar` | 需已发布到 npm；rc 阶段很多社区插件未发布 | — |
 | **GitHub 仓库** | `dsh plugin add github:作者/仓库` | **只加依赖，不自动 append 到 `cordis.patch.yml`**，需手动补挂载行 | [#656](https://github.com/deepseek-ai/deepseek-harness/discussions/656) |
 | **本地路径** | `link:/path/to/plugin`（macOS/Linux）<br>`link:C:\path\to\plugin`（Windows） | 开发调试用；路径斜杠按平台区分 | — |
+| **含空格路径（Windows）** | `dsh plugin <...>` 传含空格路径 | Windows 上含空格路径在内部转发时被拆断：`apps/cli/src/plugin.ts` 的 `runPlugin` 用 `spawnSync("pnpm", args, { shell: true })`——Node 按空格拼接参数、不转义（Node 22+ 起 DEP0190 警告），调用方引号到不了转发层 | 修复方向：`shell: false`（直接传参数组）或转发前自行转义 | [#1420](https://github.com/deepseek-ai/deepseek-harness/discussions/1420) |
 
 > 社区踩坑总结：用 `github:` 格式装插件后，记得手动去 `cordis.patch.yml` 补 `- insert:` 挂载行，否则插件依赖装了但 dsh 不加载。
 

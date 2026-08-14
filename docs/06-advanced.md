@@ -7,7 +7,7 @@
 1. **时间花在哪**：模型思考占 ~90%，工具执行 <1%，网络/渲染 ~10%——优化思考时间是性价比最高的提速
 2. **三档策略**：`low`（简单/批量轮次）、`high`（日常默认）、`max`（复杂推理/debug）——手动 UI 选或插件自动调
 3. **耗时可视化**：Web UI 底部统计行（LLM Xs / 工具调用 Ys）是最快的瓶颈定位手段
-4. **7 个真实坑**：rc.1 依赖断裂、插件缺 main、next() 忘 await、事件类型不识别、client 测试跑不了、缓存命中误判、端口占用
+4. **8 个真实坑**：rc.1 依赖断裂、插件缺 main、next() 忘 await、事件类型不识别、client 测试跑不了、缓存命中误判、端口占用、推理序列化丢 reasoning（#739）
 5. **评测三问**：谁测的、什么 harness、验证器多严——跑分要带条件看
 
 <details><summary>本章导航</summary>
@@ -63,6 +63,7 @@ dsh 的会话统计行（Web UI 底部）显示：`N 轮 · M 步 | LLM Xs · �
 | 5 | client 测试跑不了 | jsdom 报 `window.__ModuleLoader__` undefined | client 产物依赖 dsh 引导机制，组件测试在官方 CI 跑 |
 | 6 | 简单任务"突然变快"的误判 | 1s vs 110s 差异被误归因 | DeepSeek context cache 命中也会提速——A/B 测试要用全新 prompt |
 | 7 | 端口占用 | `dsh web` 起不来 | `netstat -ano \| findstr 3080` 找 PID kill |
+| 8 | 推理序列化省略空 reasoning（[#739](https://github.com/deepseek-ai/deepseek-harness/discussions/739)） | `high`/`max` 下工具调用轮次**没有思考内容**时，serializeAssistant 里 `toolCalls.length > 0 && reasoning.length > 0` 条件把空的 reasoning 字段省略 → 下一轮请求报 400（invalid pi-ai replay state） | 判断为 bug（应保留 reasoning 占位）：修复方向是序列化时**始终保留**该字段 |
 
 ## 6.5 评测视角：官方成绩单 vs 独立实测
 
