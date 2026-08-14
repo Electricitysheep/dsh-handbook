@@ -45,6 +45,8 @@
 
 **对新手**：子代理是"高阶武器"——先用好单 Agent，理解任务分解后再上子代理。错误示范是"什么任务都开子代理"，反而增加协调开销。
 
+**已知限制（社区反馈）**：当前**不能动态指定子代理模型**——子代理模型跟随父 Agent 配置，社区已在讨论区反馈（[#118](https://github.com/deepseek-ai/deepseek-harness/discussions/118) 评论区，对比 Claude Code"可指定子代理模型"的体验）。需要不同模型能力时，目前只能整体切换父 Agent 的模型配置，或拆成独立会话分别指定。
+
 ## 9.3 工作流（workflow）：多步编排
 
 **是什么**：`packages/workflow/*` 提供多步工作流编排（worker-thread provider + tool Consumer）。
