@@ -391,7 +391,7 @@ agent-default-model:
 
 ### 📣 官方讨论区活跃响应
 
-已在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 回应 8 帖：#380 插件踩坑 / #401 Windows 路径 / #392 TUI 建议 / #384 visionDS / #118 / #655 社区五项目 / #735 token 成本 / #781 LSP 提议
+已在 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) Discussions 持续活跃响应（25+ 帖）：插件踩坑 #380 / Windows 路径 #401 / 安全审计 #817 / token 成本 #735 / 社区五项目 #655 / 生态洞察帖 #839 等
 
 ## 🙏 贡献与反馈
 
