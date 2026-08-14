@@ -199,6 +199,8 @@ it('downgrades to low for simple tool chains', () => {
 2. **逻辑抽纯函数**：决策/计算逻辑与 dsh 解耦 → 单测毫秒级、覆盖全分支；实机只需验证"注入发生"。
 3. **实机验证不能省**：单测证明逻辑，实机日志证明接线——两个都过才算完成。
 
+> 📚 **官方 cookbook 延伸阅读**（2026-08 官方新增，官方仓库 `docs/cookbook/`）：`adding-a-package.md`（如何加包）、`adding-a-tool.md`（如何加工具）、`adding-a-conversation-node.md`（加对话节点）、`adding-an-llm-adapter.md`（写 LLM 适配器）、`adding-a-vendored-package.md`（vendor 包）、`extension-cookbook.md`（扩展点合集）。本章走的是"最小提速插件"路径，官方 cookbook 覆盖更多扩展点类型，进阶时对照读。
+
 ---
 
 ## 动手练习（检验你是否真懂了）

@@ -6,7 +6,7 @@
 
 | 条目 | 说明 | 佐证 |
 |---|---|---|
-| 12 章手册（中文） | 从 0 到 1：入门 → 开发 → 实战 → 生态 → 进阶，每章可运行、命令全实测 | [docs/](./docs/) |
+| 14 章手册（中文） | 从 0 到 1：入门 → 开发 → 实战 → 生态 → 进阶，每章可运行、命令全实测 | [docs/](./docs/) |
 | 英文版 | 前 10 章同步英文（EN 版 + 英文 PDF） | [docs/*.en.md](./docs/) |
 | Benchmark 附录 | 同模型 × 3 Agent 实测（5 任务 × 3 轮中位数，45/45 全对） | [docs/benchmark.md](./docs/benchmark.md) |
 | 快速上手资产 | 一页速查卡 / 插件模板 / 配置参考 / FAQ | [docs/cheatsheet.md](./docs/cheatsheet.md) 等 |
