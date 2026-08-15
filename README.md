@@ -13,7 +13,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/Electricitysheep/dsh-handbook?style=flat&color=yellow)
 ![GitHub release](https://img.shields.io/github/v/tag/Electricitysheep/dsh-handbook?label=release&color=success)
 ![dsh-handbook](https://img.shields.io/badge/dsh--handbook-白皮书-blue)
-![chapters](https://img.shields.io/badge/章节-14-green)
+![chapters](https://img.shields.io/badge/章节-15-green)
 ![pdf](https://img.shields.io/badge/PDF-5.2MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
 ![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.6-8A2BE2)
@@ -153,6 +153,10 @@ dsh --profile headless "你好，请用一句话介绍自己"
 | 沙箱机制 · 权限模型 · 审批流 · 插件安全审计清单 | 缓存命中率实测 97% · 成本模型 · 推理档位联动 · 预算实战 |
 
 </div>
+
+| 📊 **[第 15 章 · 生态全景报告](./docs/15-ecosystem-report.md)** | |
+|---|---|
+| 1804 插件 × 780 帖交叉验证：5 大洞察 + 6 个能力缝 + 生态参与者建议 |
 
 ### 📎 附录
 
