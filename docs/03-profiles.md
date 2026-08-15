@@ -169,6 +169,8 @@ dsh web   # 重启后生效
 
 ---
 
+> **预设挂载单例冲突（#1415/#1827 确认）**：每次挂载带 Cordis toolset 的预设，`tool-cordis` 会在进程单例的 Host inspect 注册表里重复注册四个 provider ID（`Service`/`Event`/`Builtin`/`Tool`）——第二次挂载直接抛 `already registered`，会话恢复/多预设叠加时踩到。排查：确认同一进程内 tool-cordis 只挂载一次。
+
 ## 动手练习（检验你是否真懂了）
 
 1. **理解题**：不看原文，画出 `profiles/web/` 目录下的文件结构，并说出每个文件的作用
