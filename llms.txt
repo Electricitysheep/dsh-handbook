@@ -1,31 +1,32 @@
-# dsh-handbook
+# dsh-handbook — DeepSeek Harness 中文手册与生态观察中心
 
-> DeepSeek Harness (dsh) from-zero-to-one Chinese handbook — 11 chapters covering install, profiles, plugin development, performance tuning, tools/context, MCP & subagents, plus a same-model multi-agent benchmark and quickstart assets (cheatsheet, plugin template, config reference, FAQ). English PDF also available.
+> DeepSeek Harness (dsh) from-zero-to-one handbook: 15 chapters (Chinese, EN translations) covering install, profiles, plugin development, performance tuning, tools & context, MCP & subagents, security & sandbox, cache & cost engineering, ecosystem panorama. Includes same-model multi-agent benchmark (omp/dsh/opencode, 45/45), quickstart assets (cheatsheet, plugin template, config reference, FAQ from real community discussions), online docs site, searchable PDF, and an ecosystem report based on 1804 plugins × 780 discussions. Keywords: dsh tutorial, dsh 教程, DeepSeek Harness guide, plugin development, plugin 开发, sandbox security, cache hit rate, cost optimization, agent benchmark.
 
 ## Documentation
 
-- [Chinese README](README.md)
-- [English PDF / chapters](docs/)
+- [Chinese README (canonical)](README.md)
+- [English README](README.en.md)
+- [Online docs site (searchable)](https://electricitysheep.github.io/dsh-handbook/)
 - [Cheatsheet (one-page quick card)](docs/cheatsheet.md)
 - [Plugin template (clone & run)](examples/plugin-template/README.md)
 - [Config reference (settings/cordis.patch.yml/profile)](docs/config-reference.md)
-- [FAQ](docs/faq.md)
-<!-- [fix] 链接健康检查：docs/benchmark/ 是目录不存在，实为 docs/benchmark.md -->
-- [Benchmark: same model × 6 agents](docs/benchmark.md)
+- [FAQ (39+ real questions from community)](docs/faq.md)
+- [Benchmark: same model × 3 agents](docs/benchmark.md)
 - [Chapter 1: Intro & capability matrix](docs/01-intro.md)
-<!-- [fix] 链接健康检查：docs/02-install.md 不存在，实为 docs/02-quickstart.md -->
 - [Chapter 2: Install & onboarding](docs/02-quickstart.md)
-- [Chapter 3: Profiles](docs/03-profiles.md)
+- [Chapter 3: Profiles & plugin system](docs/03-profiles.md)
 - [Chapter 4: Plugin development](docs/04-plugin-dev.md)
 - [Chapter 5: Use cases](docs/05-cases.md)
-- [Chapter 6: Advanced](docs/06-advanced.md)
-- [Chapter 7: Ecosystem](docs/07-ecosystem.md)
-- [Chapter 8: Tools & context](docs/08-tools-context.md)
-- [Chapter 9: MCP & subagent workflow](docs/09-mcp-subagent-workflow.md)
-- [Chapter 10: Complex cases](docs/10-complex-cases.md)
-- [Chapter 11: Future](docs/11-future.md)
-- [Chapter 12: Known limitations & boundaries (rc honest view)](docs/12-limitations.md)
+- [Chapter 6: Advanced & performance tuning](docs/06-advanced.md)
+- [Chapter 7: Ecosystem & resources](docs/07-ecosystem.md)
+- [Chapter 8: Tools & context system](docs/08-tools-context.md)
+- [Chapter 9: MCP & subagents & workflows](docs/09-mcp-subagent-workflow.md)
+- [Chapter 10: Complex real cases](docs/10-complex-cases.md)
+- [Chapter 11: Future outlook](docs/11-future.md)
+- [Chapter 12: Known limitations (honest)](docs/12-limitations.md)
 - [Chapter 13: Security & sandbox model](docs/13-security.md)
 - [Chapter 14: Cache & cost engineering](docs/14-cost.md)
 - [Chapter 15: Ecosystem panorama report](docs/15-ecosystem-report.md)
-- [Appendix B: Official packages quick reference](docs/appendix-packages.md)
+- [Appendix A: Glossary](docs/appendix-glossary.md)
+- [Appendix B: Official packages quick ref](docs/appendix-packages.md)
+- [Appendix C: Benchmark](docs/benchmark.md)
