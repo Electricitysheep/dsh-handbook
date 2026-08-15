@@ -27,4 +27,5 @@
 - [Chapter 12: Known limitations & boundaries (rc honest view)](docs/12-limitations.md)
 - [Chapter 13: Security & sandbox model](docs/13-security.md)
 - [Chapter 14: Cache & cost engineering](docs/14-cost.md)
+- [Chapter 15: Ecosystem panorama report](docs/15-ecosystem-report.md)
 - [Appendix B: Official packages quick reference](docs/appendix-packages.md)
