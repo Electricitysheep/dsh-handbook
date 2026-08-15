@@ -28,6 +28,32 @@ A model (DeepSeek V4) only "replies with text." To make it work in your reposito
 
 ## 1.3 How "everything is a plugin" works
 
+```mermaid
+flowchart TB
+    subgraph Profile["Your profile (bootable form)"]
+        P1["dsh web (Web UI)"]
+        P2["dsh headless (CLI)"]
+        P3["Custom profile (TUI/desktop/bot…)"]
+    end
+    subgraph Plugins["Capability layer (each capability = one plugin)"]
+        L["llm: model access + reasoning effort"]
+        T["tools: files/terminal/search/skills"]
+        S["session: conversation persistence"]
+        C["client: UI (web/terminal)"]
+        ST["settings: user config"]
+    end
+    subgraph Cordis["Cordis plugin container"]
+        D["DI · events · lifecycle"]
+    end
+    Profile --> Cordis
+    Cordis --> Plugins
+    Plugins --> L
+    Plugins --> T
+    Plugins --> S
+    Plugins --> C
+    Plugins --> ST
+```
+
 ### Layered view
 
 ```
