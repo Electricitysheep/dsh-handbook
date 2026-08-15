@@ -82,7 +82,7 @@ dsh --profile headless "你好，请用一句话介绍自己"
 - ⭐ **170+ Stars**——对一份刚发布的教程来说远超预期，感谢大家认可
 - 💬 **官方库 138 帖回应**——我们持续在[讨论区](https://github.com/deepseek-ai/deepseek-harness/discussions)和大家一起踩坑、排障、交流
 - 🧠 **FAQ 里的 39 条问题大多来自真实提问**——社区问什么，我们沉淀什么（#380/#817/#1052…）
-- 📦 收录于 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)，阮一峰周刊自荐也已提交
+- 📦 已向 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 提交收录 PR（[#33](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/33)，待合并）；阮一峰周刊自荐已提交
 - 🤝 与 20+ 社区项目互链（dsh-usage / dsh-sgme / AgentSoul / dsh-vault 等）
 
 > 内容随讨论区持续更新（[沉淀流水线](./docs/research/feedback-pipeline.md)，19 项可追踪）。如果你觉得有用，Star 是对我们最大的支持。
