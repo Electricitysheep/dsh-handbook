@@ -79,7 +79,7 @@
   <text x="565" y="58" font-family="monospace" font-size="14" font-weight="600" fill="#69db7c" text-anchor="middle">dsh-handbook</text>
 
   <!-- Info lines -->
-  <text x="508" y="80" font-family="monospace" font-size="12" fill="#868e96" letter-spacing="0.5">14 章 · 中英双语 · PDF</text>
+  <text x="508" y="80" font-family="monospace" font-size="12" fill="#868e96" letter-spacing="0.5">15 章 · 中英双语 · PDF</text>
   <text x="508" y="98" font-family="monospace" font-size="12" fill="#868e96" letter-spacing="0.5">benchmark · demo · 插件实战</text>
 
   <!-- Accent dot decoration (right edge) -->
