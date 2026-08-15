@@ -14,7 +14,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/Electricitysheep/dsh-handbook?style=flat&color=yellow)
 ![GitHub release](https://img.shields.io/github/v/tag/Electricitysheep/dsh-handbook?label=release&color=success)
 ![dsh-handbook](https://img.shields.io/badge/dsh--handbook-handbook-blue)
-![chapters](https://img.shields.io/badge/chapters-14-green)
+![chapters](https://img.shields.io/badge/chapters-15-green)
 ![pdf](https://img.shields.io/badge/PDF-1.6MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
 ![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.6-8A2BE2)
@@ -127,6 +127,10 @@ But the official docs focus on architecture — **the beginner path is missing**
 | 🛡️ **[Ch. 13 · Security & Sandbox](./docs/13-security.en.md)** | 💰 **[Ch. 14 · Cache & Cost](./docs/14-cost.en.md)** |
 |---|---|
 | sandbox model · permissions · approval flow · plugin audit checklist | cache hit 97% · cost model · reasoning-effort × cost · budget |
+
+| 📊 **[Ch. 15 · Ecosystem Report](./docs/15-ecosystem-report.en.md)** | |
+|---|---|
+| 1,804 plugins × 780 posts cross-validated: 5 insights + 6 capability gaps + advice for ecosystem players |
 
 </div>
 
@@ -265,6 +269,15 @@ But the official docs focus on architecture — **the beginner path is missing**
 - Visibility: session logs / balance plugins to see every cent of spend
 </details>
 
+<details>
+<summary><b>📊 Ch. 15 — ecosystem panorama report (1,804 plugins × 780 posts)</b></summary>
+
+- Data snapshot: 1,804 plugin repos (1,663 flagged "true DSH") — tools 569 / utility 345 / session 229 … sandbox only 9
+- 5 insights: Windows = #1 pain point (60+ posts) · "community fills what the official side doesn't build" · security audits active but security tooling scarce · serialization/boundary bug family · cost transparency as a hidden must-have
+- 6 capability gaps (data + discussion double-verified): vision channel · memory seam · desktop/TUI shell protocol · evaluation loop · first-class Windows support · plugin registry
+- Advice for plugin developers / evaluators / onlookers — full report: [Ch. 15](./docs/15-ecosystem-report.en.md)
+</details>
+
 ## 🖥 Demo
 
 ### ① Web UI chat (`dsh web`)
@@ -371,8 +384,8 @@ agent-default-model:
 
 ## 📄 PDF
 
-- **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (14 chapters, ~120k+ chars, 4.2MB, professional typesetting: cover/TOC/styles)
-- **English edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf) (14 chapters + appendices, 81 pages, ~150k chars, 1.6MB, professional typesetting: cover/TOC/styles; appendices in Chinese original)
+- **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (15 chapters + appendices A–C, ~130k+ chars, 5.5MB, professional typesetting: cover/TOC/styles)
+- **English edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf) (14 chapters + appendices, 81 pages, ~150k chars, 1.6MB, professional typesetting: cover/TOC/styles; appendices in Chinese original — EN edition covers 14 chapters; Ch. 15 available online)
 
 ## 🌐 Ecosystem Links
 
