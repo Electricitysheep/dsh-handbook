@@ -198,8 +198,8 @@
       border-bottom-width: 2px; border-radius: 5px; padding: 2px 6px;
     }
 
-    /* 标题锚点：默认隐藏，hover 显现 */
-    .markdown-section .anchor { opacity: 0; margin-left: -0.85em; font-weight: 400; transition: opacity 0.15s; }
+    /* 标题锚点：默认淡显（提示可 hover），悬停全显 */
+    .markdown-section .anchor { opacity: 0.25; margin-left: -0.85em; font-weight: 400; transition: opacity 0.15s; }
     .markdown-section .anchor span { color: var(--muted); }
     .markdown-section h1:hover .anchor, .markdown-section h2:hover .anchor,
     .markdown-section h3:hover .anchor, .markdown-section h4:hover .anchor { opacity: 1; }
