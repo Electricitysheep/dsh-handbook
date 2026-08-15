@@ -430,7 +430,7 @@ agent-default-model:
 
 ## 📄 白皮书 PDF
 
-- **中文完整版**：[DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf)（14 章 + 附录 ABC，~120k+ 字符，5.2MB）
+- **中文完整版**：[DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf)（15 章 + 附录 ABC，~130k+ 字符）
 - **英文完整版**：[DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf)（14 章 + 附录，81 页，约 150k 字符，1.6MB）
 
 ## 🌐 与生态联动
@@ -475,7 +475,7 @@ agent-default-model:
 
 ### 🔄 最近更新
 
-- **14 章完整版**（第 13 安全沙箱 / 第 14 缓存成本）+ 附录 A/B/C
+- **15 章完整版**（第 13 安全沙箱 / 第 14 缓存成本 / 第 15 生态全景报告）+ 附录 A/B/C
 - 讨论区反馈持续沉淀：FAQ 39 条 / KVCache 规则 / 内置 Agent 预设 / run_code 异步坑（[沉淀流水线](./docs/research/feedback-pipeline.md)）
 
 ## 📜 许可
