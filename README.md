@@ -1,8 +1,10 @@
 # DeepSeek Harness 白皮书 · dsh-handbook
 
-> **从 0 到 1 玩转 DeepSeek Harness 的新手百科全书** · 中文 · [English](./README.en.md)
+> **DeepSeek Harness 中文手册 × 生态观察中心**——从 0 到 1 玩转 dsh，跟着 780 帖讨论区看懂生态 · 中文 · [English](./README.en.md)
 
 **📖 [在线阅读](https://electricitysheep.github.io/dsh-handbook/) · 📄 [下载 PDF](./DeepSeek-Harness-白皮书.pdf) · ⭐ [点 Star 支持](https://github.com/Electricitysheep/dsh-handbook/stargazers)**
+
+**1804 插件 · 780 帖讨论区 · 15 章手册 · 195 帖社区响应 · 280+ Stars**
 
 <p align="center">
   <img src="./docs/assets/banner.svg" alt="dsh-handbook banner" width="720"/>
@@ -79,13 +81,28 @@ dsh --profile headless "你好，请用一句话介绍自己"
 
 发布两天，很幸运得到了这些反馈：
 
-- ⭐ **170+ Stars**——对一份刚发布的教程来说远超预期，感谢大家认可
-- 💬 **官方库 138 帖回应**——我们持续在[讨论区](https://github.com/deepseek-ai/deepseek-harness/discussions)和大家一起踩坑、排障、交流
+- ⭐ **280+ Stars**——对一份刚发布的教程来说远超预期，感谢大家认可
+- 💬 **官方库 195 帖回应**——我们持续在[讨论区](https://github.com/deepseek-ai/deepseek-harness/discussions)和大家一起踩坑、排障、交流
 - 🧠 **FAQ 里的 39 条问题大多来自真实提问**——社区问什么，我们沉淀什么（#380/#817/#1052…）
 - 📦 已向 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 提交收录 PR（[#33](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/33)，待合并）；阮一峰周刊自荐已提交
-- 🤝 与 20+ 社区项目互链（dsh-usage / dsh-sgme / AgentSoul / dsh-vault 等）
+- 🤝 与 30+ 社区项目互链（dsh-usage / dsh-sgme / AgentSoul / dsh-vault / egress-guard / agentmemory…）
 
 > 内容随讨论区持续更新（[沉淀流水线](./docs/research/feedback-pipeline.md)，19 项可追踪）。如果你觉得有用，Star 是对我们最大的支持。
+
+## 🔭 生态观察（第 15 章·全景报告）
+
+> 把 **1804 个插件仓库**的数据盘点 × **780 帖讨论区**定性观察交叉验证，5 个关键结论：
+
+| 结论 | 一句话 |
+|---|---|
+| 🪟 **Windows 是第一痛点** | 中文路径（15+ 帖同根因）/ koffi / 端口 / 子进程——数据讨论双证实 |
+| 🧩 **"官方没做，社区全做"** | 桌面壳 140+ / TUI / 记忆 77 / 视觉 132——健康互补 |
+| 🛡️ **安全审计活跃，工具稀缺** | sandbox 分类仅 9 个插件——**供给缺口** |
+| 🐛 **序列化 bug 家族** | unknown tool / reasoning 省略 / run_code 丢弃——rc 期主战场 |
+| 💰 **成本透明化是刚需** | 缓存命中 97% 实测 + 成本工具雨后春笋 |
+
+**6 个能力缝**（官方可优先建）：视觉通道 · 记忆 seam · 桌面 TUI 协议 · 评测闭环 · Windows 一等支持 · 插件 registry
+> 完整报告（含对开发者/选型者/观望者的建议）：[第 15 章](./docs/15-ecosystem-report.md)
 
 ## 📚 目录（从 0 到 1）
 
