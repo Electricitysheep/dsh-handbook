@@ -267,6 +267,7 @@ agent-default-model:
 
 ---
 
+> **源码方式启动慢的根因（#1424 社区实测确认）**：`pnpm dsh web` 每次启动用 tsx/esbuild **现场转译整个 TS 源码图**（非全量构建），叠加机械盘/大文件数时冷启动可达数分钟。解决：先 `pnpm build` 全量构建一次，或直接用 `npx @deepseek-ai/dsh web`（发布版）绕开转译开销。
 ## 动手练习（10 分钟内完成）
 
 1. **安装**：`npx -y @deepseek-ai/dsh --version` 确认版本
