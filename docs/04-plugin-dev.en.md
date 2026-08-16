@@ -7,7 +7,7 @@
 ## TL;DR (30-second version)
 
 1. **Core problem**: dsh re-thinks before every tool call; in a 50-step task, 90%+ of wall-clock time is thinking. Lowering the reasoning effort is the fastest speedup.
-2. **Three-step architecture**: pure function (decision logic, zero deps, unit-testable) → plugin body (hook into the waterfall) → live verification (logs prove the injection happened).
+2. **Three-layer verification**: pure-function tests (decision logic) → waterfall contract tests (correct wiring) → live verification (real agent loop).
 3. **`agent/request` waterfall**: fires before every model request; listener return values flow to the next listener, enabling "keep original config + override one field."
 4. **`next()` is a Promise; you must `await` it**: spreading without awaiting yields an empty object, dropping the provider/model and causing errors.
 5. **Development discipline**: find the extension point first (90% of behaviors have official hooks), extract logic into pure functions, never skip live verification.
@@ -159,7 +159,11 @@ export function apply(ctx: Context, config: SpeedPluginConfig = DEFAULT_CONFIG):
 
 ## 4.5 Testing
 
-**Unit tests** (pure function, zero dependencies):
+Stopping at “the module loads” is not enough. Test plugins in three layers: pure-function tests for business rules, waterfall contract tests for the runtime boundary, and live verification for the complete agent loop.
+
+### Layer 1: Pure-function tests
+
+Pure-function tests have no runtime dependency, run quickly, and cover every decision branch:
 
 ```ts
 import { describe, expect, it } from 'vitest'
@@ -175,9 +179,48 @@ it('downgrades to low for simple tool chains', () => {
 //     oversized payload upgrades to max / mixed tools upgrade to high
 ```
 
-**Live verification** (critical, proves "the injection actually happens"):
+### Layer 2: Waterfall contract tests
 
-Mount the plugin (Chapter 3 method) → restart `dsh web` → send a file-creation task → watch the dsh process logs:
+Passing pure-function tests does not prove that the plugin is wired correctly. A particularly dangerous mistake is omitting `await next()`, which silently drops upstream fields such as `provider`, `model`, and `tools`. A contract test captures the listener with a minimal `Context` substitute; it needs neither an API key nor a running dsh instance:
+
+```ts
+it('awaits next, preserves the seed, and only overrides reasoning effort', async () => {
+  const next = async () => ({
+    provider: 'deepseek-official',
+    model: 'deepseek-reasoner',
+    reasoningEffort: 'max',
+    tools: ['read', 'write'],
+  })
+
+  const result = await runRegisteredHandler({ agent: { session: { events: [] } } }, next)
+
+  expect(result).toEqual({
+    provider: 'deepseek-official',
+    model: 'deepseek-reasoner',
+    reasoningEffort: 'high',
+    tools: ['read', 'write'],
+  })
+})
+```
+
+The template's [`tests/plugin.spec.ts`](../examples/plugin-template/tests/plugin.spec.ts) also verifies that the plugin:
+
+- registers exactly one `agent/request` listener;
+- reads only the eight most recent `tool/call` events and ignores unrelated events;
+- propagates downstream waterfall failures instead of swallowing them.
+
+Run all automated checks:
+
+```bash
+cd examples/plugin-template
+npm install
+npm test
+npm run typecheck
+```
+
+### Layer 3: Real agent-loop verification
+
+Contract tests prove the plugin boundary, but they do not replace the real runtime. Mount the plugin (Chapter 3 method) → restart `dsh web` → send a file-creation task → watch the dsh process logs:
 
 ```text
 [speed-plugin] agent/request: calls=[]                    => reasoningEffort=high
@@ -186,7 +229,9 @@ Mount the plugin (Chapter 3 method) → restart `dsh web` → send a file-creati
 
 First turn has no tool calls → stays at baseline `high`. After detecting the `write` tool → next turn drops to `low`. **The injection pipeline works end to end.**
 
-> Full runnable code: combine the code snippets in this chapter to run it.
+To run this layer in CI, see official Discussion [#462: API-key-free waterfall verification](https://github.com/deepseek-ai/deepseek-harness/discussions/462). The method uses a mock LLM to emit a deterministic tool call, runs it through a headless profile and the real agent loop, then checks the expected waterfalls and `tools/result` in an audit snapshot. Its commands target specific rc/master revisions; use the scripts and event catalog from the version under test instead of asserting one fixed event count across releases.
+
+> Full runnable code: see [`examples/plugin-template/`](../examples/plugin-template/).
 
 > **⚠️ Reasoning-effort support varies by adapter/model (real pitfall)**: if `decideEffort` returns `low` but the current provider adapter's capability table doesn't support it (e.g. the `deepseek-official` adapter only exposes `off`/`high`/`max`), the request fails with `does not support reasoning effort "low"` — **this is an adapter gap, not a plugin bug** (the official API does support `low`, see api-docs.deepseek.com/guides/thinking_mode/; FAQ Q4 covers effort tiers).
 >
@@ -200,8 +245,8 @@ First turn has no tool calls → stays at baseline `high`. After detecting the `
 ## 4.6 Three Development Disciplines for Newcomers
 
 1. **Find the extension point first:** 90% of behaviors you want to change have official hooks (`agent/request`, `settings`, `conversationEvents`, `slots`). Don't fork the core.
-2. **Extract logic into pure functions:** Decouple decision/computation logic from dsh. Unit tests run in milliseconds and cover every branch. Live verification only needs to confirm "the injection happened."
-3. **Never skip live verification:** Unit tests prove the logic; live logs prove the wiring. Both must pass before you're done.
+2. **Extract logic into pure functions:** Decouple decision/computation logic from dsh. Unit tests run in milliseconds and cover every branch.
+3. **Verify both the boundary and the runtime:** Contract tests prove `next()` forwarding and seed preservation; live logs prove that the real agent loop behaves as expected.
 
 ---
 
