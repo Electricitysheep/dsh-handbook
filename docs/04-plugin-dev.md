@@ -5,7 +5,7 @@
 ## TL;DR（本章核心，30 秒版）
 
 1. **核心问题**：dsh 每次工具调用前模型都重新思考，50 步任务 90%+ 时间在思考——降档是最快提速
-2. **架构三板斧**：纯函数（决策逻辑，零依赖可单测）→ 插件主体（接入 waterfall）→ 实机验证（日志证明注入发生）
+2. **验证三层**：纯函数单测（决策正确）→ waterfall 契约测试（接线正确）→ 实机验证（真实循环生效）
 3. **`agent/request` waterfall**：每次模型请求前触发，监听者返回值传给下一个监听者，实现"保留原配置 + 覆盖某字段"
 4. **`next()` 是 Promise，必须 await**：不 await 直接 spread 会得到空对象，provider/model 丢失报错
 5. **开发纪律**：先找扩展点（90% 行为有官方钩子）、逻辑抽纯函数、实机验证不能省
@@ -165,7 +165,11 @@ export function apply(ctx: Context, config: SpeedPluginConfig = DEFAULT_CONFIG):
 
 ## 4.5 测试
 
-**单元测试**（纯函数，零依赖）：
+插件测试不能停在“模块能加载”。推荐按三层验证：纯函数单测负责业务规则，waterfall 契约测试负责运行时边界，实机验证负责完整 agent 循环。
+
+### 第一层：纯函数单测
+
+纯函数测试零运行时依赖、执行快，适合覆盖所有决策分支：
 
 ```ts
 import { describe, expect, it } from 'vitest'
@@ -180,9 +184,48 @@ it('downgrades to low for simple tool chains', () => {
 // ... 更多分支：全新提示保持基线 / 禁用降档 / 超大载荷升 max / 混合工具升 high
 ```
 
-**实机验证**（关键——证明"注入真的发生"）：
+### 第二层：waterfall 契约测试
 
-挂载插件（第 3 章方法）→ 重启 `dsh web` → 发一个创建文件的任务 → 观察 dsh 进程日志：
+纯函数通过不代表插件接线正确。最常见的隐蔽错误是漏掉 `await next()`，它会让上游的 `provider`、`model`、`tools` 等字段静默丢失。契约测试用最小 `Context` 替身捕获监听器，不需要 API Key，也不启动 dsh：
+
+```ts
+it('awaits next, preserves the seed, and only overrides reasoning effort', async () => {
+  const next = async () => ({
+    provider: 'deepseek-official',
+    model: 'deepseek-reasoner',
+    reasoningEffort: 'max',
+    tools: ['read', 'write'],
+  })
+
+  const result = await runRegisteredHandler({ agent: { session: { events: [] } } }, next)
+
+  expect(result).toEqual({
+    provider: 'deepseek-official',
+    model: 'deepseek-reasoner',
+    reasoningEffort: 'high',
+    tools: ['read', 'write'],
+  })
+})
+```
+
+配套模板的 [`tests/plugin.spec.ts`](../examples/plugin-template/tests/plugin.spec.ts) 还覆盖：
+
+- 只注册一个 `agent/request` 监听器；
+- 只读取最近 8 个 `tool/call`，忽略其他事件；
+- 下游 waterfall 抛错时原样向上传播，不静默吞错。
+
+运行全部自动测试：
+
+```bash
+cd examples/plugin-template
+npm install
+npm test
+npm run typecheck
+```
+
+### 第三层：真实 agent 循环验证
+
+契约测试证明插件边界符合预期，但不能替代真实运行时。挂载插件（第 3 章方法）→ 重启 `dsh web` → 发一个创建文件的任务 → 观察 dsh 进程日志：
 
 ```text
 [speed-plugin] agent/request: calls=[]                    => reasoningEffort=high
@@ -191,7 +234,9 @@ it('downgrades to low for simple tool chains', () => {
 
 第一轮无工具调用 → 保持基线 `high`；检测到 `write` 工具 → 下一轮降为 `low`。**注入链路完整工作。**
 
-> 完整可运行代码：参考本章各节代码片段组合即可运行。
+如果需要把这一层放进 CI，可参考官方讨论 [#462：无 API Key 验证 waterfall 行为](https://github.com/deepseek-ai/deepseek-harness/discussions/462)：用 mock LLM 产生固定工具调用，经 headless profile 跑真实 agent loop，再用审计快照检查预期 waterfall 和 `tools/result`。讨论中的命令基于特定 rc/master 源码，复用时应以目标版本的脚本和事件清单为准，不要把固定的事件数量当成跨版本断言。
+
+> 完整可运行代码：见 [`examples/plugin-template/`](../examples/plugin-template/)。
 
 > **⚠️ 档位支持因适配器/模型而异（真实踩坑）**：`decideEffort` 返回 `low` 后，如果当前 provider 的适配器能力表不支持 `low`（如 `deepseek-official` 适配器只有 `off`/`high`/`max`），请求会报 `does not support reasoning effort "low"`——**这是适配器缺口，不是插件 bug**（官方 API 实际支持 low，见 api-docs.deepseek.com/guides/thinking_mode/；FAQ Q4 有档位说明）。
 >
@@ -205,8 +250,8 @@ it('downgrades to low for simple tool chains', () => {
 ## 4.6 给新手的三条开发纪律
 
 1. **先找扩展点**：要改的行为 90% 有官方钩子（`agent/request`、`settings`、`conversationEvents`、`slots`）——不要 fork 核心。
-2. **逻辑抽纯函数**：决策/计算逻辑与 dsh 解耦 → 单测毫秒级、覆盖全分支；实机只需验证"注入发生"。
-3. **实机验证不能省**：单测证明逻辑，实机日志证明接线——两个都过才算完成。
+2. **逻辑抽纯函数**：决策/计算逻辑与 dsh 解耦 → 单测毫秒级、覆盖全分支。
+3. **边界和实机都要验证**：契约测试证明 `next()` 透传和字段保留，实机日志证明真实 agent loop 生效。
 
 > 📚 **官方 cookbook 延伸阅读**（2026-08 官方新增，官方仓库 `docs/cookbook/`）：`adding-a-package.md`（如何加包）、`adding-a-tool.md`（如何加工具）、`adding-a-conversation-node.md`（加对话节点）、`adding-an-llm-adapter.md`（写 LLM 适配器）、`adding-a-vendored-package.md`（vendor 包）、`extension-cookbook.md`（扩展点合集）。本章走的是"最小提速插件"路径，官方 cookbook 覆盖更多扩展点类型，进阶时对照读。
 
