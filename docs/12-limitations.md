@@ -100,6 +100,8 @@ dsh 在 macOS/Linux 上表现成熟，但 Windows 支持有明显的**第二公�
 
 ---
 
+> **沙箱 MSYS 冲突（#1889 实测签名）**：`workspace-write` 用受限令牌时，MSYS 系 shell 在 cygheap 初始化即死（`cygheap_user::init: NtSetInformationToken (TokenDefaultDacl), 0xC0000022` / `CreateFileMapping ... Win32 error 5`）——MSYS 运行时模型与受限令牌直接冲突，插件层无解。这也解释了为什么 Windows 方案清一色要求 `danger-full-access`（不是作者偷懒）。
+
 ## 12.4 跨平台已知问题速查表
 
 > 本章跨平台已知问题一表速查。帖号均为官方讨论区真实帖（deepseek-ai/deepseek-harness），截至 2026-08-14。
