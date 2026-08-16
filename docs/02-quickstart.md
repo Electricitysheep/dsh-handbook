@@ -268,6 +268,10 @@ agent-default-model:
 ---
 
 > **源码方式启动慢的根因（#1424 社区实测确认）**：`pnpm dsh web` 每次启动用 tsx/esbuild **现场转译整个 TS 源码图**（非全量构建），叠加机械盘/大文件数时冷启动可达数分钟。**实测计时**：tsx 热缓存 ~40s / 冷缓存 ~5min / 编译产物 `lib/bin.js` 版 ~12s（页面响应 5ms）。解决：① 启动命令改用 `node apps\cli\lib\bin.js web`（走编译产物）② 或先 `pnpm build` 全量构建一次 ③ 或直接用 `npx @deepseek-ai/dsh web`（发布版）。
+> **Windows 通用坑 1——极简模式起不来**（#1889 实测）：报 `terminal inspection is unsupported on platform win32` 时，**和 node-pty 无关**——调用顺序是先解析平台 inspector 再 spawn，inspector 在前。重装 node-pty/换 Node/装 VS Build Tools 都没用；需 dsh-win32 类补丁。
+>
+> **Windows 通用坑 2——当天发布的插件版本装不上**：profile 的 `pnpm-workspace.yaml` 里 `minimumReleaseAgeExclude` 只写了接线时的版本，插件发布新版后约一天内 `dsh plugin add <pkg>@latest` 回 `Already up to date`。要立刻装：`--config.minimumReleaseAge=0`。
+
 ## 动手练习（10 分钟内完成）
 
 1. **安装**：`npx -y @deepseek-ai/dsh --version` 确认版本
