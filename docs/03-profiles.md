@@ -92,6 +92,10 @@ dsh web   # 重启后生效
 
 ## 3.3 host 半与 client 半：一个包，两副面孔
 
+**"半"（half）= 插件的半边实现**。一个插件可以拆成两个部分分别跑在不同环境：**host 半**跑在 Node 进程（有文件系统/命令/服务权限），**client 半**跑在浏览器（web UI，只能做界面和交互）。两者通过 cordis 服务桥接（`ctx.provide`/`ctx.get`）。
+
+**一个插件可以只有 host 半**——无 UI 需求的插件（工具类、服务类）只需 host 半：不声明 `dsh.client`、不写 `exports["./client"]` 即可（第 4 章模板就是纯 host 插件）。反之也可以只有 client 半（见 3.5 Q4），但 client 半无法直接访问文件系统，需要 host 半桥接。
+
 插件可以同时携带两个运行半：
 
 | 半边 | 运行位置 | 职责 | 示例 |
@@ -105,8 +109,9 @@ dsh web   # 重启后生效
 {
   "dsh": {
     "client": {
-      "inject": ["@deepseek-ai/dsh-client-runtime", "@deepseek-ai/dsh-client-locale"],
-      "platform": "web"
+      "platform": "web",
+      "inject": [],        // 需要注入的 client 服务（通常为空；官方示例即 []）
+      "immediately": true  // 是否随 web 启动立即加载
     }
   },
   "exports": {
@@ -134,6 +139,23 @@ dsh web   # 重启后生效
 | `ctx.slots.inject` | client ui-slots | 在界面槽位注入 UI（如 turnTail 显示产物文件行） |
 | `settings` 服务 | dsh-settings | 注册用户可配置的命名空间（设置页自动渲染） |
 | `ctx.provide` / `ctx.get` | cordis | 跨插件提供服务 |
+
+**怎么用（以 `agent/request` 为例）**——在插件的 `apply(ctx)` 里注册：
+
+```ts
+import type {} from '@deepseek-ai/dsh-agent'  // 类型增强
+
+export function apply(ctx: any) {
+  ctx.on('agent/request', async (request, next) => {
+    // 每次模型请求前触发：可以改 provider / model / reasoningEffort / tools
+    request.reasoningEffort = request.tools?.length > 3 ? 'low' : request.reasoningEffort
+    // 必须 await next() 并 return 其结果（它是 Promise，把修改后的请求交给下一环）
+    return await next(request)
+  })
+}
+```
+
+> 关键：`agent/request` 是 **waterfall**（链式）——每个插件都要 `await next()` 并 return 结果；漏 `await` 或没 return，下游收不到你的修改（见 3.5 常见坑）。
 
 ## 3.5 常见坑（真实踩过）
 
