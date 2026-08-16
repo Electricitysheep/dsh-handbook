@@ -14,7 +14,8 @@ plugin-template/
 │   ├── policy.ts         # 纯函数：决策逻辑（零依赖，可单测）
 │   └── index.ts          # apply(ctx)：接入 agent/request waterfall
 └── tests/
-    └── policy.spec.ts    # 纯函数单元测试
+    ├── policy.spec.ts    # 纯函数单元测试
+    └── plugin.spec.ts    # waterfall 契约测试
 ```
 
 ## 快速开始
@@ -50,7 +51,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 
 - `src/policy.ts`：`decidePolicy(...)` 纯函数——输入最近的工具调用，输出推理档位（可替换为你的业务逻辑）
 - `src/index.ts`：`apply(ctx)` 监听 `agent/request` waterfall，注入决策结果
-- **测试**：`npm test` 跑纯函数（零依赖，毫秒级）
+- **测试**：`npm test` 同时验证纯函数和插件的 waterfall 契约
 
 ## 自定义指南
 
@@ -65,7 +66,8 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 
 1. 逻辑抽纯函数 → 单测毫秒级
 2. 用官方扩展点（agent/request 等），不碰核心
-3. 单测 + 实机日志双证据才算完成
+3. 契约测试确认 `next()` 正确透传、上游字段不丢失
+4. 自动测试 + 实机日志双证据才算完成
 
 ---
 
