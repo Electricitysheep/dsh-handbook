@@ -193,6 +193,15 @@ it('downgrades to low for simple tool chains', () => {
 
 > 完整可运行代码：参考本章各节代码片段组合即可运行。
 
+> **⚠️ 档位支持因适配器/模型而异（真实踩坑）**：`decideEffort` 返回 `low` 后，如果当前 provider 的适配器能力表不支持 `low`（如 `deepseek-official` 适配器只有 `off`/`high`/`max`），请求会报 `does not support reasoning effort "low"`——**这是适配器缺口，不是插件 bug**（官方 API 实际支持 low，见 api-docs.deepseek.com/guides/thinking_mode/；FAQ Q4 有档位说明）。
+>
+> **按模型能力表适配的写法**：降档目标先查适配器支持，映射到可用档位：
+> ```ts
+> const SUPPORTED = ['off', 'high', 'max']  // 按当前适配器能力表
+> const effort = decideEffort({...})        // 插件想要的档位
+> const final = SUPPORTED.includes(effort) ? effort : (effort === 'low' ? 'high' : effort)  // low 不支持时回退 high
+> ```
+
 ## 4.6 给新手的三条开发纪律
 
 1. **先找扩展点**：要改的行为 90% 有官方钩子（`agent/request`、`settings`、`conversationEvents`、`slots`）——不要 fork 核心。
@@ -210,7 +219,7 @@ it('downgrades to low for simple tool chains', () => {
 2. **理解题**：解释为什么 `decideEffort` 要设计成纯函数而不是直接在 `apply(ctx)` 里写逻辑。如果决策逻辑依赖了 `ctx.session`，还能单测吗？
    > 自查：参考本章 4.3 节"为什么拆成纯函数"段落
 3. **动手题**：给 `decideEffort` 写一个新的测试用例：当 `recentCalls` 里有 3 个简单工具 + 1 个超大参数（`argsSize = 5000`）时，应该返回什么档位？写出测试代码并运行
-   > 自查：参考本章 4.5 节单元测试示例，预期结果取决于 `allowUpgrade` 配置
+   > 自查：参考本章 4.5 节单元测试示例。**注意**：3 简单 + 1 超大 = 4 个调用，ratio = 0.75 **恰好命中第一分支**（`ratio >= 0.75 && allowDowngrade`）→ 返回 `low`（取决于 `allowDowngrade`，`allowUpgrade` 分支执行不到）
 4. **动手题**：在 `apply(ctx)` 里，如果把 `await next()` 改成 `const seed = next()`（不 await），会发生什么？写出你的推理，然后在实机中验证
    > 自查：参考本章 4.4 节"三个关键点"第 1 条
 5. **动手题**：假设你要写一个类似的插件，但改为根据"当前会话的工具调用总次数"来决定档位（超过 20 次自动降为 low），写出纯函数签名和核心逻辑

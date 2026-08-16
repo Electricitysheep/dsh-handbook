@@ -39,6 +39,8 @@ Windows 上 3080 可能落在 Hyper-V/WSL2/Docker Desktop 的保留端口区间�
 ## 模型与性能
 
 **Q：推理档位怎么选？**
+> ⚠️ 档位支持因适配器而异：`deepseek-official` 适配器能力表为 `off`/`high`/`max`（`low` 官方 API 实际支持但适配器未暴露）；opencode-go/pi-ai 网关支持 `low`。降档前先确认当前 provider 支持（报 `does not support reasoning effort` = 适配器缺口，映射到最近可用档位即可）。
+
 `low`（简单/批量/工具轮）/ `high`（日常）/ `max`（复杂）。工具链 90% 时间在思考——降档最快提速。
 
 **Q：为什么我的任务慢？**
