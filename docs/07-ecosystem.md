@@ -77,6 +77,7 @@
 | **pi-quiet-tools** | 工具输出压缩：进上下文前把大结果压缩为头尾预览 + 本地 artifact（>12,000 字符或 240 行触发） | 经 [pi2dsh](https://github.com/weijiafu14/pi2dsh) 挂载，[#1052](https://github.com/deepseek-ai/deepseek-harness/discussions/1052) |
 | **dsh-win32** | Windows 上补齐官方缺失的 win32 ProcessInspector，让极简模式的持久 shell 能起来；另有沙箱内可用的 busybox 变体、ConPTY 前台命令识别、GBK/UTF-16 读取 | [sjh9714/dsh-win32](https://github.com/sjh9714/dsh-win32)（npm `dsh-win32`），采纳提案 [#1889](https://github.com/deepseek-ai/deepseek-harness/discussions/1889） |
 | **dsh-installers** | 免装 Node 安装包：mac DMG / Windows exe，自带 Node 运行时、零前置依赖 | [codeAnqiang-ma/dsh-installers](https://github.com/codeAnqiang-ma/dsh-installers)（[#380](https://github.com/deepseek-ai/deepseek-harness/discussions/380) 作者 codeAnqiang-ma 提供），安装见第 2 章 2.2 方式三 |
+| **kubemd** | Kubernetes 运行时故障诊断 skill（案例记忆 + CLI 双入口，5 场景 kind 实测验证）| [guiyi-labs/kubemd](https://github.com/guiyi-labs/kubemd)，`git clone` 即用（DSH skill） |
 
 **发现插件**：GitHub 搜 `topic:dsh-plugin`。
 **发布插件**：给你的仓库加 `dsh-plugin` topic + npm 发布。
