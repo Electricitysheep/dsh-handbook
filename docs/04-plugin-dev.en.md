@@ -188,6 +188,15 @@ First turn has no tool calls → stays at baseline `high`. After detecting the `
 
 > Full runnable code: combine the code snippets in this chapter to run it.
 
+> **⚠️ Reasoning-effort support varies by adapter/model (real pitfall)**: if `decideEffort` returns `low` but the current provider adapter's capability table doesn't support it (e.g. the `deepseek-official` adapter only exposes `off`/`high`/`max`), the request fails with `does not support reasoning effort "low"` — **this is an adapter gap, not a plugin bug** (the official API does support `low`, see api-docs.deepseek.com/guides/thinking_mode/; FAQ Q4 covers effort tiers).
+>
+> **Adapter-aware mapping** — resolve the desired effort against the adapter's supported set:
+> ```ts
+> const SUPPORTED = ['off', 'high', 'max']  // current adapter capability table
+> const effort = decideEffort({...})        // what the plugin wants
+> const final = SUPPORTED.includes(effort) ? effort : (effort === 'low' ? 'high' : effort)  // fall back if unsupported
+> ```
+
 ## 4.6 Three Development Disciplines for Newcomers
 
 1. **Find the extension point first:** 90% of behaviors you want to change have official hooks (`agent/request`, `settings`, `conversationEvents`, `slots`). Don't fork the core.
