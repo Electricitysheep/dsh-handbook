@@ -234,7 +234,7 @@ npm run typecheck
 
 第一轮无工具调用 → 保持基线 `high`；检测到 `write` 工具 → 下一轮降为 `low`。**注入链路完整工作。**
 
-如果需要把这一层放进 CI，可参考官方讨论 [#462：无 API Key 验证 waterfall 行为](https://github.com/deepseek-ai/deepseek-harness/discussions/462)：用 mock LLM 产生固定工具调用，经 headless profile 跑真实 agent loop，再用审计快照检查预期 waterfall 和 `tools/result`。讨论中的命令基于特定 rc/master 源码，复用时应以目标版本的脚本和事件清单为准，不要把固定的事件数量当成跨版本断言。
+需要把这一层放进 CI 时，见[第 8 章 8.7 节：无 API Key 的插件运行时验证](./08-tools-context.md#87-插件运行时验证方法论零成本)，其中区分了官方内置 smoke/mock 能力与社区 waterfall 审计插件。
 
 > 完整可运行代码：见 [`examples/plugin-template/`](../examples/plugin-template/)。
 
