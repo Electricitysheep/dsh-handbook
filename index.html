@@ -1,821 +1,1283 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeepSeek Harness 白皮书 · dsh-handbook</title>
-  <meta name="description" content="DeepSeek Harness (dsh) 从 0 到 1 深度手册：14 章中文教程 + 同模型多 Agent 实测 benchmark + 快速上手资产。">
-  <meta property="og:title" content="DeepSeek Harness 白皮书">
-  <meta property="og:description" content="DeepSeek Harness (dsh) 从 0 到 1 深度手册：14 章中文教程 + 实测 benchmark。">
-  <meta property="og:type" content="website">
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1117">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234d6bfe'/%3E%3Cstop offset='1' stop-color='%237c5cff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='-apple-system,sans-serif' font-size='34' font-weight='700' fill='%23fff' text-anchor='middle'%3Ed%3C/text%3E%3C/svg%3E">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DeepSeek Harness 白皮书 · dsh-handbook</title>
+        <meta name="description" content="DeepSeek Harness (dsh) 从 0 到 1 深度手册：14 章中文教程 + 同模型多 Agent 实测 benchmark + 快速上手资产。">
+        <meta property="og:title" content="DeepSeek Harness 白皮书">
+        <meta property="og:description" content="DeepSeek Harness (dsh) 从 0 到 1 深度手册：14 章中文教程 + 实测 benchmark。">
+        <meta property="og:type" content="website">
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1117">
+        <link
+        rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234d6bfe'/%3E%3Cstop offset='1' stop-color='%237c5cff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='-apple-system,sans-serif' font-size='34' font-weight='700' fill='%23fff' text-anchor='middle'%3Ed%3C/text%3E%3C/svg%3E">
 
-  <!-- 主题必须在首帧前确定，避免暗黑用户看到白色闪屏；支持 ?theme=dark|light 显式指定 -->
-  <script>
-    (function () {
-      var theme;
-      try {
-        var m = location.search.match(/[?&]theme=(light|dark)/);
-        if (m) {
-          theme = m[1];
-        } else {
-          theme = localStorage.getItem('dsh-theme');
-        }
-      } catch (e) { /* 隐私模式 */ }
-      if (theme !== 'light' && theme !== 'dark') {
-        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-      document.documentElement.setAttribute('data-theme', theme);
-    })();
-  </script>
+        <!-- 主题必须在首帧前确定，避免暗黑用户看到白色闪屏；支持 ?theme=dark|light 显式指定 -->
+        <script>
+            (function () {
+                var theme;
+                try {
+                    var m = location.search.match(/[?&]theme=(light|dark)/);
+                    if (m) {
+                        theme = m[1];
+                    } else {
+                        theme = localStorage.getItem('dsh-theme');
+                    }
+                } catch (e) { /* 隐私模式 */
+                }
+                if (theme !== 'light' && theme !== 'dark') {
+                    theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-theme', theme);
+            })();
+        </script>
 
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <style>
-    /* ════════════════════════════════════════════════════════════════
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+        <style>
+        /* ════════════════════════════════════════════════════════════════
        设计系统：所有颜色走 CSS 变量，light / dark 两套完整 token。
        docsify 主题里的硬编码色（表格斑马纹 #f8f8f8、标题 #2c3e50、
        侧栏 #505d6b 等）在下方逐条覆盖，暗黑模式不再有白底白字。
-       ════════════════════════════════════════════════════════════════ */
-    :root {
-      --theme-color: var(--accent);
+       ════════════════════════════════════════════════════════════════ */:root
+        {
+            --theme-color: var(--accent);
 
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
-                   "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-      --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas,
-                   "Liberation Mono", "Roboto Mono", monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+            --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, "Liberation Mono", "Roboto Mono", monospace;
 
-      --accent:        #4d6bfe;
-      --accent-2:      #7c5cff;
-      --accent-strong: #3a55e0;
+            --accent: #4d6bfe;
+            --accent-2: #7c5cff;
+            --accent-strong: #3a55e0;
 
-      --bg:            #ffffff;
-      --bg-sidebar:    #fbfbfd;
-      --bg-alt:        #f5f6fa;
-      --text:          #212734;
-      --text-2:        #5b6472;
-      --muted:         #8b93a3;
-      --border:        #e7e9f0;
-      --border-2:      #d8dbe6;
+            --bg: #ffffff;
+            --bg-sidebar: #fbfbfd;
+            --bg-alt: #f5f6fa;
+            --text: #212734;
+            --text-2: #5b6472;
+            --muted: #8b93a3;
+            --border: #e7e9f0;
+            --border-2: #d8dbe6;
 
-      --inline-code-bg:   #eef0fe;
-      --inline-code-text: #3e56d8;
+            --inline-code-bg: #eef0fe;
+            --inline-code-text: #3e56d8;
 
-      --code-bg:     #141824;
-      --code-border: #242b3d;
+            --code-bg: #141824;
+            --code-border: #242b3d;
 
-      --table-head-bg: #f4f6fc;
-      --table-stripe:  #fafbfe;
+            --table-head-bg: #f4f6fc;
+            --table-stripe: #fafbfe;
 
-      --alert-note:      #4d6bfe;
-      --alert-tip:       #199a63;
-      --alert-important: #7c3aed;
-      --alert-warning:   #b45309;
-      --alert-caution:   #c2312f;
+            --alert-note: #4d6bfe;
+            --alert-tip: #199a63;
+            --alert-important: #7c3aed;
+            --alert-warning: #b45309;
+            --alert-caution: #c2312f;
 
-      --radius: 10px;
-      --radius-sm: 6px;
-    }
+            --radius: 10px;
+            --radius-sm: 6px;
+        }
 
-    html[data-theme="dark"] {
-      --accent:        #7d95ff;
-      --accent-2:      #a78bfa;
-      --accent-strong: #98a9ff;
+        html[data-theme="dark"] {
+            --accent: #7d95ff;
+            --accent-2: #a78bfa;
+            --accent-strong: #98a9ff;
 
-      --bg:            #0f1117;
-      --bg-sidebar:    #0b0d13;
-      --bg-alt:        #171b26;
-      --text:          #e6e9f0;
-      --text-2:        #a8b1c2;
-      --muted:         #79818f;
-      --border:        #262b38;
-      --border-2:      #343b4d;
+            --bg: #0f1117;
+            --bg-sidebar: #0b0d13;
+            --bg-alt: #171b26;
+            --text: #e6e9f0;
+            --text-2: #a8b1c2;
+            --muted: #79818f;
+            --border: #262b38;
+            --border-2: #343b4d;
 
-      --inline-code-bg:   rgba(125, 149, 255, 0.14);
-      --inline-code-text: #a5b4ff;
+            --inline-code-bg: rgba(125, 149, 255, 0.14);
+            --inline-code-text: #a5b4ff;
 
-      --code-bg:     #11151f;
-      --code-border: #232a3b;
+            --code-bg: #11151f;
+            --code-border: #232a3b;
 
-      --table-head-bg: #171b26;
-      --table-stripe:  #141824;
+            --table-head-bg: #171b26;
+            --table-stripe: #141824;
 
-      --alert-note:      #7d95ff;
-      --alert-tip:       #4ade80;
-      --alert-important: #a78bfa;
-      --alert-warning:   #fbbf24;
-      --alert-caution:   #f87171;
-    }
+            --alert-note: #7d95ff;
+            --alert-tip: #4ade80;
+            --alert-important: #a78bfa;
+            --alert-warning: #fbbf24;
+            --alert-caution: #f87171;
+        }
 
-    /* ── 基础 ─────────────────────────────────────────────────── */
-    html { color-scheme: light; }
-    html[data-theme="dark"] { color-scheme: dark; }
+        /* ── 基础 ─────────────────────────────────────────────────── */
+        html {
+            color-scheme: light;
+        }
+        html[data-theme="dark"] {
+            color-scheme: dark;
+        }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-sans);
-      letter-spacing: 0;
-    }
-    body, .sidebar, .markdown-section, .markdown-section th, .markdown-section td,
-    .markdown-section pre, .markdown-section code, .markdown-section blockquote,
-    .markdown-section details, .sidebar .search input, .dsh-theme-toggle, .dsh-lang-toggle {
-      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            letter-spacing: 0;
+        }
+        body,
+        .sidebar,
+        .markdown-section,
+        .markdown-section th,
+        .markdown-section td,
+        .markdown-section pre,
+        .markdown-section code,
+        .markdown-section blockquote,
+        .markdown-section details,
+        .sidebar .search input,
+        .dsh-theme-toggle,
+        .dsh-lang-toggle {
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
 
-    ::selection { background: rgba(77, 107, 254, 0.22); }
-    html[data-theme="dark"] ::selection { background: rgba(125, 149, 255, 0.32); }
+        ::selection {
+            background: rgba(77, 107, 254, 0.22);
+        }
+        html[data-theme="dark"] ::selection {
+            background: rgba(125, 149, 255, 0.32);
+        }
 
-    * { scrollbar-width: thin; scrollbar-color: var(--border-2) transparent; }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 8px; }
-    ::-webkit-scrollbar-track { background: transparent; }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-2) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-2);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-    /* ── 加载占位 ─────────────────────────────────────────────── */
-    div#app { font-size: inherit; font-weight: inherit; margin: 0; }
-    div#app:empty:before { content: none; }
-    .dsh-loader {
-      display: flex; flex-direction: column; align-items: center; gap: 18px;
-      padding-top: 38vh; color: var(--muted); font-size: 15px;
-    }
-    .dsh-loader-ring {
-      width: 34px; height: 34px; border-radius: 50%;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      animation: dsh-spin 0.8s linear infinite;
-    }
-    @keyframes dsh-spin { to { transform: rotate(360deg); } }
+        /* ── 加载占位 ─────────────────────────────────────────────── */
+        div#app {
+            font-size: inherit;
+            font-weight: inherit;
+            margin: 0;
+        }
+        div#app:empty:before {
+            content: none;
+        }
+        .dsh-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            padding-top: 38vh;
+            color: var(--muted);
+            font-size: 15px;
+        }
+        .dsh-loader-ring {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            animation: dsh-spin 0.8s linear infinite;
+        }
+        @keyframes dsh-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-    /* ── 正文排版 ─────────────────────────────────────────────── */
-    .content { padding-top: 44px; background: var(--bg); }
-    .markdown-section {
-      max-width: 860px;
-      font-size: 16px;
-      line-height: 1.8;
-      letter-spacing: 0.01em;
-      padding: 32px 32px 88px;
-    }
-    @media (max-width: 768px) {
-      .markdown-section { max-width: none; padding: 20px 18px 64px; }
-    }
+        /* ── 正文排版 ─────────────────────────────────────────────── */
+        .content {
+            padding-top: 44px;
+            background: var(--bg);
+        }
+        .markdown-section {
+            max-width: 860px;
+            font-size: 16px;
+            line-height: 1.8;
+            letter-spacing: 0.01em;
+            padding: 32px 32px 88px;
+        }
+        @media(max-width: 768px) {
+            .markdown-section {
+                max-width: none;
+                padding: 20px 18px 64px;
+            }
+        }
 
-    .markdown-section h1, .markdown-section h2, .markdown-section h3,
-    .markdown-section h4, .markdown-section strong {
-      color: var(--text);
-      font-weight: 650;
-    }
-    .markdown-section h1 {
-      font-size: 1.9rem; font-weight: 700; letter-spacing: 0;
-      margin: 0 0 1.2rem; padding-bottom: 0.55em;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    .markdown-section h1::after {
-      content: ""; position: absolute; left: 0; bottom: -1.5px;
-      width: 56px; height: 3px; border-radius: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    }
-    .markdown-section h2 {
-      font-size: 1.42rem; margin: 2.6em 0 0.9em; padding-bottom: 0.35em;
-      border-bottom: 1px solid var(--border);
-    }
-    .markdown-section h3 { font-size: 1.16rem; margin: 2.1em 0 0.7em; }
-    .markdown-section h4 { font-size: 1.02rem; margin: 1.8em 0 0.6em; }
-    .markdown-section h6 { color: var(--muted); }
-    .markdown-section em { color: var(--text-2); }
-    .markdown-section hr {
-      border: none; height: 1px; margin: 2.6em 0;
-      background: linear-gradient(90deg, transparent, var(--border-2), transparent);
-    }
-    .markdown-section iframe { border: 1px solid var(--border); border-radius: var(--radius); }
-    .markdown-section img { border-radius: 8px; }
-    .markdown-section input[type="checkbox"] { accent-color: var(--accent); }
+        .markdown-section h1,
+        .markdown-section h2,
+        .markdown-section h3,
+        .markdown-section h4,
+        .markdown-section strong {
+            color: var(--text);
+            font-weight: 650;
+        }
+        .markdown-section h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            margin: 0 0 1.2rem;
+            padding-bottom: 0.55em;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .markdown-section h1::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -1.5px;
+            width: 56px;
+            height: 3px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        }
+        .markdown-section h2 {
+            font-size: 1.42rem;
+            margin: 2.6em 0 0.9em;
+            padding-bottom: 0.35em;
+            border-bottom: 1px solid var(--border);
+        }
+        .markdown-section h3 {
+            font-size: 1.16rem;
+            margin: 2.1em 0 0.7em;
+        }
+        .markdown-section h4 {
+            font-size: 1.02rem;
+            margin: 1.8em 0 0.6em;
+        }
+        .markdown-section h6 {
+            color: var(--muted);
+        }
+        .markdown-section em {
+            color: var(--text-2);
+        }
+        .markdown-section hr {
+            border: none;
+            height: 1px;
+            margin: 2.6em 0;
+            background: linear-gradient(90deg, transparent, var(--border-2), transparent);
+        }
+        .markdown-section iframe {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .markdown-section img {
+            border-radius: 8px;
+        }
+        .markdown-section input[type="checkbox"] {
+            accent-color: var(--accent);
+        }
 
-    kbd {
-      font-family: var(--font-mono); font-size: 0.8em; color: var(--text-2);
-      background: var(--bg-alt); border: 1px solid var(--border-2);
-      border-bottom-width: 2px; border-radius: 5px; padding: 2px 6px;
-    }
+        kbd {
+            font-family: var(--font-mono);
+            font-size: 0.8em;
+            color: var(--text-2);
+            background: var(--bg-alt);
+            border: 1px solid var(--border-2);
+            border-bottom-width: 2px;
+            border-radius: 5px;
+            padding: 2px 6px;
+        }
 
-    /* 标题锚点：默认淡显（提示可 hover），悬停全显 */
-    .markdown-section .anchor { opacity: 0.25; margin-left: -0.85em; font-weight: 400; transition: opacity 0.15s; }
-    .markdown-section .anchor span { color: var(--muted); }
-    .markdown-section h1:hover .anchor, .markdown-section h2:hover .anchor,
-    .markdown-section h3:hover .anchor, .markdown-section h4:hover .anchor { opacity: 1; }
+        /* 标题锚点：默认淡显（提示可 hover），悬停全显 */
+        .markdown-section .anchor {
+            opacity: 0.85;
+            margin-left: -0.85em;
+            font-weight: 400;
+            transition: opacity 0.15s;
+        }
+        .markdown-section .anchor span {
+            color: var(--text);
+        }
+        .markdown-section h1:hover .anchor,
+        .markdown-section h2:hover .anchor,
+        .markdown-section h3:hover .anchor,
+        .markdown-section h4:hover .anchor {
+            opacity: 1;
+        }
 
-    /* ── 链接 ─────────────────────────────────────────────────── */
-    .markdown-section a {
-      color: var(--accent); font-weight: 500; text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .markdown-section a:hover { color: var(--accent-strong); border-bottom-color: var(--accent-strong); }
+        /* ── 链接 ─────────────────────────────────────────────────── */
+        .markdown-section a {
+            color: var(--accent);
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: color 0.15s, border-color 0.15s;
+        }
+        .markdown-section a:hover {
+            color: var(--accent-strong);
+            border-bottom-color: var(--accent-strong);
+        }
 
-    /* ── 行内代码 / 代码块 ─────────────────────────────────────── */
-    .markdown-section code, .markdown-section pre { font-family: var(--font-mono); }
-    .markdown-section code {
-      background: var(--inline-code-bg); color: var(--inline-code-text);
-      padding: 0.15em 0.42em; border-radius: 5px; font-size: 0.87em;
-      white-space: pre-wrap;
-    }
-    .markdown-section pre {
-      background: var(--code-bg);
-      border: 1px solid var(--code-border);
-      border-radius: var(--radius);
-      padding: 15px 18px;
-      margin: 1.4em 0;
-      line-height: 1.7;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    }
-    html[data-theme="dark"] .markdown-section pre { box-shadow: none; }
-    .markdown-section pre::after { content: none; } /* 去掉右上角语言角标，给复制按钮让位 */
-    .markdown-section pre > code {
-      background: transparent; color: #b6bdcc;
-      padding: 0; font-size: 0.84rem; line-height: 1.7;
-      white-space: pre;
-    }
+        /* ── 行内代码 / 代码块 ─────────────────────────────────────── */
+        .markdown-section code,
+        .markdown-section pre {
+            font-family: var(--font-mono);
+        }
+        .markdown-section code {
+            background: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.15em 0.42em;
+            border-radius: 5px;
+            font-size: 0.87em;
+            white-space: pre-wrap;
+        }
+        .markdown-section pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: var(--radius);
+            padding: 15px 18px;
+            margin: 1.4em 0;
+            line-height: 1.7;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+        html[data-theme="dark"] .markdown-section pre {
+            box-shadow: none;
+        }
+        .markdown-section pre::after {
+            content: none;
+        } /* 去掉右上角语言角标，给复制按钮让位 */
+        .markdown-section pre > code {
+            background: transparent;
+            color: #b6bdcc;
+            padding: 0;
+            font-size: 0.84rem;
+            line-height: 1.7;
+            white-space: pre;
+        }
 
-    /* Prism 配色（One Dark 衍生），代码块始终深底 → 两种主题共用 */
-    .markdown-section pre .token.comment,
-    .markdown-section pre .token.prolog,
-    .markdown-section pre .token.doctype,
-    .markdown-section pre .token.cdata   { color: #7d8496; }
-    .markdown-section pre .token.punctuation { color: #8b93a7; }
-    .markdown-section pre .token.keyword,
-    .markdown-section pre .token.important,
-    .markdown-section pre .token.statement,
-    .markdown-section pre .token.atrule   { color: #c678dd; }
-    .markdown-section pre .token.string,
-    .markdown-section pre .token.char,
-    .markdown-section pre .token.attr-value,
-    .markdown-section pre .token.string-2 { color: #98c379; }
-    .markdown-section pre .token.number,
-    .markdown-section pre .token.boolean,
-    .markdown-section pre .token.atom     { color: #d19a66; }
-    .markdown-section pre .token.function,
-    .markdown-section pre .token.class-name { color: #61afef; }
-    .markdown-section pre .token.property,
-    .markdown-section pre .token.attr-name,
-    .markdown-section pre .token.constant { color: #e5c07b; }
-    .markdown-section pre .token.operator,
-    .markdown-section pre .token.regex,
-    .markdown-section pre .token.url,
-    .markdown-section pre .token.entity,
-    .markdown-section pre .token.selector { color: #56b6c2; }
-    .markdown-section pre .token.variable,
-    .markdown-section pre .token.tag      { color: #e06c75; }
-    .markdown-section pre .token.deleted  { color: #e06c75; text-decoration: line-through; }
-    .markdown-section pre .token.inserted { color: #98c379; }
-    .markdown-section pre .token.namespace { opacity: 0.75; }
+        /* Prism 配色（One Dark 衍生），代码块始终深底 → 两种主题共用 */
+        .markdown-section pre .token.comment,
+        .markdown-section pre .token.prolog,
+        .markdown-section pre .token.doctype,
+        .markdown-section pre .token.cdata {
+            color: #7d8496;
+        }
+        .markdown-section pre .token.punctuation {
+            color: #8b93a7;
+        }
+        .markdown-section pre .token.keyword,
+        .markdown-section pre .token.important,
+        .markdown-section pre .token.statement,
+        .markdown-section pre .token.atrule {
+            color: #c678dd;
+        }
+        .markdown-section pre .token.string,
+        .markdown-section pre .token.char,
+        .markdown-section pre .token.attr-value,
+        .markdown-section pre .token.string-2 {
+            color: #98c379;
+        }
+        .markdown-section pre .token.number,
+        .markdown-section pre .token.boolean,
+        .markdown-section pre .token.atom {
+            color: #d19a66;
+        }
+        .markdown-section pre .token.function,
+        .markdown-section pre .token.class-name {
+            color: #61afef;
+        }
+        .markdown-section pre .token.property,
+        .markdown-section pre .token.attr-name,
+        .markdown-section pre .token.constant {
+            color: #e5c07b;
+        }
+        .markdown-section pre .token.operator,
+        .markdown-section pre .token.regex,
+        .markdown-section pre .token.url,
+        .markdown-section pre .token.entity,
+        .markdown-section pre .token.selector {
+            color: #56b6c2;
+        }
+        .markdown-section pre .token.variable,
+        .markdown-section pre .token.tag {
+            color: #e06c75;
+        }
+        .markdown-section pre .token.deleted {
+            color: #e06c75;
+            text-decoration: line-through;
+        }
+        .markdown-section pre .token.inserted {
+            color: #98c379;
+        }
+        .markdown-section pre .token.namespace {
+            opacity: 0.75;
+        }
 
-    /* ── 表格（修暗黑白底白字的核心） ─────────────────────────── */
-    .markdown-section table {
-      display: block; overflow-x: auto;
-      border-collapse: separate; border-spacing: 0;
-      width: 100%; margin: 1.6em 0; font-size: 0.92em;
-      border: 1px solid var(--border); border-radius: var(--radius);
-    }
-    .markdown-section tr { border-top: none; }
-    .markdown-section th, .markdown-section td {
-      border: none; padding: 0.6em 0.95em; vertical-align: top; text-align: left;
-    }
-    .markdown-section th {
-      background: var(--table-head-bg);
-      font-weight: 600; font-size: 0.95em; color: var(--text);
-      border-bottom: 1px solid var(--border-2);
-    }
-    /* README 章节地图这类"卡片式网格表"（<div align="center"> 包裹）：
+        /* ── 表格（修暗黑白底白字的核心） ─────────────────────────── */
+        .markdown-section table {
+            display: block;
+            overflow-x: auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            margin: 1.6em 0;
+            font-size: 0.92em;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .markdown-section tr {
+            border-top: none;
+        }
+        .markdown-section th,
+        .markdown-section td {
+            border: none;
+            padding: 0.6em 0.95em;
+            vertical-align: top;
+            text-align: left;
+        }
+        .markdown-section th {
+            background: var(--table-head-bg);
+            font-weight: 600;
+            font-size: 0.95em;
+            color: var(--text);
+            border-bottom: 1px solid var(--border-2);
+        }
+        /* README 章节地图这类"卡片式网格表"（<div align="center"> 包裹）：
        首行是章节链接而非列头，去掉表头化样式，呈现为圆角卡片 */
-    .markdown-section div[align="center"] > table { max-width: 760px; margin-left: auto; margin-right: auto; }
-    .markdown-section div[align="center"] > table th {
-      background: transparent; color: var(--text);
-      font-size: 1em; font-weight: 600; border-bottom: 1px solid var(--border);
-    }
-    .markdown-section div[align="center"] > table th,
-    .markdown-section div[align="center"] > table td { text-align: center; white-space: normal; }
-    .markdown-section td { border-bottom: 1px solid var(--border); }
-    .markdown-section tbody tr:last-child td { border-bottom: none; }
-    .markdown-section th:first-child { border-top-left-radius: 9px; }
-    .markdown-section th:last-child  { border-top-right-radius: 9px; }
-    .markdown-section tbody tr:last-child td:first-child { border-bottom-left-radius: 9px; }
-    .markdown-section tbody tr:last-child td:last-child  { border-bottom-right-radius: 9px; }
-    .markdown-section tbody tr:nth-child(2n) { background: var(--table-stripe); }
-    .markdown-section tbody tr:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+        .markdown-section div[align="center"] > table {
+            max-width: 760px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .markdown-section div[align="center"] > table th {
+            background: transparent;
+            color: var(--text);
+            font-size: 1em;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+        .markdown-section div[align="center"] > table th,
+        .markdown-section div[align="center"] > table td {
+            text-align: center;
+            white-space: normal;
+        }
+        .markdown-section td {
+            border-bottom: 1px solid var(--border);
+        }
+        .markdown-section tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .markdown-section th:first-child {
+            border-top-left-radius: 9px;
+        }
+        .markdown-section th:last-child {
+            border-top-right-radius: 9px;
+        }
+        .markdown-section tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 9px;
+        }
+        .markdown-section tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 9px;
+        }
+        .markdown-section tbody tr:nth-child(2n) {
+            background: var(--table-stripe);
+        }
+        .markdown-section tbody tr:hover {
+            background: color-mix(in srgb, var(--accent) 5%, transparent);
+        }
 
-    /* ── 引用块 ───────────────────────────────────────────────── */
-    .markdown-section blockquote {
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 var(--radius) var(--radius) 0;
-      padding: 0.7em 1.15em;
-      margin: 1.3em 0;
-      color: var(--text-2);
-    }
-    .markdown-section blockquote p { font-weight: 400; margin: 0.3em 0; }
+        /* ── 引用块 ───────────────────────────────────────────────── */
+        .markdown-section blockquote {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            padding: 0.7em 1.15em;
+            margin: 1.3em 0;
+            color: var(--text-2);
+        }
+        .markdown-section blockquote p {
+            font-weight: 400;
+            margin: 0.3em 0;
+        }
 
-    /* ── GitHub 风格 alert（[!NOTE] / [!WARNING] …，JS 转换） ── */
-    .dsh-alert {
-      border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
-      border-left: 3px solid currentColor;
-      border-radius: 0 var(--radius) var(--radius) 0;
-      background: color-mix(in srgb, currentColor 7%, var(--bg));
-      padding: 0.75em 1.15em;
-      margin: 1.3em 0;
-    }
-    .dsh-alert.dsh-alert-note      { color: var(--alert-note); }
-    .dsh-alert.dsh-alert-tip       { color: var(--alert-tip); }
-    .dsh-alert.dsh-alert-important { color: var(--alert-important); }
-    .dsh-alert.dsh-alert-warning   { color: var(--alert-warning); }
-    .dsh-alert.dsh-alert-caution   { color: var(--alert-caution); }
-    .dsh-alert-title {
-      display: flex; align-items: center; gap: 7px;
-      margin: 2px 0 6px; font-weight: 600; font-size: 0.92em;
-    }
-    .dsh-alert-title svg { width: 16px; height: 16px; flex: none; }
-    .dsh-alert > *:not(.dsh-alert-title) { color: var(--text); }
-    .dsh-alert > *:last-child { margin-bottom: 0; }
-    .dsh-alert p { margin: 0.3em 0; }
+        /* ── GitHub 风格 alert（[!NOTE] / [!WARNING] …，JS 转换） ── */
+        .dsh-alert {
+            border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+            border-left: 3px solid currentColor;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            background: color-mix(in srgb, currentColor 7%, var(--bg));
+            padding: 0.75em 1.15em;
+            margin: 1.3em 0;
+        }
+        .dsh-alert.dsh-alert-note {
+            color: var(--alert-note);
+        }
+        .dsh-alert.dsh-alert-tip {
+            color: var(--alert-tip);
+        }
+        .dsh-alert.dsh-alert-important {
+            color: var(--alert-important);
+        }
+        .dsh-alert.dsh-alert-warning {
+            color: var(--alert-warning);
+        }
+        .dsh-alert.dsh-alert-caution {
+            color: var(--alert-caution);
+        }
+        .dsh-alert-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin: 2px 0 6px;
+            font-weight: 600;
+            font-size: 0.92em;
+        }
+        .dsh-alert-title svg {
+            width: 16px;
+            height: 16px;
+            flex: none;
+        }
+        .dsh-alert > *:not(.dsh-alert-title) {
+            color: var(--text);
+        }
+        .dsh-alert > *:last-child {
+            margin-bottom: 0;
+        }
+        .dsh-alert p {
+            margin: 0.3em 0;
+        }
 
-    /* docsify 内置 ?> 提示 / !> 警告（未用到也保证不破） */
-    .markdown-section p.tip, .markdown-section p.warn {
-      background: var(--bg-alt); border-radius: var(--radius); color: var(--text);
-      border: 1px solid var(--border); border-left: 4px solid var(--accent);
-    }
+        /* docsify 内置 ?> 提示 / !> 警告（未用到也保证不破） */
+        .markdown-section p.tip,
+        .markdown-section p.warn {
+            background: var(--bg-alt);
+            border-radius: var(--radius);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+        }
 
-    /* ── details / summary ────────────────────────────────────── */
-    .markdown-section details {
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 0.6em 1.1em; margin: 1.2em 0; background: var(--bg);
-    }
-    .markdown-section details summary {
-      cursor: pointer; font-weight: 600; padding: 0.25em 0; color: var(--text);
-    }
-    .markdown-section details summary::marker { color: var(--accent); }
-    .markdown-section details[open] summary {
-      border-bottom: 1px solid var(--border); margin-bottom: 0.6em; padding-bottom: 0.45em;
-    }
+        /* ── details / summary ────────────────────────────────────── */
+        .markdown-section details {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.6em 1.1em;
+            margin: 1.2em 0;
+            background: var(--bg);
+        }
+        .markdown-section details summary {
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0.25em 0;
+            color: var(--text);
+        }
+        .markdown-section details summary::marker {
+            color: var(--accent);
+        }
+        .markdown-section details[open] summary {
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 0.6em;
+            padding-bottom: 0.45em;
+        }
 
-    /* ── 侧栏 ─────────────────────────────────────────────────── */
-    .sidebar {
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border);
-      padding-top: 0; width: 300px;
-    }
-    .sidebar > h1 {
-      margin: 0; padding: 0 24px; height: 52px;
-      display: flex; align-items: center;
-      font-size: 1.12rem; font-weight: 700;
-      position: sticky; top: 0; z-index: 5;
-      background: var(--bg-sidebar); border-bottom: 1px solid var(--border);
-    }
-    .sidebar > h1 a {
-      background: linear-gradient(120deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent; color: var(--accent);
-    }
-    .sidebar .sidebar-nav { padding: 8px 12px 48px; line-height: 1.9; }
-    .sidebar { color: var(--text-2); }
-    .sidebar li { margin: 2px 0; }
-    .sidebar ul { margin-left: 8px; }
-    .sidebar ul li a {
-      color: var(--text-2); font-size: 13.5px; font-weight: 400;
-      padding: 3px 10px; border-radius: var(--radius-sm);
-      transition: background 0.12s, color 0.12s;
-    }
-    .sidebar ul li a:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); color: var(--accent-strong); text-decoration: none; }
-    .sidebar ul li.active > a {
-      border-right: none;
-      color: var(--accent-strong); font-weight: 600;
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
-    }
-    html[data-theme="dark"] .sidebar ul li.active > a { color: var(--accent); }
-    .app-sub-sidebar li::before { content: ""; padding-right: 0; }
-    .app-sub-sidebar li a { font-size: 12.5px; color: var(--muted); }
-    .app-sub-sidebar li.active a { color: var(--accent); }
+        /* ── 侧栏 ─────────────────────────────────────────────────── */
+        .sidebar {
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            padding-top: 0;
+            width: 300px;
+        }
+        .sidebar > h1 {
+            margin: 0;
+            padding: 0 24px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            font-size: 1.12rem;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border);
+        }
+        .sidebar > h1 a {
+            background: linear-gradient(120deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: var(--accent);
+        }
+        .sidebar .sidebar-nav {
+            padding: 8px 12px 48px;
+            line-height: 1.9;
+        }
+        .sidebar {
+            color: var(--text-2);
+        }
+        .sidebar li {
+            margin: 2px 0;
+        }
+        .sidebar ul {
+            margin-left: 8px;
+        }
+        .sidebar ul li a {
+            color: var(--text-2);
+            font-size: 13.5px;
+            font-weight: 400;
+            padding: 3px 10px;
+            border-radius: var(--radius-sm);
+            transition: background 0.12s, color 0.12s;
+        }
+        .sidebar ul li a:hover {
+            background: color-mix(in srgb, var(--accent) 8%, transparent);
+            color: var(--accent-strong);
+            text-decoration: none;
+        }
+        .sidebar ul li.active > a {
+            border-right: none;
+            color: var(--accent-strong);
+            font-weight: 600;
+            background: color-mix(in srgb, var(--accent) 12%, transparent);
+        }
+        html[data-theme="dark"] .sidebar ul li.active > a {
+            color: var(--accent);
+        }
+        .app-sub-sidebar li::before {
+            content: "";
+            padding-right: 0;
+        }
+        .app-sub-sidebar li a {
+            font-size: 12.5px;
+            color: var(--muted);
+        }
+        .app-sub-sidebar li.active a {
+            color: var(--accent);
+        }
 
-    /* 侧栏分组标签（_sidebar.md 里的 **阶段 N · xxx**，渲染为 sidebar-nav 直接子级 p） */
-    .sidebar-nav > p {
-      margin: 1.15em 0 0.35em; padding: 0 10px;
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.09em;
-      color: var(--muted);
-    }
-    .sidebar .dot {
-      display: inline-block; width: 7px; height: 7px; border-radius: 50%;
-      background: var(--dot, var(--accent)); margin-right: 6px; vertical-align: 1px;
-    }
+        /* 侧栏分组标签（_sidebar.md 里的 **阶段 N · xxx**，渲染为 sidebar-nav 直接子级 p） */
+        .sidebar-nav > p {
+            margin: 1.15em 0 0.35em;
+            padding: 0 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.09em;
+            color: var(--muted);
+        }
+        .sidebar .dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--dot, var(--accent));
+            margin-right: 6px;
+            vertical-align: 1px;
+        }
 
-    /* ── 侧栏搜索框 ───────────────────────────────────────────── */
-    .sidebar .search {
-      margin-bottom: 4px; padding: 10px 14px 12px;
-      border-bottom: 1px solid var(--border);
-      position: sticky; top: 52px; z-index: 4;
-      background: var(--bg-sidebar);
-    }
-    .sidebar .search input {
-      background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px;
-      color: var(--text); padding: 0.5em 0.7em; font-family: var(--font-sans);
-    }
-    .sidebar .search input:focus { border-color: var(--accent); outline: none; }
-    .sidebar .search input::placeholder { color: var(--muted); }
-    .sidebar .search h2 { color: var(--text); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; margin: 12px 0 6px; }
-    .sidebar .search a { color: var(--text-2); }
-    .sidebar .search .matching-post {
-      border: 1px solid var(--border); border-radius: 8px;
-      margin: 6px 0; padding: 8px 10px; transition: background 0.12s, border-color 0.12s;
-    }
-    .sidebar .search .matching-post:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
-    .sidebar .search p.empty { color: var(--muted); }
+        /* ── 侧栏搜索框 ───────────────────────────────────────────── */
+        .sidebar .search {
+            margin-bottom: 4px;
+            padding: 10px 14px 12px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 52px;
+            z-index: 4;
+            background: var(--bg-sidebar);
+        }
+        .sidebar .search input {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            padding: 0.5em 0.7em;
+            font-family: var(--font-sans);
+        }
+        .sidebar .search input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+        .sidebar .search input::placeholder {
+            color: var(--muted);
+        }
+        .sidebar .search h2 {
+            color: var(--text);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            margin: 12px 0 6px;
+        }
+        .sidebar .search a {
+            color: var(--text-2);
+        }
+        .sidebar .search .matching-post {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 6px 0;
+            padding: 8px 10px;
+            transition: background 0.12s, border-color 0.12s;
+        }
+        .sidebar .search .matching-post:hover {
+            background: color-mix(in srgb, var(--accent) 7%, transparent);
+            border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+        }
+        .sidebar .search p.empty {
+            color: var(--muted);
+        }
 
-    /* ── 复制按钮（docsify-copy-code 注入的样式较晚，需覆盖） ── */
-    .markdown-section .docsify-copy-code-button {
-      position: absolute !important; top: 8px !important; right: 8px !important;
-      padding: 3px 9px !important; border-radius: 6px !important;
-      border: 1px solid var(--code-border) !important;
-      background: rgba(255, 255, 255, 0.06) !important;
-      color: #8b93a7 !important;
-      font-family: var(--font-sans) !important; font-size: 11px !important;
-      font-weight: 500 !important; line-height: 1.5 !important;
-      text-shadow: none !important; cursor: pointer;
-      opacity: 0; transition: opacity 0.15s, color 0.15s, background 0.15s;
-    }
-    .markdown-section pre:hover .docsify-copy-code-button { opacity: 1; }
-    .markdown-section .docsify-copy-code-button:hover { color: #d7dce6 !important; background: rgba(255, 255, 255, 0.12) !important; }
-    .markdown-section .docsify-copy-code-button.error { color: #f87171 !important; }
+        /* ── 复制按钮（docsify-copy-code 注入的样式较晚，需覆盖） ── */
+        .markdown-section .docsify-copy-code-button {
+            position: absolute !important;
+            top: 8px !important;
+            right: 8px !important;
+            padding: 3px 9px !important;
+            border-radius: 6px !important;
+            border: 1px solid var(--code-border) !important;
+            background: rgba(255, 255, 255, 0.06) !important;
+            color: #8b93a7 !important;
+            font-family: var(--font-sans) !important;
+            font-size: 11px !important;
+            font-weight: 500 !important;
+            line-height: 1.5 !important;
+            text-shadow: none !important;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.15s, color 0.15s, background 0.15s;
+        }
+        .markdown-section pre:hover .docsify-copy-code-button {
+            opacity: 1;
+        }
+        .markdown-section .docsify-copy-code-button:hover {
+            color: #d7dce6 !important;
+            background: rgba(255, 255, 255, 0.12) !important;
+        }
+        .markdown-section .docsify-copy-code-button.error {
+            color: #f87171 !important;
+        }
 
-    /* ── mermaid 图容器 ───────────────────────────────────────── */
-    .markdown-section .mermaid {
-      display: flex; justify-content: center; overflow-x: auto;
-      background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 18px 14px; margin: 1.5em 0;
-    }
-    .markdown-section .mermaid svg { max-width: 100%; height: auto; }
+        /* ── mermaid 图容器 ───────────────────────────────────────── */
+        .markdown-section .mermaid {
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 14px;
+            margin: 1.5em 0;
+        }
+        .markdown-section .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
 
-    /* ── 图片缩放遮罩跟随主题 ─────────────────────────────────── */
-    .medium-zoom-overlay { background: var(--bg) !important; }
+        /* ── 图片缩放遮罩跟随主题 ─────────────────────────────────── */
+        .medium-zoom-overlay {
+            background: var(--bg) !important;
+        }
 
-    /* ── 移动端侧栏开关 ───────────────────────────────────────── */
-    .sidebar-toggle { display: none; background: transparent; cursor: pointer; }
-    @media (max-width: 768px) {
-      .sidebar-toggle { display: block; }
-      .sidebar > h1 { padding: 0 18px; }
-      .sidebar .search { top: 52px; }
-    }
+        /* ── 移动端侧栏开关 ───────────────────────────────────────── */
+        .sidebar-toggle {
+            display: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        @media(max-width: 768px) {
+            .sidebar-toggle {
+                display: block;
+            }
+            .sidebar > h1 {
+                padding: 0 18px;
+            }
+            .sidebar .search {
+                top: 52px;
+            }
+        }
 
-    /* ── 悬浮控制组：语言切换 + 主题切换（桌面在侧栏标题行，移动端右下角） ── */
-    .dsh-controls {
-      position: fixed; right: 18px; bottom: 18px; z-index: 999;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .dsh-lang-toggle {
-      display: inline-flex; align-items: center; gap: 5px;
-      height: 40px; padding: 0 14px; border-radius: 20px;
-      background: var(--bg); color: var(--text-2);
-      border: 1px solid var(--border-2); cursor: pointer;
-      font-family: var(--font-sans); font-size: 12px; font-weight: 600;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    .dsh-lang-toggle .sep { color: var(--muted); font-weight: 400; }
-    .dsh-lang-toggle .l { opacity: 0.45; transition: opacity 0.15s, color 0.15s; }
-    .dsh-lang-toggle[data-active="zh"] .l-zh,
-    .dsh-lang-toggle[data-active="en"] .l-en { opacity: 1; color: var(--accent); }
-    .dsh-lang-toggle:hover { border-color: var(--accent); }
-    .dsh-theme-toggle {
-      width: 40px; height: 40px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--bg); color: var(--text-2);
-      border: 1px solid var(--border-2); cursor: pointer;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    .dsh-theme-toggle:hover { color: var(--accent-strong); border-color: var(--accent); }
-    .dsh-theme-toggle svg { width: 18px; height: 18px; }
-    /* 侧栏标题行内的形态（桌面） */
-    .sidebar > h1 .dsh-controls { position: static; margin-left: auto; box-shadow: none; }
-    .sidebar > h1 .dsh-lang-toggle {
-      height: 28px; padding: 0 11px; border-radius: 14px;
-      background: transparent; box-shadow: none;
-    }
-    .sidebar > h1 .dsh-lang-toggle:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
-    .sidebar > h1 .dsh-theme-toggle {
-      width: 28px; height: 28px; flex: none;
-      background: transparent; border: none; box-shadow: none;
-    }
-    .sidebar > h1 .dsh-theme-toggle:hover {
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
-      border: none; border-radius: 50%;
-    }
-    .sidebar > h1 .dsh-theme-toggle svg { width: 15px; height: 15px; }
-    .dsh-theme-toggle .icon-sun { display: none; }
-    .dsh-theme-toggle .icon-moon { display: block; }
-    html[data-theme="dark"] .dsh-theme-toggle .icon-sun { display: block; }
-    html[data-theme="dark"] .dsh-theme-toggle .icon-moon { display: none; }
-  </style>
+        /* ── 悬浮控制组：语言切换 + 主题切换（桌面在侧栏标题行，移动端右下角） ── */
+        .dsh-controls {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dsh-lang-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            height: 40px;
+            padding: 0 14px;
+            border-radius: 20px;
+            background: var(--bg);
+            color: var(--text-2);
+            border: 1px solid var(--border-2);
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .dsh-lang-toggle .sep {
+            color: var(--muted);
+            font-weight: 400;
+        }
+        .dsh-lang-toggle .l {
+            opacity: 0.45;
+            transition: opacity 0.15s, color 0.15s;
+        }
+        .dsh-lang-toggle[data-active="zh"] .l-zh,
+        .dsh-lang-toggle[data-active="en"] .l-en {
+            opacity: 1;
+            color: var(--accent);
+        }
+        .dsh-lang-toggle:hover {
+            border-color: var(--accent);
+        }
+        .dsh-theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            color: var(--text-2);
+            border: 1px solid var(--border-2);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .dsh-theme-toggle:hover {
+            color: var(--accent-strong);
+            border-color: var(--accent);
+        }
+        .dsh-theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+        /* 侧栏标题行内的形态（桌面） */
+        .sidebar > h1 .dsh-controls {
+            position: static;
+            margin-left: auto;
+            box-shadow: none;
+        }
+        .sidebar > h1 .dsh-lang-toggle {
+            height: 28px;
+            padding: 0 11px;
+            border-radius: 14px;
+            background: transparent;
+            box-shadow: none;
+        }
+        .sidebar > h1 .dsh-lang-toggle:hover {
+            background: color-mix(in srgb, var(--accent) 10%, transparent);
+        }
+        .sidebar > h1 .dsh-theme-toggle {
+            width: 28px;
+            height: 28px;
+            flex: none;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+        .sidebar > h1 .dsh-theme-toggle:hover {
+            background: color-mix(in srgb, var(--accent) 12%, transparent);
+            border: none;
+            border-radius: 50%;
+        }
+        .sidebar > h1 .dsh-theme-toggle svg {
+            width: 15px;
+            height: 15px;
+        }
+        .dsh-theme-toggle .icon-sun {
+            display: none;
+        }
+        .dsh-theme-toggle .icon-moon {
+            display: block;
+        }
+        html[data-theme="dark"] .dsh-theme-toggle .icon-sun {
+            display: block;
+        }
+        html[data-theme="dark"] .dsh-theme-toggle .icon-moon {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <div id="app">
-    <div class="dsh-loader">
-      <span class="dsh-loader-ring"></span>
-      <span>dsh 白皮书加载中</span>
+    <div id="app">
+        <div class="dsh-loader">
+            <span class="dsh-loader-ring"></span>
+            <span>dsh 白皮书加载中</span>
+        </div>
     </div>
-  </div>
 
-  <div class="dsh-controls" id="dshControls">
-    <button class="dsh-lang-toggle" id="dshLangToggle" type="button" data-active="zh"
-            title="切换语言 / Switch language" aria-label="切换语言">
-      <span class="l l-zh">中</span><span class="sep">/</span><span class="l l-en">EN</span>
-    </button>
-    <button class="dsh-theme-toggle" id="dshThemeToggle" type="button" aria-label="切换亮暗主题" title="切换亮 / 暗主题">
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-    </button>
-  </div>
+    <div class="dsh-controls" id="dshControls">
+        <button class="dsh-lang-toggle" id="dshLangToggle" type="button" data-active="zh" title="切换语言 / Switch language" aria-label="切换语言">
+            <span class="l l-zh">中</span>
+            <span class="sep">/</span>
+            <span class="l l-en">EN</span>
+        </button>
+        <button class="dsh-theme-toggle" id="dshThemeToggle" type="button" aria-label="切换亮暗主题" title="切换亮 / 暗主题">
+            <svg class="icon-moon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="icon-sun" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+    </div>
 
-  <script>
-    /* ── 自定义插件 ────────────────────────────────────────────────
+    <script>
+        /* ── 自定义插件 ────────────────────────────────────────────────
        1. alertPlugin：GitHub 风格 > [!NOTE]/[!TIP]/[!IMPORTANT]/[!WARNING]/[!CAUTION]
           docsify 不认识这套语法，原样渲染会露出 [!WARNING] 字面量。
        2. mermaidSrcSaver：在 docsify-mermaid 渲染前保存图源码，
           切换主题时用它重渲染（light/dark 配色不同）。
        ──────────────────────────────────────────────────────────── */
-    var DSH_ALERTS = {
-      NOTE:      { label: '备注',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>' },
-      TIP:       { label: '提示',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>' },
-      IMPORTANT: { label: '重要',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' },
-      WARNING:   { label: '警告',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>' },
-      CAUTION:   { label: '注意',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86L7.86 2z"/><path d="M12 8v4M12 16h.01"/></svg>' }
-    };
+        var DSH_ALERTS = {
+            NOTE: {
+                label: '备注',
+                icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>'
+            },
+            TIP: {
+                label: '提示',
+                icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>'
+            },
+            IMPORTANT: {
+                label: '重要',
+                icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
+            },
+            WARNING: {
+                label: '警告',
+                icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>'
+            },
+            CAUTION: {
+                label: '注意',
+                icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86L7.86 2z"/><path d="M12 8v4M12 16h.01"/></svg>'
+            }
+        };
 
-    function dshAlertPlugin(hook) {
-      hook.afterEach(function (html, next) {
-        next(html.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, function (block, inner) {
-          // marked 可能把标记渲染成 <p>[!TYPE]</p> 或 <p>[!TYPE] 正文…</p> 两种形态
-          var m = inner.match(/^\s*(?:<p>\s*)?\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i);
-          if (!m) return block;
-          var type = m[1].toUpperCase();
-          var def = DSH_ALERTS[type];
-          var rest = inner.slice(m[0].length);
-          if (/^\s*(?:<\/p>|<br\s*\/?>)/i.test(rest)) {
-            rest = rest.replace(/^\s*(?:<\/p>|<br\s*\/?>)/i, ''); // 标记独占一段，整段去掉
-          } else {
-            rest = '<p>' + rest; // 标记和正文同段，补回被吃掉的开标签
-          }
-          var title = '<p class="dsh-alert-title">' + def.icon + '<span>' + def.label + '</span></p>';
-          return '<div class="dsh-alert dsh-alert-' + type.toLowerCase() + '">' + title + rest + '</div>';
-        }));
-      });
-    }
+        function dshAlertPlugin(hook) {
+            hook.afterEach(function (html, next) {
+                next(html.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, function (block, inner) { // marked 可能把标记渲染成 <p>[!TYPE]</p> 或 <p>[!TYPE] 正文…</p> 两种形态
+                    var m = inner.match(/^\s*(?:<p>\s*)?\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i);
+                    if (! m) 
+                        return block;
+                    
+                    var type = m[1].toUpperCase();
+                    var def = DSH_ALERTS[type];
+                    var rest = inner.slice(m[0].length);
+                    if (/^\s*(?:<\/p>|<br\s*\/?>)/i.test(rest)) {
+                        rest = rest.replace(/^\s*(?:<\/p>|<br\s*\/?>)/i, ''); // 标记独占一段，整段去掉
+                    } else {
+                        rest = '<p>' + rest; // 标记和正文同段，补回被吃掉的开标签
+                    }
+                    var title = '<p class="dsh-alert-title">' + def.icon + '<span>' + def.label + '</span></p>';
+                    return '<div class="dsh-alert dsh-alert-' + type.toLowerCase() + '">' + title + rest + '</div>';
+                }));
+            });
+        }
 
-    function dshMermaidSrcSaver(hook) {
-      hook.doneEach(function () {
-        // 必须赶在 docsify-mermaid 的 doneEach（mermaid.run）之前执行：
-        // 本插件在 $docsify.plugins 里注册在前，docsify-mermaid 追加在后。
-        document.querySelectorAll('.mermaid').forEach(function (el) {
-          if (el.dataset.src == null) el.dataset.src = el.innerHTML;
-        });
-      });
-    }
+        function dshMermaidSrcSaver(hook) {
+            hook.doneEach(function () {
+                // 必须赶在 docsify-mermaid 的 doneEach（mermaid.run）之前执行：
+                // 本插件在 $docsify.plugins 里注册在前，docsify-mermaid 追加在后。
+                document.querySelectorAll('.mermaid').forEach(function (el) {
+                    if (el.dataset.src == null) 
+                        el.dataset.src = el.innerHTML;
+                    
+                });
+            });
+        }
 
-    // 桌面端把主题按钮放进侧栏标题行（更显眼），移动端保留右下角悬浮
-    function dshPlaceThemeToggle() {
-      var controls = document.getElementById('dshControls');
-      if (!controls) return;
-      var header = document.querySelector('.sidebar > h1');
-      var host = header && window.innerWidth > 768 ? header : document.body;
-      if (controls.parentNode !== host) host.appendChild(controls);
-    }
-    function dshTogglePlacer(hook) {
-      hook.doneEach(dshPlaceThemeToggle);
-    }
+        // 桌面端把主题按钮放进侧栏标题行（更显眼），移动端保留右下角悬浮
+        function dshPlaceThemeToggle() {
+            var controls = document.getElementById('dshControls');
+            if (! controls) 
+                return;
+            
+            var header = document.querySelector('.sidebar > h1');
+            var host = header && window.innerWidth > 768 ? header : document.body;
+            if (controls.parentNode !== host) 
+                host.appendChild(controls);
+            
+        }
+        function dshTogglePlacer(hook) {
+            hook.doneEach(dshPlaceThemeToggle);
+        }
 
-    /* ── 语言切换 ──────────────────────────────────────────────
+        /* ── 语言切换 ──────────────────────────────────────────────
        仓库有 14 章 + README 的英文版（.en.md）。语言由当前页面
        URL 决定（.en 结尾即英文模式）：英文模式下侧栏链接指向
        对应英文版、分组标签翻译；无英文版的页面（附录等）保持中文。
        ──────────────────────────────────────────────────────────── */
-    var DSH_EN_PAGES = [
-      'README',
-      'docs/01-intro', 'docs/02-quickstart', 'docs/03-profiles', 'docs/04-plugin-dev',
-      'docs/05-cases', 'docs/06-advanced', 'docs/07-ecosystem', 'docs/08-tools-context',
-      'docs/09-mcp-subagent-workflow', 'docs/10-complex-cases', 'docs/11-future',
-      'docs/12-limitations', 'docs/13-security', 'docs/14-cost'
-    ];
-    var DSH_EN_LABELS = {
-      'README': 'Home',
-      'docs/01-intro': 'Ch 1 · Meet the Harness',
-      'docs/02-quickstart': 'Ch 2 · Up and Running',
-      'docs/03-profiles': 'Ch 3 · Profiles & Plugins',
-      'docs/04-plugin-dev': 'Ch 4 · Plugin Dev in Practice',
-      'docs/05-cases': 'Ch 5 · Use Cases',
-      'docs/06-advanced': 'Ch 6 · Advanced & Tuning',
-      'docs/07-ecosystem': 'Ch 7 · Ecosystem',
-      'docs/08-tools-context': 'Ch 8 · Tools & Context',
-      'docs/09-mcp-subagent-workflow': 'Ch 9 · MCP / Subagents / Workflows',
-      'docs/10-complex-cases': 'Ch 10 · Complex Cases',
-      'docs/11-future': 'Ch 11 · Future Outlook',
-      'docs/12-limitations': 'Ch 12 · Limitations',
-      'docs/13-security': 'Ch 13 · Security',
-      'docs/14-cost': 'Ch 14 · Cost & Caching'
-    };
-    var DSH_EN_GROUPS = {
-      '阶段 1 · 入门': 'Stage 1 · Basics',
-      '阶段 2 · 开发': 'Stage 2 · Development',
-      '阶段 3 · 实战': 'Stage 3 · Practice',
-      '阶段 4 · 生态': 'Stage 4 · Ecosystem',
-      '阶段 5 · 进阶': 'Stage 5 · Advanced',
-      '附录': 'Appendix'
-    };
+        var DSH_EN_PAGES = [
+            'README',
+            'docs/01-intro',
+            'docs/02-quickstart',
+            'docs/03-profiles',
+            'docs/04-plugin-dev',
+            'docs/05-cases',
+            'docs/06-advanced',
+            'docs/07-ecosystem',
+            'docs/08-tools-context',
+            'docs/09-mcp-subagent-workflow',
+            'docs/10-complex-cases',
+            'docs/11-future',
+            'docs/12-limitations',
+            'docs/13-security',
+            'docs/14-cost'
+        ];
+        var DSH_EN_LABELS = {
+            'README': 'Home',
+            'docs/01-intro': 'Ch 1 · Meet the Harness',
+            'docs/02-quickstart': 'Ch 2 · Up and Running',
+            'docs/03-profiles': 'Ch 3 · Profiles & Plugins',
+            'docs/04-plugin-dev': 'Ch 4 · Plugin Dev in Practice',
+            'docs/05-cases': 'Ch 5 · Use Cases',
+            'docs/06-advanced': 'Ch 6 · Advanced & Tuning',
+            'docs/07-ecosystem': 'Ch 7 · Ecosystem',
+            'docs/08-tools-context': 'Ch 8 · Tools & Context',
+            'docs/09-mcp-subagent-workflow': 'Ch 9 · MCP / Subagents / Workflows',
+            'docs/10-complex-cases': 'Ch 10 · Complex Cases',
+            'docs/11-future': 'Ch 11 · Future Outlook',
+            'docs/12-limitations': 'Ch 12 · Limitations',
+            'docs/13-security': 'Ch 13 · Security',
+            'docs/14-cost': 'Ch 14 · Cost & Caching'
+        };
+        var DSH_EN_GROUPS = {
+            '阶段 1 · 入门': 'Stage 1 · Basics',
+            '阶段 2 · 开发': 'Stage 2 · Development',
+            '阶段 3 · 实战': 'Stage 3 · Practice',
+            '阶段 4 · 生态': 'Stage 4 · Ecosystem',
+            '阶段 5 · 进阶': 'Stage 5 · Advanced',
+            '附录': 'Appendix'
+        };
 
-    function dshCurrentPath() {
-      var p = (location.hash || '#/').replace(/^#\/?/, '').split('?')[0].replace(/\.md$/, '');
-      return p || 'README';
-    }
-    function dshIsEnglish() { return /\.en$/.test(dshCurrentPath()); }
-
-    // 侧栏链接/标签按当前语言重写（幂等：始终基于首次记录的原文）
-    function dshApplyLang() {
-      var en = dshIsEnglish();
-      var btn = document.getElementById('dshLangToggle');
-      if (btn) btn.setAttribute('data-active', en ? 'en' : 'zh');
-
-      document.querySelectorAll('.sidebar-nav a, .sidebar > p a, .sidebar p a').forEach(function (a) {
-        var href = a.getAttribute('href') || '';
-        // 页内子导航（?id= 锚点，docsify 按当前页标题生成）不参与语言重写，
-        // 否则其路径会被归一成页面路径，文本被误改成页面标题
-        if (href.charAt(0) !== '#' || href.indexOf('?id=') !== -1) return;
-        if (!a.dataset.origHref) {
-          a.dataset.origHref = href;
-          a.dataset.origText = a.textContent;
+        function dshCurrentPath() {
+            var p = (location.hash || '#/').replace(/^#\/?/, '').split('?')[0].replace(/\.md$/, '');
+            return p || 'README';
         }
-        var base = a.dataset.origHref.replace(/^#\/?/, '').replace(/\.md$/, '').split('?')[0];
-        var baseZh = base.replace(/\.en$/, '');
-        if (en) {
-          if (DSH_EN_PAGES.indexOf(baseZh) >= 0) {
-            a.setAttribute('href', '#/' + baseZh + '.en');
-            a.textContent = DSH_EN_LABELS[baseZh] || a.dataset.origText;
-          } else {
-            a.setAttribute('href', a.dataset.origHref);
-            a.textContent = a.dataset.origText; // 无英文版，保持中文
-          }
-        } else {
-          a.setAttribute('href', a.dataset.origHref);
-          a.textContent = a.dataset.origText;
+        function dshIsEnglish() {
+            return /\.en$/.test(dshCurrentPath());
         }
-      });
 
-      // 分组标签（**阶段 N · xxx** 渲染为 sidebar-nav 直接子级 p > strong）
-      document.querySelectorAll('.sidebar-nav > p strong').forEach(function (s) {
-        if (s.dataset.origText == null) s.dataset.origText = s.textContent;
-        s.textContent = dshIsEnglish() ? (DSH_EN_GROUPS[s.dataset.origText] || s.dataset.origText)
-                                       : s.dataset.origText;
-      });
+        // 侧栏链接/标签按当前语言重写（幂等：始终基于首次记录的原文）
+        function dshApplyLang() {
+            var en = dshIsEnglish();
+            var btn = document.getElementById('dshLangToggle');
+            if (btn) 
+                btn.setAttribute('data-active', en ? 'en' : 'zh');
+            
 
-      // 侧栏底部语言链接：英文模式下从 "English" 变为 "中文"
-      var footerLink = document.querySelector('.sidebar p a[href*="README.en"]');
-      if (footerLink) {
-        if (footerLink.dataset.origText == null) footerLink.dataset.origText = footerLink.textContent;
-        if (dshIsEnglish()) {
-          footerLink.textContent = '中文';
-          footerLink.setAttribute('href', '#/README.md');
-        } else {
-          footerLink.textContent = footerLink.dataset.origText;
-          footerLink.setAttribute('href', footerLink.dataset.origHref || footerLink.getAttribute('href'));
-        }
-      }
-    }
-    function dshLangPlugin(hook) {
-      hook.doneEach(dshApplyLang);
-    }
+            document.querySelectorAll('.sidebar-nav a, .sidebar > p a, .sidebar p a').forEach(function (a) {
+                var href = a.getAttribute('href') || '';
+                // 页内子导航（?id= 锚点，docsify 按当前页标题生成）不参与语言重写，
+                // 否则其路径会被归一成页面路径，文本被误改成页面标题
+                if (href.charAt(0) !== '#' || href.indexOf('?id=') !== -1) 
+                    return;
+                
+                if (! a.dataset.origHref) {
+                    a.dataset.origHref = href;
+                    a.dataset.origText = a.textContent;
+                }
+                var base = a.dataset.origHref.replace(/^#\/?/, '').replace(/\.md$/, '').split('?')[0];
+                var baseZh = base.replace(/\.en$/, '');
+                if (en) {
+                    if (DSH_EN_PAGES.indexOf(baseZh) >= 0) {
+                        a.setAttribute('href', '#/' + baseZh + '.en');
+                        a.textContent = DSH_EN_LABELS[baseZh] || a.dataset.origText;
+                    } else {
+                        a.setAttribute('href', a.dataset.origHref);
+                        a.textContent = a.dataset.origText; // 无英文版，保持中文
+                    }
+                } else {
+                    a.setAttribute('href', a.dataset.origHref);
+                    a.textContent = a.dataset.origText;
+                }
+            });
 
-    window.$docsify = {
-      name: 'DeepSeek Harness 白皮书',
-      nameLink: '/',
-      repo: 'https://github.com/Electricitysheep/dsh-handbook',
-      loadSidebar: true,
-      alias: {
-        '/.*/_sidebar.md': '/_sidebar.md'
-      },
-      maxLevel: 3,
-      subMaxLevel: 2,
-      homepage: 'README.md',
-      auto2top: true,
-      notFoundPage: true,
-      externalLinkTarget: '_blank',
-      search: {
-        maxAge: 86400000,
-        paths: 'auto',
-        placeholder: '搜索文档',
-        noData: '没有找到结果',
-        depth: 3
-      },
-      copyCode: {
-        buttonText: '复制',
-        errorText: '复制失败',
-        successText: '已复制'
-      },
-      plugins: [dshAlertPlugin, dshMermaidSrcSaver, dshTogglePlacer, dshLangPlugin]
-    };
-  </script>
+            // 分组标签（**阶段 N · xxx** 渲染为 sidebar-nav 直接子级 p > strong）
+            document.querySelectorAll('.sidebar-nav > p strong').forEach(function (s) {
+                if (s.dataset.origText == null) 
+                    s.dataset.origText = s.textContent;
+                
+                s.textContent = dshIsEnglish() ? (DSH_EN_GROUPS[s.dataset.origText] || s.dataset.origText) : s.dataset.origText;
+            });
 
-  <!-- 主题切换：持久化 + mermaid 跟随重渲染 -->
-  <script>
-    (function () {
-      var btn = document.getElementById('dshThemeToggle');
-
-      function rerenderMermaid(theme) {
-        if (!window.mermaid || !window.__dshInitMermaid) return;
-        try {
-          window.__dshInitMermaid(theme);
-          var nodes = document.querySelectorAll('.mermaid');
-          if (!nodes.length) return;
-          nodes.forEach(function (el) {
-            if (el.dataset.src != null) {
-              el.removeAttribute('data-processed');
-              el.innerHTML = el.dataset.src;
+            // 侧栏底部语言链接：英文模式下从 "English" 变为 "中文"
+            var footerLink = document.querySelector('.sidebar p a[href*="README.en"]');
+            if (footerLink) {
+                if (footerLink.dataset.origText == null) 
+                    footerLink.dataset.origText = footerLink.textContent;
+                
+                if (dshIsEnglish()) {
+                    footerLink.textContent = '中文';
+                    footerLink.setAttribute('href', '#/README.md');
+                } else {
+                    footerLink.textContent = footerLink.dataset.origText;
+                    footerLink.setAttribute('href', footerLink.dataset.origHref || footerLink.getAttribute('href'));
+                }
             }
-          });
-          window.mermaid.run({ querySelector: '.mermaid', suppressErrors: true });
-        } catch (e) { /* 重渲染失败则保留旧图，不影响阅读 */ }
-      }
-
-      btn.addEventListener('click', function () {
-        var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        try { localStorage.setItem('dsh-theme', next); } catch (e) { /* 隐私模式 */ }
-        var meta = document.querySelector('meta[name="theme-color"]:not([media])') ||
-                   document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', next === 'dark' ? '#0f1117' : '#ffffff');
-        rerenderMermaid(next);
-        btn.blur();
-      });
-
-      // 语言切换：跳到当前页面的另一语言版本；无对应版本时回对方首页
-      document.getElementById('dshLangToggle').addEventListener('click', function () {
-        var path = dshCurrentPath();
-        var target;
-        if (/\.en$/.test(path)) {
-          target = path.replace(/\.en$/, '');
-        } else {
-          target = DSH_EN_PAGES.indexOf(path) >= 0 ? path + '.en' : 'README.en';
         }
-        location.hash = '#/' + target;
-        this.blur();
-      });
+        function dshLangPlugin(hook) {
+            hook.doneEach(dshApplyLang);
+        }
 
-      window.addEventListener('resize', dshPlaceThemeToggle);
-    })();
-  </script>
+        window.$docsify = {
+            name: 'DeepSeek Harness 白皮书',
+            nameLink: '/',
+            repo: 'https://github.com/Electricitysheep/dsh-handbook',
+            loadSidebar: true,
+            alias: {
+                '/.*/_sidebar.md': '/_sidebar.md'
+            },
+            maxLevel: 3,
+            subMaxLevel: 2,
+            homepage: 'README.md',
+            auto2top: true,
+            notFoundPage: true,
+            externalLinkTarget: '_blank',
+            search: {
+                maxAge: 86400000,
+                paths: 'auto',
+                placeholder: '搜索文档',
+                noData: '没有找到结果',
+                depth: 3
+            },
+            copyCode: {
+                buttonText: '复制',
+                errorText: '复制失败',
+                successText: '已复制'
+            },
+            plugins: [dshAlertPlugin, dshMermaidSrcSaver, dshTogglePlacer, dshLangPlugin]
+        };
+    </script>
 
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/emoji.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2/dist/docsify-copy-code.min.js"></script>
+    <!-- 主题切换：持久化 + mermaid 跟随重渲染 -->
+    <script>
+        (function () {
+            var btn = document.getElementById('dshThemeToggle');
 
-  <!-- docsify 内置 Prism 只有 markup/css/clike/js；补上文档实际用到的 bash / yaml / json / ts -->
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+            function rerenderMermaid(theme) {
+                if (!window.mermaid || !window.__dshInitMermaid) 
+                    return;
+                
+                try {
+                    window.__dshInitMermaid(theme);
+                    var nodes = document.querySelectorAll('.mermaid');
+                    if (! nodes.length) 
+                        return;
+                    
+                    nodes.forEach(function (el) {
+                        if (el.dataset.src != null) {
+                            el.removeAttribute('data-processed');
+                            el.innerHTML = el.dataset.src;
+                        }
+                    });
+                    window.mermaid.run({querySelector: '.mermaid', suppressErrors: true});
+                } catch (e) { /* 重渲染失败则保留旧图，不影响阅读 */
+                }
+            }
 
-  <!-- mermaid：docsify-mermaid 在渲染时才读全局 mermaid，
-       module 脚本在 DOMContentLoaded 前执行完，时序安全 -->
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    window.mermaid = mermaid;
+            btn.addEventListener('click', function () {
+                var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                try {
+                    localStorage.setItem('dsh-theme', next);
+                } catch (e) { /* 隐私模式 */
+                }
+                var meta = document.querySelector('meta[name="theme-color"]:not([media])') || document.querySelector('meta[name="theme-color"]');
+                if (meta) 
+                    meta.setAttribute('content', next === 'dark' ? '#0f1117' : '#ffffff');
+                
+                rerenderMermaid(next);
+                btn.blur();
+            });
 
-    var FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif';
-    var LIGHT = {
-      background: 'transparent',
-      primaryColor: '#e9edfe', primaryBorderColor: '#4d6bfe', primaryTextColor: '#212734',
-      secondaryColor: '#efe9ff', secondaryBorderColor: '#7c5cff', secondaryTextColor: '#212734',
-      tertiaryColor: '#f5f7fb', tertiaryBorderColor: '#c7cdea', tertiaryTextColor: '#5b6472',
-      clusterBkg: 'rgba(77,107,254,0.05)', clusterBorder: '#c3cdf5',
-      lineColor: '#94a0b8', textColor: '#212734',
-      mainBkg: '#e9edfe', nodeBorder: '#4d6bfe',
-      edgeLabelBackground: '#ffffff', fontSize: '14px', fontFamily: FONT
-    };
-    var DARK = {
-      background: 'transparent',
-      primaryColor: '#1b2233', primaryBorderColor: '#7d95ff', primaryTextColor: '#e6e9f0',
-      secondaryColor: '#231d36', secondaryBorderColor: '#a78bfa', secondaryTextColor: '#e6e9f0',
-      tertiaryColor: '#151a26', tertiaryBorderColor: '#2c3450', tertiaryTextColor: '#a8b1c2',
-      clusterBkg: 'rgba(125,149,255,0.06)', clusterBorder: '#333d5e',
-      lineColor: '#5f6b85', textColor: '#e6e9f0',
-      mainBkg: '#1b2233', nodeBorder: '#7d95ff',
-      edgeLabelBackground: '#11141c', fontSize: '14px', fontFamily: FONT
-    };
+            // 语言切换：跳到当前页面的另一语言版本；无对应版本时回对方首页
+            document.getElementById('dshLangToggle').addEventListener('click', function () {
+                var path = dshCurrentPath();
+                var target;
+                if (/\.en$/.test(path)) {
+                    target = path.replace(/\.en$/, '');
+                } else {
+                    target = DSH_EN_PAGES.indexOf(path) >= 0 ? path + '.en' : 'README.en';
+                }
+                location.hash = '#/' + target;
+                this.blur();
+            });
 
-    window.__dshInitMermaid = function (theme) {
-      mermaid.initialize({
-        startOnLoad: false,
-        securityLevel: 'strict',
-        theme: 'base',
-        themeVariables: theme === 'dark' ? DARK : LIGHT
-      });
-    };
-    window.__dshInitMermaid(document.documentElement.getAttribute('data-theme') || 'light');
-  </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-mermaid@2/dist/docsify-mermaid.js"></script>
-</body>
-</html>
+            window.addEventListener('resize', dshPlaceThemeToggle);
+        })();
+    </script>
+
+    <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/emoji.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2/dist/docsify-copy-code.min.js"></script>
+
+    <!-- docsify 内置 Prism 只有 markup/css/clike/js；补上文档实际用到的 bash / yaml / json / ts -->
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+
+    <!-- mermaid：docsify-mermaid 在渲染时才读全局 mermaid，
+           module 脚本在 DOMContentLoaded 前执行完，时序安全 -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        window.mermaid = mermaid;
+
+        var FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif';
+        var LIGHT = {
+            background: 'transparent',
+            primaryColor: '#e9edfe',
+            primaryBorderColor: '#4d6bfe',
+            primaryTextColor: '#212734',
+            secondaryColor: '#efe9ff',
+            secondaryBorderColor: '#7c5cff',
+            secondaryTextColor: '#212734',
+            tertiaryColor: '#f5f7fb',
+            tertiaryBorderColor: '#c7cdea',
+            tertiaryTextColor: '#5b6472',
+            clusterBkg: 'rgba(77,107,254,0.05)',
+            clusterBorder: '#c3cdf5',
+            lineColor: '#94a0b8',
+            textColor: '#212734',
+            mainBkg: '#e9edfe',
+            nodeBorder: '#4d6bfe',
+            edgeLabelBackground: '#ffffff',
+            fontSize: '14px',
+            fontFamily: FONT
+        };
+        var DARK = {
+            background: 'transparent',
+            primaryColor: '#1b2233',
+            primaryBorderColor: '#7d95ff',
+            primaryTextColor: '#e6e9f0',
+            secondaryColor: '#231d36',
+            secondaryBorderColor: '#a78bfa',
+            secondaryTextColor: '#e6e9f0',
+            tertiaryColor: '#151a26',
+            tertiaryBorderColor: '#2c3450',
+            tertiaryTextColor: '#a8b1c2',
+            clusterBkg: 'rgba(125,149,255,0.06)',
+            clusterBorder: '#333d5e',
+            lineColor: '#5f6b85',
+            textColor: '#e6e9f0',
+            mainBkg: '#1b2233',
+            nodeBorder: '#7d95ff',
+            edgeLabelBackground: '#11141c',
+            fontSize: '14px',
+            fontFamily: FONT
+        };
+
+        window.__dshInitMermaid = function (theme) {
+            mermaid.initialize({
+                startOnLoad: false,
+                securityLevel: 'strict',
+                theme: 'base',
+                themeVariables: theme === 'dark' ? DARK : LIGHT
+            });
+        };
+        window.__dshInitMermaid(document.documentElement.getAttribute('data-theme') || 'light');
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-mermaid@2/dist/docsify-mermaid.js"></script>
+</body></html>
