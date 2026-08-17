@@ -4,7 +4,7 @@
 
 **📖 [在线阅读](https://electricitysheep.github.io/dsh-handbook/) · 📄 [下载 PDF](https://github.com/Electricitysheep/dsh-handbook/releases) · ⭐ [点 Star 支持](https://github.com/Electricitysheep/dsh-handbook/stargazers)**
 
-**1804 插件 · 780 帖讨论区 · 15 章手册 · 195 帖社区响应 · 280+ Stars**
+*· 15 章手册 · 195 帖社区响应 · 280+ Stars**
 
 <p align="center">
   <img src="./docs/assets/banner.svg" alt="dsh-handbook banner" width="720"/>
