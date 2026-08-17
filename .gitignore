@@ -1,3 +1,6 @@
 node_modules/
 package-lock.json
 .omo/
+
+# PDF 白皮书（Releases-only，不进仓库）
+*.pdf
