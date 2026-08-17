@@ -6,11 +6,12 @@
 
 ## TL;DR (30-second version)
 
-1. **Cache is the #1 cost variable**: DeepSeek's context cache bills repeated input at a **98% discount (Flash) / 99%+ discount (Pro)** — agent workloads are input-heavy, so the hit rate directly determines the cost scale
-2. **Measured hit rate in this handbook: 97%**: session continuity + stable tool schemas + the nature of multi-step agent workloads (Section 5.1.1); community long-run measurements reach 99.7% ([#560](https://github.com/deepseek-ai/deepseek-harness/discussions/560))
-3. **Three hit-rate principles**: keep the session alive (don't keep creating new ones), keep the prefix stable (don't keep changing config), interrupt less (write clear acceptance criteria once)
-4. **Two independent levers**: reasoning tier controls *how much thinking*, cache controls *the input unit price* — they stack, so `low` + high hit rate = the cheapest combination
-5. **Cost must be visible**: the session stats line shows cache hit %; per-turn token counts are awaiting official implementation ([#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735)) — until then, use the stats line + a community cost-tracker plugin
+1. **Cache is the #1 cost variable**: DeepSeek's context cache bills repeated input at a **96.8% discount (Flash) / 96.7% discount (Pro)** (off-peak, peak/valley pricing effective 2026-08-16) — agent workloads are input-heavy, so the hit rate directly determines the cost scale
+2. **Peak/valley pricing is the biggest new lever**: peak hours are UTC 01:00–04:00 + 06:00–10:00 (Beijing 09:00–12:00 + 14:00–18:00 — almost exactly covering the Chinese workday), so everyday domestic coding sits almost entirely in the 2× price window; move **long-running tasks** (bulk refactors / test runs / long agent tasks) to the evening or before 8am and the bill is cut **in half** — this **multiplies** with the hit rate and needs **no config changes** (14.1)
+3. **Measured hit rate in this handbook: 97%**: session continuity + stable tool schemas + the nature of multi-step agent workloads (Section 5.1.1); community long-run measurements reach 99.7% ([#560](https://github.com/deepseek-ai/deepseek-harness/discussions/560))
+4. **Three hit-rate principles**: keep the session alive (don't keep creating new ones), keep the prefix stable (don't keep changing config), interrupt less (write clear acceptance criteria once)
+5. **Two independent levers**: reasoning tier controls *how much thinking*, cache controls *the input unit price* — they stack, so `low` + high hit rate = the cheapest combination
+6. **Cost must be visible**: the session stats line shows cache hit %; per-turn token counts are awaiting official implementation ([#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735)) — until then, use the stats line + a community cost-tracker plugin, or read `session.jsonl.zstd` directly with zero installation (14.7)
 
 <details><summary>Chapter navigation</summary>
 - [14.1 How Conversation Caching Works](#141-how-conversation-caching-works)
@@ -28,12 +29,35 @@
 
 DeepSeek's API **context cache** (prompt caching): repeated/similar input tokens are billed at the **cache price** instead of full price. dsh's input for every model request = system prompt + skill catalog + conversation history + tool schemas (Section 8.3) — **the stable prefix portion is the natural cache candidate**, which is why agent workloads have far higher cache potential than ordinary chat.
 
-**Billing rules** (Section 5.1.1 pricing table):
+**Billing rules** (**peak/valley pricing effective 2026-08-16 16:00 UTC**, official [pricing page](https://api-docs.deepseek.com/quick_start/pricing); Section 5.1.1 still shows the pre-peak/valley flat price table — this chapter's table is authoritative):
 
-| Charge | Miss price | Cache-hit price | Discount |
+| Model | Cache hit | Miss | Output |
 |---|---|---|---|
-| Input (Flash) | $0.14/M | $0.0028/M | **98%** |
-| Input (Pro) | $0.435/M | $0.003625/M | **99%+** |
+| v4-flash off-peak | $0.007 | $0.22 | $0.66 |
+| v4-flash peak | $0.014 | $0.44 | $1.32 |
+| v4-pro off-peak | $0.022 | $0.66 | $1.98 |
+| v4-pro peak | $0.044 | $1.32 | $3.96 |
+
+(In USD per million tokens.)
+
+**Discount change (old → new)** — the three principles in 14.3 still hold, but the "cache controls the input unit price" lever has gotten shorter:
+
+| | Old table (flat price) | New table (off-peak) |
+|---|---|---|
+| Flash hit discount | 98% | **96.8%** |
+| Pro hit discount | 99.2% | **96.7%** |
+| Flash miss/hit multiple | 50× | **31×** |
+| Pro miss/hit multiple | 120× | **30×** |
+
+Also, **the output price is now 3× the miss price** (it was 2× under the old table) — in output-heavy tasks, cache optimization recovers a smaller share than the old table suggested (output gets no cache discount, and its weight relative to input prices has grown).
+
+**Peak/valley pricing (effective 2026-08-16 16:00 UTC)**:
+
+- **Peak hours**: UTC **01:00–04:00** + **06:00–10:00**; everything else is **off-peak**, billed at exactly half the peak price (all three tiers — hit / miss / output — are halved together)
+- **Beijing time** peak = **09:00–12:00** + **14:00–18:00** — covering China's workday almost exactly, leaving only the lunch break
+- **For users in China**: everyday coding falls almost entirely in the 2× price window; move **long-running tasks** (bulk refactors, test runs, long agent tasks) to the evening or before 8am — the bill is cut **in half**
+- That's a **100% price difference** — bigger than any single optimization in 14.3, and it needs **no config changes**
+- It **multiplies** with the hit rate rather than adding to it: off-peak halves all three tiers at once, doesn't conflict with 14.3's optimizations, and stacks with them (see the end of 14.3)
 
 **Input structure per request** (Section 8.3) — determines which tokens can hit:
 
@@ -62,6 +86,8 @@ This handbook measured a cache hit rate of up to **97%** in real dsh session sta
 
 **How it was measured**: the "cache hit %" in the session stats line at the bottom of the Web UI (Section 6.6); the comparison baseline is 5.1.1's "50-step tool chain task, 2.4M input tokens" — a typical sample of the input scale.
 
+> **Metric caveat 2 (peak/valley pricing, stepped on by the #45 author)**: since peak/valley pricing took effect on 2026-08-16, in a **session that crosses a peak/valley boundary** the same prefix is billed at different unit prices on each side of the boundary — when running cost-comparison experiments (e.g. 14.4's cost model, 14.2's hit-rate measurement), **sessions that cross a boundary must not be compared to non-crossing sessions by dollar amount — compare tokens only**. The #45 author hit this in practice: the time distributions of two data groups differed, and comparing by amount produced the wrong conclusion.
+
 | Metric | Where to look | Behavior on hits |
 |---|---|---|
 | Cache hit % | Session stats line (bottom of Web UI) | Stays high (97%+ in long sessions) |
@@ -80,23 +106,27 @@ Three levers, ordered by cost-effectiveness:
 
 **Grounding check**: when the hit rate drops below expectations, the first thing to suspect is "did the prefix change?" — changing config, switching tiers, or touching the skill catalog all invalidate the cache (Section 6.6 monitoring line).
 
+**Peak/valley pricing is the fourth — and biggest — lever**: move long-running tasks (bulk refactors, test runs, long agent tasks) to off-peak hours (Beijing evening or before 8am) and the bill is cut **in half** — a 100% price difference, bigger than any of the three levers above, **multiplicative** with the hit rate (off-peak halves the hit/miss/output tiers together, 14.1), stackable with the three principles, and requiring **no config changes**.
+
 ## 14.4 Cost Model: How the Hit Rate Drives Your Bill
 
 **Cost model in one line** (Section 6.6): `total cost ≈ output tokens × output price + missed input × miss price + hit input × hit price` — agent workloads are input-heavy, so **the cache hit rate is the #1 cost variable**.
 
-Using Chapter 5's Flash input prices, here's a worked example (**10k input tokens**, hit-rate comparison). Arithmetic sample (90% hits): `9,000 × $0.0028/M + 1,000 × $0.14/M ≈ $0.000165` — split hits from misses first, then multiply each by its own price:
+Using 14.1's **off-peak Flash input prices**, here's a worked example (**10k input tokens**, hit-rate comparison). Arithmetic sample (90% hits): `9,000 × $0.007/M + 1,000 × $0.22/M ≈ $0.000283` — split hits from misses first, then multiply each by its own price:
 
-| Hit rate | Hit tokens | Miss tokens | Input cost (Flash) | Relative cost |
+| Hit rate | Hit tokens | Miss tokens | Input cost (Flash off-peak) | Relative cost |
 |---|---|---|---|---|
-| **90%** | 9,000 | 1,000 | ≈ $0.000165 | 1× |
-| 50% | 5,000 | 5,000 | ≈ $0.000714 | ≈ 4.3× |
-| **10%** | 1,000 | 9,000 | ≈ $0.001263 | ≈ 7.6× |
+| **90%** | 9,000 | 1,000 | ≈ $0.000283 | 1× |
+| 50% | 5,000 | 5,000 | ≈ $0.001135 | ≈ 4.0× |
+| **10%** | 1,000 | 9,000 | ≈ $0.001987 | ≈ 7.0× |
 
-Scaled to 1M input tokens: 90% hits ≈ **$0.0165**, 10% hits ≈ **$0.126**, full price $0.14 — **nearly an order of magnitude apart**.
+Scaled to 1M input tokens: 90% hits ≈ **$0.0283**, 10% hits ≈ **$0.199**, full price $0.22 (off-peak miss) — **nearly an order of magnitude apart**.
 
-Scaled again to this handbook's measured scale (5.1.1: 50-step tool chain, 2.4M input tokens): 97% hits ≈ **$0.017** vs full price ≈ **$0.34** — roughly **20×**. That's the numerical source of 5.1.1's "cost far below the naive miss-price estimate."
+Scaled again to this handbook's measured scale (5.1.1: 50-step tool chain, 2.4M input tokens): 97% hits ≈ **$0.032** vs full price ≈ **$0.53** — roughly **16×**. That's the numerical source of 5.1.1's "cost far below the naive miss-price estimate" (note: this multiple was ~20× under the old flat-price table; it dropped to 16× because the hit discount narrowed, see 14.1).
 
-> Note: this table only covers the input side — Chapter 5's pricing table only records input prices; for the output side, check the official pricing page. In input-heavy agent scenarios, the input side *is* the dominant variable.
+> Note: this table only covers the input side — for the output side see the 14.1 price table (output = 3× miss price, no cache discount); cache optimization yields less in output-heavy tasks than in input-heavy ones (14.1 discount change).
+
+> **Prefix-slimming measurement (#45; data and scripts in [sjh9714/dsh-lean](https://github.com/sjh9714/dsh-lean))**: 32 paired runs, each starting from a clean copy of the task, with both sides running the task's own test suite to validate the deliverable. The default `standard` preset's prefix is **8,246 missed tokens**, of which ~**3,700** come from tools a single-agent session never calls (the delegation group, goal, jobs) — under the current peak/valley table, paying for that prefix once accounts for **46% of the entire session's bill** (6-request task, average of 3 runs; 52% under the old flat-price table). Implication: **"prefix slimming" — removing tools you never call — is a high-value optimization direction**; the raw token counts are committed in the repo, so the exact figure can be recomputed against the new table.
 
 ## 14.5 Reasoning Tiers and Caching: the Cost Matrix
 
@@ -112,18 +142,18 @@ Reasoning tiers control "how much thinking," and cache is an **orthogonal lever*
 
 - **Long tool-chain tasks (20–50 steps) benefit the most**: the cumulative effect of downgrading thinking per step is significant (FAQ Q2 in Chapter 6) — both levers (tier × hit rate) act on every step
 - Simple turns at `low` show almost no quality difference; complex reasoning at `low` may skip critical steps (FAQ Q3 in Chapter 6)
-- **Stacked example** (2.4M-input-scale task, Flash prices): `low` + 97% hits ≈ under $0.017 (fewer thinking tokens → actually less; inferred, pending verification); `max` + repeated cold starts ≈ over $0.34 — **the same task is 20×+ apart with both levers fully on vs fully off**
+- **Stacked example** (2.4M-input-scale task, off-peak Flash prices): `low` + 97% hits ≈ under $0.032 (fewer thinking tokens → actually less; inferred, pending verification); `max` + repeated cold starts ≈ over $0.53 — **the same task is 16×+ apart with both levers fully on vs fully off**
 - Note: `low/high/max` are the tier names of the gateway this handbook measured on (pi-ai/opencode-go); the default deepseek-official adapter uses `off/high/max` (Section 6.2 note)
 
 ## 14.6 Budget in Practice: Cost Estimate for Case A
 
 Budget using Chapter 10's **Case A (data-quality analysis, 186s)** as the sample: tool chain `read → write(clean.py) → bash → write(visualize.py) → bash → read → summarize`, ~6–8 steps. Scaled from the 5.1.1 magnitude (50 steps ≈ 2.4M input tokens), Case A's input is roughly **500k tokens (inferred, pending verification)**:
 
-| Scenario | Hit rate | Input cost (Flash, estimated) |
+| Scenario | Hit rate | Input cost (Flash off-peak, estimated) |
 |---|---|---|
-| Session continuity + stable prefix (recommended) | 97% | ≈ **$0.0035** |
-| New session mid-way / prefix changed | 10% | ≈ $0.063 |
-| Extreme: full price every time | 0% | $0.07 |
+| Session continuity + stable prefix (recommended) | 97% | ≈ **$0.0067** |
+| New session mid-way / prefix changed | 10% | ≈ $0.099 |
+| Extreme: full price every time | 0% | $0.11 |
 
 **Step-level breakdown** (why session continuity saves money) — only the first turn is a full-price cold start; every later turn misses only its small increment of "this turn's messages + tool results" (inferred, pending verification):
 
@@ -132,7 +162,7 @@ Budget using Chapter 10's **Case A (data-quality analysis, 186s)** as the sample
 | 1 | read(sales_data.json) | ~50k | Cold start (miss) |
 | 2–6 | write/bash/write/bash/read/summarize | ~450k | Prefix hit zone, tiny increments |
 
-**Conclusion**: a real 3-minute task costs under **1 cent** on the input side; the same work, done differently (session continuity vs repeated cold starts), differs by **~18×**. The output side (two scripts + summary) is orders of magnitude smaller than the input, so total cost stays in the single-digit cents (inferred, pending verification). This is the per-task source of "dsh with V4-Flash costs about 1/10 to 1/30 of Claude" (measured in Chapter 1).
+**Conclusion**: a real 3-minute task costs under **1 cent** on the input side; the same work, done differently (session continuity vs repeated cold starts), differs by **~16×**. The output side (two scripts + summary) is orders of magnitude smaller than the input, so total cost stays in the single-digit cents (inferred, pending verification). This is the per-task source of "dsh with V4-Flash costs about 1/10 to 1/30 of Claude" (measured in Chapter 1).
 
 ## 14.7 Measurement: Making Token Usage Visible
 
@@ -143,9 +173,17 @@ Budget using Chapter 10's **Case A (data-quality analysis, 186s)** as the sample
 
 **The gap**: **per-turn token counts**. Official discussion [#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) (filed 2026-08-14, title "【友好显示】希望在每轮对话中加入本轮对话token消耗量" / "Friendly display: add per-turn token usage to each turn", 2 comments) is exactly this request — confirmed to exist in the thread; not yet implemented officially.
 
-**Community suggestion (already posted to #735's comment thread)**: the per-turn display should split into **two numbers** — ① total tokens this turn (quick glance at spend); ② hit/miss tokens this turn (see the optimization headroom). Looking at total tokens alone misleads: the same 10k tokens costs 7.6× more at a 90% vs 10% hit rate (see 14.4).
+**Community suggestion (already posted to #735's comment thread)**: the per-turn display should split into **two numbers** — ① total tokens this turn (quick glance at spend); ② hit/miss tokens this turn (see the optimization headroom). Looking at total tokens alone misleads: the same 10k tokens costs 7.0× more at a 90% vs 10% hit rate (see 14.4).
 
 **Interim tooling**: the community `dsh-plugin-cost-tracker` (Sections 9.5/9.6; real-time token-cost tracking, plugin/MCP form) — implemented through Chapter 4's plugin extension points, tallying `usage` on request/session events (inferred, pending verification); or reconcile manually from session logs / the API usage field. Chapter 11 predicts "cache-hit-rate tooling" is the mid-term theme (11.2) — once #735 lands, the cost-transparency loop closes.
+
+**Zero installation: read `session.jsonl.zstd` directly (the #45 author's approach)** — no plugin needed; dsh's own raw session data already contains everything:
+- `assistant/chunk` events with `chunk.type` of `usage` carry the vendor-returned `inputTokens` / `cacheReadTokens` / `outputTokens` / `reasoningTokens` — **per-request** (one per model request), not a session aggregate
+- `request/header` events carry the full tool-schema array and system prompt that were actually sent — measure your prefix's size without spending an extra API call
+
+> **Pitfall (stepped on by the #45 author)**: `zstdDecompressSync` stops after the first frame, but dsh **appends a new frame on every write** — decompressing a 136-line session yields just 1 line. Split by the frame magic (`28 B5 2F FD`) and decompress each frame individually.
+
+**One-liner (provided by the #45 author, zero installation)**: `npx dsh-lean audit` — prints the per-request hit breakdown (hit / miss / output) plus the largest tool schemas in your prefix (same data source as above; see 14.4's prefix-slimming measurement).
 
 ## 14.8 Cost Pitfall Checklist
 
@@ -154,19 +192,21 @@ Budget using Chapter 10's **Case A (data-quality analysis, 186s)** as the sample
 | 1 | Misreading cache hits as "the model got faster" | A/B comparison skewed by 1s vs 110s (Chapter 6 pitfall #6) | A/B tests must use a **fresh prompt** |
 | 2 | Creating new sessions constantly burns money | Every task cold-starts; input billed at full price | Keep long/batch tasks in one session |
 | 3 | Config changes silently kill the hit rate | Hit % suddenly drops; cost climbs | Monitor the hit % in the stats line; keep the prefix stable |
-| 4 | Judging cost by total tokens alone | 10k tokens at 90% vs 10% differs by 7.6× | Split hit/miss and look at both (#735 suggestion) |
-| 5 | Budget missing the output side | Input-only math doesn't add up | Add output prices from the official pricing page (Chapter 5 only lists input prices) |
+| 4 | Judging cost by total tokens alone | 10k tokens at 90% vs 10% differs by 7.0× | Split hit/miss and look at both (#735 suggestion) |
+| 5 | Budget missing the output side | Input-only math doesn't add up | Add output prices from the 14.1 price table (output = 3× miss price, no cache discount) |
 | 6 | Tier roulette | `max` on batch jobs doubles the cost | Use `low` for batch, `max` only for complex tasks |
+| 7 | Comparing dollar amounts across a peak/valley boundary | Cost-comparison experiments reach wrong conclusions (stepped on by the #45 author) | Compare tokens only, never amounts — prefixes crossing a boundary carry different unit prices on each side (see the 14.2 metric caveat 2) |
 
 ## 14.9 Decision Recommendations at a Glance
 
 | Scenario | Recommendation |
 |---|---|
-| Long tool-chain tasks (20–50 steps) | `high` + session continuity + stable prefix; 2.4M-input scale ≈ $0.017 (97% hits) |
+| Long tool-chain tasks (20–50 steps) | `high` + session continuity + stable prefix; 2.4M-input scale ≈ $0.032 (97% hits, off-peak) |
 | Batch / simple turns | `low` + batched in the same session (biggest hit bonus) |
 | Complex reasoning / debugging | `max` (quality over cost); cold start is acceptable for one-off tasks |
 | Cost-sensitive batch processing | `low` + headless + serial in one session |
-| Performance/cost comparison tests | Fresh prompt + fixed tier + median of multiple runs (Sections 6.4/6.6) |
+| Long-running tasks (bulk refactors / tests / long agent tasks) | Schedule them **off-peak** (Beijing after 8pm / before 8am) — the bill is cut in half (multiplies with the hit rate, 14.1) |
+| Performance/cost comparison tests | Fresh prompt + fixed tier + median of multiple runs (Sections 6.4/6.6); groups that cross a peak/valley boundary compare tokens only, never amounts (14.2 metric caveat 2) |
 | Hit rate dropping abnormally | Check whether the prefix changed first (config / skill catalog / model tier) |
 
 ---
@@ -174,7 +214,7 @@ Budget using Chapter 10's **Case A (data-quality analysis, 186s)** as the sample
 ## Hands-on exercises
 
 1. **Understand**: why is "cache hit rate the #1 cost variable"? Use the 14.4 10k-token table to explain how many times more 90% costs vs 10% hits
-   > Check yourself: the 14.4 comparison table (7.6×) and the 6.6 cost-model one-liner
+   > Check yourself: the 14.4 comparison table (7.0×) and the 6.6 cost-model one-liner
 2. **Hands-on**: run a 3-step task and watch the session stats line at the bottom of the Web UI and the per-turn end line (time / first token / tok/s); estimate how much of this task hit cache
    > Check yourself: the 14.7 measurement methods and the 6.3 stats-line format
 3. **Hands-on**: run the same batch of tasks two ways — "a new session per item" vs "all in one session" — and compare wall-clock times; the new-session version will almost certainly be noticeably slower on the first turn (cold start)
@@ -191,7 +231,8 @@ Budget using Chapter 10's **Case A (data-quality analysis, 186s)** as the sample
 - **Q: When will the official per-turn token display ship?** [#735](https://github.com/deepseek-ai/deepseek-harness/discussions/735) is a feature request filed 2026-08-14 (2 comments) — **not implemented yet**. Until then: the session stats line's hit % + the community `dsh-plugin-cost-tracker` (Chapter 9).
 - **Q: Do third-party gateways / self-hosted providers get the cache discount too?** The cache discount is a DeepSeek API-side capability (Chapter 5 pricing table); third-party gateways' cache support and billing must be checked on their own pricing pages (inferred, pending verification).
 - **Q: Why does a task get noticeably faster after a cache hit?** The hit prefix doesn't need recomputing, so first-token time drops by an order of magnitude (cold start ~110s vs hot cache ~1s, measured in Chapter 1). Tell-tale sign: first token suddenly drops from 10s+ to under 1s — almost certainly a hit (FAQ Q4 in Chapter 6). Use fresh prompts for performance comparisons to avoid cache interference (Chapter 6 pitfall #6).
+- **Q: When is the cheapest time to run?** Peak/valley pricing applies since 2026-08-16 (14.1): peak hours are UTC 01:00–04:00 + 06:00–10:00 (Beijing 09:00–12:00 + 14:00–18:00), and off-peak is billed at half the peak price. Everyday domestic coding falls almost entirely in the peak window; move long-running tasks (bulk refactors / tests / long agent tasks) to the evening or before 8am and the bill is cut in half — multiplicative with the hit rate, no config changes needed.
 
 ---
 
-*Info as of 2026-08-14 (dsh 0.1.0-rc.6). Pricing and cache policy are subject to the official docs; items marked "(inferred, pending verification)" are extrapolations or estimates — corrections via PR after real-world testing are welcome.*
+*Info as of 2026-08-16 (dsh 0.1.0-rc.6; peak/valley pricing effective 2026-08-16 16:00 UTC). Pricing and cache policy are subject to the official docs; items marked "(inferred, pending verification)" are extrapolations or estimates — corrections via PR after real-world testing are welcome.*
