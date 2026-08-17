@@ -229,7 +229,7 @@ Contract tests prove the plugin boundary, but they do not replace the real runti
 
 First turn has no tool calls → stays at baseline `high`. After detecting the `write` tool → next turn drops to `low`. **The injection pipeline works end to end.**
 
-To run this layer in CI, see official Discussion [#462: API-key-free waterfall verification](https://github.com/deepseek-ai/deepseek-harness/discussions/462). The method uses a mock LLM to emit a deterministic tool call, runs it through a headless profile and the real agent loop, then checks the expected waterfalls and `tools/result` in an audit snapshot. Its commands target specific rc/master revisions; use the scripts and event catalog from the version under test instead of asserting one fixed event count across releases.
+To run this layer in CI, see [Chapter 8, Section 8.7: testing plugin runtime behavior without an API key](./08-tools-context.en.md#87-testing-plugin-runtime-behavior-without-an-api-key). It distinguishes the built-in smoke/mock capabilities from the community waterfall audit plugin.
 
 > Full runnable code: see [`examples/plugin-template/`](../examples/plugin-template/).
 
