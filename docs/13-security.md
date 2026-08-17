@@ -132,6 +132,7 @@ dsh 的安全骨架是三层各管一件事（依据官方 `docs/subsystems/*` �
 | [#584](https://github.com/deepseek-ai/deepseek-harness/discussions/584) | `scrubbedParentEnv` 子串误伤 KEYBOARD/MONKEY 等合法环境变量（附可 cherry-pick 修复） | 子进程环境 | 合法环境变量被 scrubbed，行为异常 |
 | [#381](https://github.com/deepseek-ai/deepseek-harness/discussions/381) | 默认 localhost Web 可被跨站 iframe 点击劫持，诱导授权 `Full access` 并驱动高权限操作 | 前端点击劫持 | 恶意网页诱导用户在 dsh UI 上点出高权限 |
 | [#817](https://github.com/deepseek-ai/deepseek-harness/discussions/817) | 安全审计报告：沙箱/审批边界绕过与本地 RPC 无认证（PoC 可私下提供） | 系统性审计 | 覆盖 vm 逃逸（同族 #243 #778）、本地 `/api` 无鉴权（同族 #451，CVSS 8.8）、approval 回环（#250） |
+| [#2562](https://github.com/deepseek-ai/deepseek-harness/discussions/2562) | Windows 上 `workspace-write` 的写围栏把字面量 `/tmp` 解析成 `C:\tmp`，静默授予一个机器级可写目录 | 平台解析 | 编辑器面可写入，ACL 沙箱却拒绝 shell 面写同一路径，两个写入面对同一路径判定不一致 |
 
 **同族高价值补充**（帖号来自仓库内 `docs/research/discussion-mining.md` §2.6，该报告称全量 780 帖程序化核验）：
 
@@ -145,6 +146,20 @@ dsh 的安全骨架是三层各管一件事（依据官方 `docs/subsystems/*` �
 | #674 | 崩溃后 `.tmp` 明文会话残留不清理 | 隐私风险 |
 
 > 免责：以上为 rc.6 时代（2026-08-13 发布后 48h 内）的社区报告，部分可能已在新 rc 修复；引用时注意版本语境。
+
+### 13.6.1 Windows 受限令牌的运行期失败签名
+
+上面几条是策略层的边界。Windows ACL 后端还有一类问题在**运行期**才显形，报错长得不像权限问题，所以排查成本很高。以下三条均在 `windows-latest` 或真实机器上实测。
+
+| 现象 | 签名 | 说明 |
+|---|---|---|
+| 所有 HTTPS 请求失败 | `SEC_E_NO_CREDENTIALS` | 受限令牌破坏 Windows 凭据栈，走 Schannel 的客户端（curl、PowerShell）全灭，走 OpenSSL 的（node、python）不受影响。看起来像网络问题 |
+| MSYS / Git Bash 启动即死 | `cygheap_user::init: NtSetInformationToken (TokenDefaultDacl), 0xC0000022` | Cygwin 的 cygheap 初始化需要一个受限令牌不允许的 token 操作，shell 到不了提示符。报错长得像 PTY 问题，其实是 ACL 问题 |
+| 同上，另一台机器的变体 | `CreateFileMapping Win32 error 5` | 同一堵墙的另一个症状，由第三方在自己机器上独立复现 |
+
+**可操作的结论**：受限令牌下要持久 shell，就得换一个没有 POSIX 模拟层的 shell。busybox-w32 的 `ash` 在同一个受限令牌下能完成 send/read 往返（`windows-latest` CI 实测）。要 Git Bash 就只能把权限切到 `danger-full-access`。
+
+来源 [#2184](https://github.com/deepseek-ai/deepseek-harness/discussions/2184)。
 
 ## 13.7 企业安全基线
 

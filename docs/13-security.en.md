@@ -136,6 +136,7 @@ All 4 threads below verified to exist via `gh api graphql` (deepseek-ai/deepseek
 | [#584](https://github.com/deepseek-ai/deepseek-harness/discussions/584) | `scrubbedParentEnv` substring-matching wrongly scrubs legitimate env vars like KEYBOARD/MONKEY (cherry-pickable fix included) | Child-process env | Legitimate env vars get scrubbed → behavioral anomalies |
 | [#381](https://github.com/deepseek-ai/deepseek-harness/discussions/381) | Default localhost web UI can be clickjacked via cross-site iframe, inducing a `Full access` grant and driving high-privilege operations | Frontend clickjacking | Malicious webpages trick users into clicking out high privileges in the dsh UI |
 | [#817](https://github.com/deepseek-ai/deepseek-harness/discussions/817) | Security audit report: sandbox/approval boundary bypasses + unauthenticated local RPC (PoC available privately) | Systematic audit | Covers vm escape (family #243 #778), unauthenticated local `/api` (family #451, CVSS 8.8), approval loop (#250) |
+| [#2562](https://github.com/deepseek-ai/deepseek-harness/discussions/2562) | On Windows the `workspace-write` fence resolves the literal `/tmp` to `C:\tmp`, silently granting a machine-wide writable directory | Platform resolution | The editor plane can write there while the ACL sandbox denies the shell plane the same path, so two write planes disagree about one path |
 
 **High-value family supplements** (thread numbers from `docs/research/discussion-mining.md` §2.6 in this repo; that report says all 780 threads were programmatically verified):
 
@@ -149,6 +150,20 @@ All 4 threads below verified to exist via `gh api graphql` (deepseek-ai/deepseek
 | #674 | `.tmp` plaintext session residue after crashes is never cleaned | Privacy risk |
 
 > Disclaimer: these are community reports from the rc.6 era (within 48h of the 2026-08-13 release); some may already be fixed in newer rcs — keep the version context in mind when citing.
+
+### 13.6.1 Runtime failure signatures under the Windows restricted token
+
+The rows above are policy-level boundaries. The Windows ACL backend has another class of problem that only appears at **runtime**, and the errors do not look like permission errors, which makes them expensive to diagnose. All three below were measured on `windows-latest` or on real hardware.
+
+| Symptom | Signature | Notes |
+|---|---|---|
+| Every HTTPS request fails | `SEC_E_NO_CREDENTIALS` | The restricted token breaks the Windows credential stack. Schannel clients (curl, PowerShell) all fail; OpenSSL clients (node, python) are unaffected. It looks like a network problem |
+| MSYS / Git Bash dies during startup | `cygheap_user::init: NtSetInformationToken (TokenDefaultDacl), 0xC0000022` | Cygwin's cygheap init needs a token operation the restricted token denies, so the shell never reaches a prompt. It looks like a PTY problem and is an ACL one |
+| Same wall, another machine | `CreateFileMapping Win32 error 5` | A second signature of the same failure, reproduced independently by a third party |
+
+**The actionable conclusion**: a persistent shell under the restricted token needs a shell with no POSIX emulation layer. busybox-w32 `ash` completes a send/read round trip under the same restricted token (measured in `windows-latest` CI). Git Bash requires switching the permission mode to `danger-full-access`.
+
+Source: [#2184](https://github.com/deepseek-ai/deepseek-harness/discussions/2184).
 
 ## 13.7 Enterprise Security Baseline
 
