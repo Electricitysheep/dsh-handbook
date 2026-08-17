@@ -79,6 +79,8 @@
 | **dsh-installers** | 免装 Node 安装包：mac DMG / Windows exe，自带 Node 运行时、零前置依赖 | [codeAnqiang-ma/dsh-installers](https://github.com/codeAnqiang-ma/dsh-installers)（[#380](https://github.com/deepseek-ai/deepseek-harness/discussions/380) 作者 codeAnqiang-ma 提供），安装见第 2 章 2.2 方式三 |
 | **kubemd** | Kubernetes 运行时故障诊断 skill（案例记忆 + CLI 双入口，5 场景 kind 实测验证）| [guiyi-labs/kubemd](https://github.com/guiyi-labs/kubemd)，`git clone` 即用（DSH skill） |
 
+| **crash-surviving 六插件** | 崩溃存活任务/会话锚点/三平台沙箱/持久调度——40 分钟任务第 39 分钟崩溃不丢状态（Apache-2.0） | [#2564](https://github.com/deepseek-ai/deepseek-harness/discussions/2564) |
+
 **发现插件**：GitHub 搜 `topic:dsh-plugin`。
 **发布插件**：给你的仓库加 `dsh-plugin` topic + npm 发布。
 

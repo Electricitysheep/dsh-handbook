@@ -238,6 +238,8 @@ dsh plugin --profile web add file:$PWD/dsh-pi-quiet
 
 ---
 
+> **统计工具也有口径问题（#1886 实测）**：`token-meter` 的 `tokenUsage` 投影**不折叠 compaction/summary.usage**（压缩产生的消耗不计入），且 retried step 是"替换"而非"累加"——插件按推荐方式读 `ctx.sessionProjections.tokenUsage` 会继承这两个缺口。做成本对账时，用 `session.jsonl.zstd` 原始数据（14.5 读取法）交叉验证投影值。
+
 ## 动手练习（检验你是否真懂了）
 
 1. **理解题**：为什么说"缓存命中率是成本的第一变量"？用 14.4 的 10k token 表格解释 90% 与 10% 命中差多少倍
