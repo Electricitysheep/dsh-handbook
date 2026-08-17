@@ -267,6 +267,8 @@ agent-default-model:
 
 ---
 
+> **headless 长任务看不到进度？** headless 默认只打印最终答案，长任务（几分钟以上）看不出卡在哪/剩多久——可用社区 dsh-progress-viz（live stage/ETA 仪表盘，#2442）或 headless 搭配 `--verbose`/审计日志观察。
+
 > **源码方式启动慢的根因（#1424 社区实测确认）**：`pnpm dsh web` 每次启动用 tsx/esbuild **现场转译整个 TS 源码图**（非全量构建），叠加机械盘/大文件数时冷启动可达数分钟。**实测计时**：tsx 热缓存 ~40s / 冷缓存 ~5min / 编译产物 `lib/bin.js` 版 ~12s（页面响应 5ms）。解决：① 启动命令改用 `node apps\cli\lib\bin.js web`（走编译产物）② 或先 `pnpm build` 全量构建一次 ③ 或直接用 `npx @deepseek-ai/dsh web`（发布版）。
 > **Windows 通用坑 1——极简模式起不来**（#1889 实测）：报 `terminal inspection is unsupported on platform win32` 时，**和 node-pty 无关**——调用顺序是先解析平台 inspector 再 spawn，inspector 在前。重装 node-pty/换 Node/装 VS Build Tools 都没用；需 dsh-win32 类补丁。
 >

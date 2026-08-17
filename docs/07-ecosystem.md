@@ -81,6 +81,10 @@
 
 | **crash-surviving 六插件** | 崩溃存活任务/会话锚点/三平台沙箱/持久调度——40 分钟任务第 39 分钟崩溃不丢状态（Apache-2.0） | [#2564](https://github.com/deepseek-ai/deepseek-harness/discussions/2564) |
 
+| **dshbase** | 122 插件实测目录：17 个可安装/10 个完全验证通过，每个带精确安装命令与详情页 | [#1012](https://github.com/deepseek-ai/deepseek-harness/discussions/1012) |
+| **dsh-progress-viz** | headless 长任务可见化：live stage/ETA 仪表盘（headless 默认只打印最终答案，长任务看不出进度） | [#2442](https://github.com/deepseek-ai/deepseek-harness/discussions/2442) |
+| **memory-porter** | 把 Claude/ChatGPT 历史记忆迁入 DSH（含逐字证据核对）——记忆家族"搬旧数据"方案 | [#2819](https://github.com/deepseek-ai/deepseek-harness/discussions/2819) |
+
 **发现插件**：GitHub 搜 `topic:dsh-plugin`。
 **发布插件**：给你的仓库加 `dsh-plugin` topic + npm 发布。
 
