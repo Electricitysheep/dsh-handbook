@@ -9,7 +9,7 @@
 3. **工具返回 locations → 产物追踪**：模型改了什么文件，UI 能直接看到并可打开（对话末尾的产物 chips）
 4. **上下文 = 系统提示 + 技能目录 + 对话历史 + 工具结果**：分层注入，每步请求携带工具 schema
 5. **长对话自动压缩（compaction）**：检测溢出 → 修剪历史 → 可选摘要 → 失败路由到溢出代理。重要信息建议写进提示词
-6. **插件行为可零成本验证**：mock llm + headless + 审计 dump（#462）——没有 API key 也能验证 waterfall 透传与工具注入
+6. **插件行为可零成本验证**：官方 smoke/mock + headless 不需要 API Key；完整 waterfall dump 需社区审计插件（#462）
 7. **工具链有三个已知坑**：code 模式 run_code/bash 的 description required 死循环（#558/#581/#689）；流式下工具名被抹空（#725 同族，见 FAQ）；run_code 内交互式工具异步结果被丢弃（#1476）
 
 <details><summary>本章导航</summary>
@@ -124,31 +124,82 @@ dsh 的上下文机制：
 
 ## 8.7 插件运行时验证方法论（零成本）
 
-> 出处：官方讨论区 [#462](https://github.com/deepseek-ai/deepseek-harness/discussions/462)「DSH 插件运行时验证方法论：无 API Key 验证 waterfall 行为」（实证 74 事件 / 12 waterfall）。FAQ 已有一句话版本，本节展开。
+> 方法来源：官方讨论区 [#462](https://github.com/deepseek-ai/deepseek-harness/discussions/462)。下面把**官方仓库内置能力**与**社区审计插件能力**分开说明，避免把第三方环境变量误认为 dsh 原生功能。
 
-**痛点**：静态检查只能证明"插件能加载"，证明不了"插件在真实 agent 循环里不破坏行为"。尤其 waterfall 事件监听器（`tools/execute`、`approval/request`、`fs/write-intent` 等）必须正确透传 `next()`，否则会**静默吞掉下游默认行为**——这类错误只在运行时暴露；而传统验证要真实 LLM API key + token 成本。
+静态检查只能证明“插件能加载”，不能证明它在真实 agent 循环中不破坏行为。尤其 waterfall 监听器必须正确 `await next()` 并透传返回值；否则插件可能静默吞掉下游默认行为。第 4 章的[契约测试](./04-plugin-dev.md#45-测试)先覆盖这一边界，本节再验证完整运行时。
 
-**零成本方案**（dsh 仓库自带，无需 API key）：
-1. **mock llm**：脚本化返回——让第一个请求返回"调用 bash 工具"、第二个正常回复（`--sequence tool_call_success,success`），以此注入工具调用
-2. **headless profile**：走真实 agent 循环，你的插件挂监听
-3. **审计 dump**：`DSH_EVENT_AUDIT_DUMP` 导出事件审计快照
+### 8.7.1 官方内置的无 Key 冒烟测试
 
-```sh
-# 1. 启动 mock-llm（脚本化注入"调用 bash 工具"）
-pnpm run mock:llm --port 8000 --api-key mock-key \
-  --sequence tool_call_success,success --repeat-last \
-  --tool-name bash --tool-arguments '{"command":"ls"}'
+官方源码包含一个进程内 mock adapter 和组装后的 headless 测试。它不访问模型服务，适合先确认构建产物与完整插件树能正常启动：
 
-# 2. 跑 headless agent（指向 mock-llm，导出审计）
+```bash
+# 在 deepseek-harness 完整源码仓库根目录
+pnpm install --frozen-lockfile
+pnpm run build:lib:host
+
+DSH_EXAMPLE_MODE=lib pnpm exec vitest run \
+  --config vitest.e2e.config.ts \
+  examples/headless-agent/tests/keyless-smoke.e2e.ts
+```
+
+通过标准是测试退出码为 0。上述命令已在官方源码 `47f9438` 上实跑通过（1 file / 1 test）；它验证官方 headless 组合，不会自动加载你的第三方插件。插件作者应在对应测试组合中加入自己的 patch，或继续使用下面的 HTTP mock 路径。
+
+### 8.7.2 HTTP mock + 真实 DeepSeek 适配器
+
+`mock:llm` 是官方仓库内置的 OpenAI 兼容 HTTP/SSE 测试服务器。下面的脚本让第一次请求产生 `bash` 工具调用，第二次返回正常文本，从而走完真实 adapter、agent loop 和工具流水线。
+
+终端 1：
+
+```bash
+pnpm run mock:llm -- \
+  --port 8000 \
+  --api-key mock-key \
+  --sequence tool_call_success,success \
+  --repeat-last \
+  --tool-name bash \
+  --tool-arguments '{"command":"ls","description":"list files"}'
+```
+
+终端 2：
+
+```bash
 DEEPSEEK_BASE_URL=http://127.0.0.1:8000/v1 \
 DEEPSEEK_API_KEY=mock-key \
+DSH_TELEMETRY_DISABLED=1 \
+pnpm dsh --profile headless "run the bash tool once and report"
+```
+
+本地插件可先装入 headless profile：
+
+```bash
+pnpm dsh plugin --profile headless add /absolute/path/to/your-plugin
+```
+
+更适合 CI 的做法是用 `--patch ./plugin-test.cordis.yml` 注入测试插件，避免修改持久 profile。通过时应同时满足：
+
+- headless 进程退出码为 0，stdout 有最终 assistant 文本；
+- session JSONL 中出现 `tool/call`、`tool/result`；
+- `turn/end.reason.kind` 为 `completed`；
+- 插件自己的日志或可观察产物符合预期。
+
+### 8.7.3 完整 waterfall 审计是社区扩展
+
+`DSH_EVENT_AUDIT_DUMP`、审计快照的 `byMode`，以及“74 事件 / 12 waterfall”都**不是官方仓库内置能力**，而是讨论 #462 使用的社区插件 `@qing3a/dsh-event-auditor` 所提供。只有安装该插件后，下面的变量才有意义：
+
+```bash
 DSH_EVENT_AUDIT_DUMP=/tmp/audit.json \
 pnpm dsh --profile headless "run the bash tool once and report"
 ```
 
-**判定通过**：审计快照 `byMode` 同时含 emit + waterfall、waterfall 链完整出现、agent 正常跑完（`mock response recovered`）。实证：74 事件 / 12 waterfall 全部捕获，完整生命周期 `session/created → … → tools/pre-execute(wf) → tools/execute(wf) → tools/post-execute(wf) → tools/result`；关键安全证明是**所有 waterfall 监听器正确透传 `next()`、零副作用**——插件既不吞默认行为，mock 注入的工具调用也完整走完链路。
+不要把固定事件数量作为跨版本断言。更稳妥的判据是：目标插件关心的 waterfall 出现、`next()` 后的默认行为仍发生、工具得到结果、turn 正常完成。
 
-**从源码跑的三点提醒**（#462 作者实测踩坑）：sparse clone 一次加全（缺 `vendor/` 会报 `Cannot find package '@deepseek-ai/cordis'`）；`build:lib:host` + `build:lib:client` + web-frontend dist 三层构建缺一不可；`mock:llm` 参数前不要多传 `--`（会被当位置参数）。
+### 8.7.4 常见失败
+
+- **参数分隔符**：`pnpm run mock:llm --` 只写一次 `--`；缺少或多写都可能让参数解析偏移。
+- **源码不完整**：必须完整 clone；缺少 `vendor/` 会导致 `@deepseek-ai/cordis` 无法解析。
+- **构建范围**：headless 最低需要 `build:lib:host`；只有待测插件依赖 client/Web 产物时才追加对应构建。
+- **服务注入**：headless 不提供 `webServer`；把它写进必选 `inject` 会让插件一直等待服务。
+- **版本漂移**：以目标 checkout 的 CLI `--help`、`lib/types/` 和事件目录为准，不复用其他 rc/master 的固定数字。
 
 ## 8.8 工具链踩坑
 

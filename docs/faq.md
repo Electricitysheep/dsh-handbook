@@ -82,7 +82,7 @@ rc.1 依赖断裂——确认用 `^0.1.0-rc.6` 线（第 3 章坑 #1）。
 **必须**。不 await 会丢 provider/model 报错（第 4 章坑）。
 
 **Q：怎么写插件最快？**
-克隆[插件模板](../examples/plugin-template/)，改纯函数逻辑，挂载即用。想验证 waterfall 行为但没 API key？社区有零成本方案：仓库自带 mock llm + headless + 审计 dump（[#462](https://github.com/deepseek-ai/deepseek-harness/discussions/462)）。
+克隆[插件模板](../examples/plugin-template/)，改纯函数逻辑，挂载即用。想验证 waterfall 行为但没有 API Key？见[第 8 章 8.7 节](./08-tools-context.md#87-插件运行时验证方法论零成本)：官方 smoke/mock 路径无需模型服务，完整 waterfall dump 则需要社区审计插件。
 
 **Q：Code 模式下 run_code/bash 一直报 `missing required property "description"`？**
 rc.6 工具参数坑：run_code 与 bash 的 description 字段同名且标 required，模型常把内层 bash.description 当已传，外层缺字段 → 死循环重试（[#558](https://github.com/deepseek-ai/deepseek-harness/discussions/558) [#581](https://github.com/deepseek-ai/deepseek-harness/discussions/581) [#689](https://github.com/deepseek-ai/deepseek-harness/discussions/689)）。遇到时手动补外层 description 或换标准模式。

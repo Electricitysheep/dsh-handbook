@@ -52,6 +52,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 - `src/policy.ts`：`decidePolicy(...)` 纯函数——输入最近的工具调用，输出推理档位（可替换为你的业务逻辑）
 - `src/index.ts`：`apply(ctx)` 监听 `agent/request` waterfall，注入决策结果
 - **测试**：`npm test` 同时验证纯函数和插件的 waterfall 契约
+- **实机验证**：需要无 API Key 跑真实 agent loop 时，见[第 8 章 8.7 节](../../docs/08-tools-context.md#87-插件运行时验证方法论零成本)
 
 ## 自定义指南
 
