@@ -11,6 +11,7 @@
 3. **Tool returns carry `locations` → artifact tracking**: the model can see which files it changed, and the UI lets you open them directly (artifact chips at the end of the conversation).
 4. **Context = system prompt + skill catalog + conversation history + tool results**: layered injection, with tool schemas carried in every request.
 5. **Long conversations are auto-compressed (compaction)**: detect overflow → prune history → optional summarization → fallback to overflow agent. Important info should be written into the prompt manually.
+6. **Plugin behavior can be tested without a provider key**: use the built-in headless smoke test or mock LLM, and add a community auditor only when waterfall-level evidence is required.
 
 ## 8.1 Official Capability Map (60+ Packages at a Glance)
 
@@ -86,6 +87,85 @@ Long conversations blow up the context window. dsh's `compaction` plugins (e.g. 
 1. **Tool names are short verbs** (read/write/grep/glob/edit/bash) — when writing prompts or plugins, just say "read the file" or "search" and it works
 2. **Tool returns include `locations` → artifact tracking** — files the model changed appear in the conversation's artifact area
 3. **Long conversations are auto-compressed** — no need to manually clear history (but important info should go into the prompt)
+
+## 8.7 Testing Plugin Runtime Behavior Without an API Key
+
+> This method originated in official Discussion [#462](https://github.com/deepseek-ai/deepseek-harness/discussions/462). The steps below distinguish **capabilities built into the official repository** from those supplied by a **community audit plugin**.
+
+Static checks only prove that a plugin loads. They do not prove that it preserves behavior in a real agent loop. Waterfall listeners must `await next()` and forward its result; otherwise, a plugin can silently swallow downstream behavior. The [contract tests in Chapter 4](./04-plugin-dev.en.md#45-testing) cover that boundary first, while this section exercises the assembled runtime.
+
+### 8.7.1 Built-in keyless smoke test
+
+The official source tree contains an in-process mock adapter and an assembled headless smoke test. It makes no provider request:
+
+```bash
+# From the root of a complete deepseek-harness source checkout
+pnpm install --frozen-lockfile
+pnpm run build:lib:host
+
+DSH_EXAMPLE_MODE=lib pnpm exec vitest run \
+  --config vitest.e2e.config.ts \
+  examples/headless-agent/tests/keyless-smoke.e2e.ts
+```
+
+The test passes when it exits with code 0. These commands were run successfully against official commit `47f9438` (1 file / 1 test). This lane validates the official headless composition; it does not automatically load a third-party plugin. Add the plugin to the test composition through a patch, or use the HTTP mock path below.
+
+### 8.7.2 HTTP mock with the real DeepSeek adapter
+
+`mock:llm` is the official repository's OpenAI-compatible HTTP/SSE test server. This script emits a `bash` tool call for the first request and a normal text response for the second, exercising the real adapter, agent loop, and tool pipeline.
+
+Terminal 1:
+
+```bash
+pnpm run mock:llm -- \
+  --port 8000 \
+  --api-key mock-key \
+  --sequence tool_call_success,success \
+  --repeat-last \
+  --tool-name bash \
+  --tool-arguments '{"command":"ls","description":"list files"}'
+```
+
+Terminal 2:
+
+```bash
+DEEPSEEK_BASE_URL=http://127.0.0.1:8000/v1 \
+DEEPSEEK_API_KEY=mock-key \
+DSH_TELEMETRY_DISABLED=1 \
+pnpm dsh --profile headless "run the bash tool once and report"
+```
+
+Install a local plugin into the headless profile first:
+
+```bash
+pnpm dsh plugin --profile headless add /absolute/path/to/your-plugin
+```
+
+For CI, prefer `--patch ./plugin-test.cordis.yml` to inject the test plugin without mutating a persistent profile. A passing run should satisfy all of these conditions:
+
+- the headless process exits with code 0 and stdout contains the final assistant text;
+- the session JSONL contains `tool/call` and `tool/result`;
+- `turn/end.reason.kind` is `completed`;
+- plugin-specific logs or observable artifacts match expectations.
+
+### 8.7.3 Full waterfall auditing is a community extension
+
+`DSH_EVENT_AUDIT_DUMP`, the audit snapshot's `byMode` field, and the “74 events / 12 waterfalls” result are **not built into the official repository**. They come from the community plugin `@qing3a/dsh-event-auditor` used in Discussion #462. This variable is meaningful only after installing that plugin:
+
+```bash
+DSH_EVENT_AUDIT_DUMP=/tmp/audit.json \
+pnpm dsh --profile headless "run the bash tool once and report"
+```
+
+Do not assert one fixed event count across releases. Stable assertions are that the waterfalls relevant to the plugin occur, default behavior after `next()` still occurs, the tool returns a result, and the turn completes.
+
+### 8.7.4 Common failures
+
+- **Argument separator:** write `pnpm run mock:llm --` with exactly one `--`; omitting or duplicating it can shift argument parsing.
+- **Incomplete source checkout:** use a full clone. Missing `vendor/` prevents `@deepseek-ai/cordis` from resolving.
+- **Build scope:** headless requires `build:lib:host`; add client/Web builds only when the plugin under test depends on those artifacts.
+- **Service injection:** headless does not provide `webServer`; making it a required injection leaves the plugin waiting forever.
+- **Version drift:** trust the target checkout's CLI `--help`, `lib/types/`, and event catalog instead of fixed numbers copied from another rc/master revision.
 
 ---
 
