@@ -144,7 +144,7 @@
 | [#410](https://github.com/deepseek-ai/deepseek-harness/discussions/410) | **`@deepseek-ai/dsh-tools@0.0.1-rc.1` 无法安装：peer `dsh-type-meta` 未发布** | 第 4 章依赖坑 |
 | [#432](https://github.com/deepseek-ai/deepseek-harness/discussions/432) | dsh-doctor：patch 失败静默启动（id 覆盖/未知 id） | 第 3 章 patch 层坑 |
 | [#447](https://github.com/deepseek-ai/deepseek-harness/discussions/447) | `Invalid schema for function 'cmd'`：插件 schema 错误拖垮 agent | 第 4 章 schema 校验 |
-| [#462](https://github.com/deepseek-ai/deepseek-harness/discussions/462) | **插件运行时验证方法论：mock llm + headless + 审计 dump，零成本无 key 验证 waterfall** | **内容缺口**：插件测试方法论（第 4 章强化） |
+| [#462](https://github.com/deepseek-ai/deepseek-harness/discussions/462) | **插件运行时验证方法论：mock llm + headless + 审计 dump，零成本无 key 验证 waterfall** | **已沉淀**：第 4 章契约测试 + 第 8 章 8.7 节无 Key 运行时验证 |
 | [#502](https://github.com/deepseek-ai/deepseek-harness/discussions/502) | 第三方 settings namespaces 被硬编码白名单挡住（plugin-configuration 不显示） | 第 4 章 settings 扩展点 |
 | [#558](https://github.com/deepseek-ai/deepseek-harness/discussions/558) | **code 模式 run_code/bash 同名 required description 导致死循环** | **内容缺口**：Code Mode 工具参数坑 |
 | [#572](https://github.com/deepseek-ai/deepseek-harness/discussions/572) | 进程内多份 `@deepseek-ai/dsh-tools` → Symbol key 不匹配，调度器静默 undefined（crash） | 第 4 章依赖复制坑 |
