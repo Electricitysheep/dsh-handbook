@@ -132,3 +132,31 @@
 - 两面对照，结论取"数据 + 讨论都指向"的部分，减少单侧偏差
 
 > 生态在变，本报告会随讨论区持续更新（见 [沉淀流水线](./research/feedback-pipeline.md)）。
+
+## 15.6 独立数据源交叉验证：每周生态地图（验证纪律视角）
+
+> 另一份独立数据源：[zoahdev/dsh-ecosystem 每周生态地图](https://github.com/zoahdev/dsh-ecosystem)
+> （每周更新，2026-08-17 数据）。与 15.1 的 dsh-hub.cc 规模口径不同，它统计的是
+> **注册表级验证指标**——补上"有多少插件真的能装、能跑"这一面。
+
+### 注册表快照（2026-08-17，实时数据）
+
+| 指标 | 数值 | 说明 |
+|---|---|---|
+| 注册表插件 | 908 | dsh-subscribe 收录，来源可追溯 |
+| 已验证（verified） | 21（2.3%） | 窄定义：策展人实际跑过 CI + 安装 + 运行时冒烟 |
+| 周增长 | ~554 → 908（+64%） | 一周内 |
+| 分类 top | tools 208 / ui 208 / dev 108 | 工具 + UI 占 46% |
+
+### 与 15.1 的互补关系
+
+- 15.1 回答"生态有多大"（商店规模口径）；本节回答"生态有多可信"（验证口径）
+- **2.3% 验证缺口**是信任侧的量化：发现易、验证难——这正是 doctor /
+  poison-guard / 注册表契约存在的理由
+- 验证方法论与工具：[dsh-plugin-doctor](https://github.com/zoahdev/dsh-plugin-doctor)
+  （发布前体检）、[dsh-poison-guard](https://github.com/zoahdev/dsh-poison-guard)
+  （投毒扫描）、[审计方法论文章](https://zoahdev.github.io/blog/2026/08/17/how-to-audit-a-small-plugin.html)
+- 每周更新：https://github.com/zoahdev/dsh-ecosystem（含补丁台账 42+ 与 RFC #1846/#2486）
+
+> 口径提醒：本节 "verified" 是窄定义（CI + 安装 + 运行时冒烟），**不等于安全审计**——
+> 两个口径都标注清楚，读者按需取用。
