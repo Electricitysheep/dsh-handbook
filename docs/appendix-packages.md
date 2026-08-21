@@ -115,7 +115,7 @@ dsh 的"地基"：装一个 `@deepseek-ai/dsh` 就能跑，profile 由内置 bun
 | `@deepseek-ai/dsh-pty` | rc.1 时代依赖，从未发布（`pnpm dlx` 404 的根因，见第 2 章 FAQ） |
 | `@deepseek-ai/dsh-type-meta` | rc.1 时代依赖，从未发布（rc.1 依赖断裂的根因，见第 3 章 3.5 节） |
 
-> 规避方式：依赖统一走 `^0.1.0-rc.6` 线。
+> 规避方式：依赖统一走 `^0.1.0-rc.8` 线。
 
 ---
 

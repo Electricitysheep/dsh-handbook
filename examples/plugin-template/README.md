@@ -8,7 +8,7 @@
 
 ```
 plugin-template/
-├── package.json          # host 插件声明（rc.6 依赖线）
+├── package.json          # host 插件声明（rc.8 依赖线）
 ├── tsconfig.json
 ├── src/
 │   ├── policy.ts         # 纯函数：决策逻辑（零依赖，可单测）

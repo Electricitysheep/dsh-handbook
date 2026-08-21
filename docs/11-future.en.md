@@ -25,7 +25,7 @@
 
 | Horizon | Projection | Basis |
 |---|---|---|
-| Short | `0.1.0` stable release (drop rc), breaking changes converge | Currently rc.6; official explicitly warns of breaking changes; iteration is fast |
+| Short | `0.1.0` stable release (drop rc), breaking changes converge | Currently rc.8; official explicitly warns of breaking changes; iteration is fast |
 | Short | Official TUI & interactive CLI (highest community demand, #172 15+ comments) | Hottest request in official Discussions |
 | Mid | Cache/performance optimization becomes the theme (finer reasoning_effort, cache-hit tooling) | High cache-hit rate is already a cost advantage (ch. 5); it will be made explicit via tooling |
 | Mid | Plugin ecosystem standardization (marketplace / one-click install / quality tiers) | Official `dsh-plugin` topic exists; plugin growth inevitably creates a marketplace |

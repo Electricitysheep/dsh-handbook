@@ -51,12 +51,12 @@ dsh-speed-plugin/
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/dsh-agent": "^0.1.0-rc.6"
+    "@deepseek-ai/dsh-agent": "^0.1.0-rc.8"
   }
 }
 ```
 
-> ⚠️ 依赖版本务必用 `^0.1.0-rc.6` 线——rc.1 线的 npm 依赖链是断的（见第 3 章常见坑）。
+> ⚠️ 依赖版本务必用 `^0.1.0-rc.8` 线——rc.1 线的 npm 依赖链是断的（见第 3 章常见坑）。
 
 ## 4.3 纯函数：决策逻辑（零依赖，可单测）
 

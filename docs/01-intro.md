@@ -42,7 +42,7 @@
 | 开源时间 | 2026-08-13 |
 | 协议 | MIT（可商用、可改） |
 | 语言 | TypeScript（Node.js ≥ 22） |
-| 版本线 | `0.1.0-rc.x`（当前 rc.6，迭代快，官方明示"将有破坏性变更"） |
+| 版本线 | `0.1.0-rc.x`（当前 rc.8，迭代快，官方明示"将有破坏性变更"） |
 | 底层 | [Cordis](https://github.com/cordiverse/cordis)（可组合插件容器） |
 | 内置形态 | `web`（Web UI）+ `headless`（一次性 CLI） |
 | 官方定位 | 官方 README 原话："everything is a plugin" |
@@ -129,7 +129,7 @@ flowchart TB
 
 | 维度 | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI |
 |---|---|---|---|---|---|---|
-| 开源 | ✅ MIT | ❌ 闭源 | ❌ 闭源 | ✅ MIT | ❌ 闭源 | ❌ 闭源 |
+| 开源 | ✅ MIT | ❌ 闭源 | ✅ 开源（harness 架构，2025） | ✅ MIT | ❌ 闭源 | ❌ 闭源 |
 | 模型绑定 | 模型无关（官方适配 DeepSeek） | Claude 系 | GPT 系 | 任意 | Gemini 系 | Kimi 系 |
 | 官方运行时 | ✅（web + headless + 插件生态） | 产品即运行时 | 产品即运行时 | 客户端（无官方后端） | 产品即运行时 | 产品即运行时 |
 | **插件体系** | **官方级：一切皆插件，60+ 官方包** | 配置/钩子为主 | 配置为主 | 配置为主 | 无 | 无 |
@@ -153,14 +153,14 @@ flowchart TB
 | **GLM CLI** | 智谱 coding agent CLI | 主打 GLM 模型；dsh 模型无关 + 插件生态 |
 | **Grok CLI** | xAI 终端 coding agent | 主打 Grok 模型 |
 
-> 结论：主流 agent 大致分三类——**IDE 内嵌**（Cursor/Windsurf）、**终端编码助手**（Codex/OpenCode/Aider/Qwen Code/GLM CLI/Grok CLI）、**运行时/平台**（dsh/Devin）。dsh 是目前唯一"官方开源 + 模型无关 + 插件生态"的运行时型选手。
+> 结论：主流 agent 大致分三类——**IDE 内嵌**（Cursor/Windsurf）、**终端编码助手**（OpenCode/Aider/Qwen Code/GLM CLI/Grok CLI）、**运行时/平台**（dsh/Devin/**Codex harness**）。dsh 与 Codex harness 同为开源运行时，其中 **dsh 独有“官方开源 + 模型无关 + 一切皆插件”** 的组合（Codex 仍以 OpenAI 模型为核心）。
 
 <!-- [style] 子标题编号统一：去掉残留旧编号 -->
 ### 通俗文字版：每家是什么、适合谁、和 dsh 差在哪
 
 **Claude Code（Anthropic）**：目前最成熟的终端编码助手。开箱即用、TUI 体验好、生态成熟——**适合想马上干活的人**。缺点：闭源、绑定 Claude 模型、定制空间有限（只能配置/钩子）。和 dsh 比：dsh 能改的东西它改不了（界面/工具链/后端），但 dsh 的"开箱即用"还比不上它。
 
-**OpenAI Codex**：OpenAI 的终端 agent。工程能力强、GPT 系模型加持。同样闭源绑定。和 dsh 比：能力线接近，但 dsh 开源可自改。
+**OpenAI Codex**：OpenAI 的终端 agent，**2025 年底已开源其 harness 架构**。工程能力强、GPT 系模型加持。和 dsh 比：两者已同为开源运行时，核心差异在 **插件体系**—— dsh “一切皆插件”（60+ 官方包，host/client 双半可深度定制），Codex 则以终端编码助手形态为主。
 
 **OpenCode**：开源、终端、可配任意模型——和 dsh 最像的"邻居"。关键差异：**OpenCode 没有官方后端运行时**（它是客户端 + 配置），dsh 有官方 bundle + 60+ 包 + 插件生态，可定制面更深。**如果你是 OpenCode 用户，迁移 dsh 的成本很低**（概念类似）。
 
@@ -250,7 +250,7 @@ flowchart TB
 能。使用（第 2 章）不需要编程；写插件（第 4 章）需要基础 TS，但教程给完整代码。
 
 **Q4：dsh 稳定吗？**
-当前 rc 阶段（0.1.0-rc.6），迭代快、有破坏性变更。生产核心依赖建议等正式版；玩生态现在正是时机。
+当前 rc 阶段（0.1.0-rc.8），迭代快、有破坏性变更。生产核心依赖建议等正式版；玩生态现在正是时机。
 
 **Q5：为什么现在学 dsh 值得？**
 生态零日 + 官方点名鼓励社区 + 中文教程空白——**每个早期生态都有"第一个吃螃蟹的人"的红利**，现在是入场窗口。

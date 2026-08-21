@@ -8,7 +8,7 @@
 2. **挂载插件只需两步**：`package.json` 加依赖 + `cordis.patch.yml` 加挂载行，然后 `pnpm install` 重启
 3. **host 半跑在 Node，client 半跑在浏览器**：一个 npm 包通过 `exports["."]` 和 `exports["./client"]` 同时携带两副面孔
 4. **改行为找扩展点，别 fork 核心**：`agent/request` waterfall、`conversationEvents`、`ctx.slots.inject`、`settings` 服务是四大常用钩子
-5. **rc 阶段三大坑**：依赖版本用 `^0.1.0-rc.6` 线、`next()` 必须 await、client 测试需要 dsh 运行时
+5. **rc 阶段三大坑**：依赖版本用 `^0.1.0-rc.8` 线、`next()` 必须 await、client 测试需要 dsh 运行时
 
 <details><summary>本章导航</summary>
 - [3.1 profile：一个可启动的配置栈](#31-profile一个可启动的配置栈)
@@ -163,7 +163,7 @@ export function apply(ctx: any) {
 
 | 坑 | 现象 | 解决 | 帖号 |
 |---|---|---|---|
-| **rc.1 依赖断裂** | `pnpm install` 报 `@deepseek-ai/dsh-type-meta@0.0.1-rc.1` 404 | 官方 rc.1 时代多个包从未发布；升级到 `^0.1.0-rc.6` 线 | — |
+| **rc.1 依赖断裂** | `pnpm install` 报 `@deepseek-ai/dsh-type-meta@0.0.1-rc.1` 404 | 官方 rc.1 时代多个包从未发布；升级到 `^0.1.0-rc.8` 线 | — |
 | **全局 `core.hooksPath` 冲突** | 全局设过 `core.hooksPath`（如 Codex/Claude Code）→ `pnpm install` 时 lefthook postinstall 失败 | 临时取消全局 hooksPath：`git config --global --unset core.hooksPath`，装完再恢复 | [#139](https://github.com/deepseek-ai/deepseek-harness/discussions/139) |
 | **macOS 全局安装解析不到插件** | `pnpm add -g @deepseek-ai/dsh` 后启动报 ~88 个插件包 `ERR_MODULE_NOT_FOUND` | pnpm 全局安装的模块解析策略与 npm 不同；macOS 建议用 `npm i -g` 或 npx | [#204](https://github.com/deepseek-ai/deepseek-harness/discussions/204) |
 | **koffi 预编译损坏（Windows）** | koffi 3.1.3/3.1.4 的 `win32-x64` 预编译 binary 损坏 → 目录选择器崩溃/服务静默挂 | 锁死 koffi@3.1.2：`pnpm add koffi@3.1.2` 或改 `package.json` resolution | [#293](https://github.com/deepseek-ai/deepseek-harness/discussions/293) |

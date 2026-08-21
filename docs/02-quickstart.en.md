@@ -25,7 +25,7 @@ First run downloads dsh (large package, 40+ plugin modules, 1-3 min). You're goo
 
 <!-- [style] 输出/目录类代码块统一补 text 语言标签 -->
 ```text
-0.1.0-rc.6
+0.1.0-rc.8
 ```
 
 **Global install (recommended for frequent use)**
@@ -181,7 +181,7 @@ agent-default-model:
 | `npx` very slow | first-run package size; `npm i -g` helps |
 | browser can't reach 3080 | port busy: `netstat -ano \| findstr 3080` → kill PID |
 | model not responding | check `~/.dsh/settings.yaml` + API key |
-| plugin install 404 | **rc.1 dependency break**: use `^0.1.0-rc.6` line (Ch.3 pitfall #1) |
+| plugin install 404 | **rc.1 dependency break**: use `^0.1.0-rc.8` line (Ch.3 pitfall #1) |
 | behavior changed after upgrade | rc-stage breaking changes; check changelog |
 
 ---

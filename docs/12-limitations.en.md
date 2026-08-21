@@ -1,6 +1,6 @@
 # Chapter 12: Known Limitations & Boundaries — the Honest Edition
 
-> Goal: list dsh's **known limitations** and usage boundaries without hype. When this handbook was written, dsh was still at `0.1.0-rc.6` (pre-release). These limitations are "facts of this moment", not "permanent fate" — they will change as versions iterate.
+> Goal: list dsh's **known limitations** and usage boundaries without hype. When this handbook was written, dsh was still at `0.1.0-rc.8` (pre-release). These limitations are "facts of this moment", not "permanent fate" — they will change as versions iterate.
 >
 > All "known issues" come from hands-on testing + public feedback in the official repo discussions (deepseek-ai/deepseek-harness, as of 2026-08-13).
 
@@ -18,11 +18,11 @@
 
 ### Breaking changes happen anytime
 
-dsh has gone through at least one **dependency breakage** from rc.1 to rc.6: inconsistent `@deepseek-ai/*` version lines caused plugins to fail installing (404/ERR_MODULE_NOT_FOUND). rc.6 has converged a lot, but **nothing guarantees rc.7 or the stable release won't break again**.
+dsh has gone through at least one **dependency breakage** from rc.1 to rc.8: inconsistent `@deepseek-ai/*` version lines caused plugins to fail installing (404/ERR_MODULE_NOT_FOUND). rc.8 has converged a lot, but **nothing guarantees rc.7 or the stable release won't break again**.
 
 **Real impact on you**:
 - Tutorials/plugins may need rewriting every couple of weeks
-- Pinning the version line (`^0.1.0-rc.6`) is the baseline; but whether an rc-line upgrade is "backward compatible" or "start over" depends on the official team's mood
+- Pinning the version line (`^0.1.0-rc.8`) is the baseline; but whether an rc-line upgrade is "backward compatible" or "start over" depends on the official team's mood
 
 > [!WARNING]
 > Evaluate carefully before production use. At writing time the official team is iterating fast — **what works today may be deprecated tomorrow**.
@@ -68,7 +68,7 @@ The handbook's benchmark covers **single agent, normal task scale**. These scena
 
 Compared with Claude Code, Codex, and other mature products, dsh's gaps are **structural** (not fixed by adding a few features):
 
-| Dimension | dsh (rc.6) | Mature agents |
+| Dimension | dsh (rc.8) | Mature agents |
 |---|---|---|
 | Ecosystem stage | day zero, few third-party assets | mature, complete |
 | Out of the box | requires understanding profiles/plugin system | install & run |
@@ -91,13 +91,13 @@ Black swans a selector must consider:
 
 Finally, honestly about this handbook itself:
 
-- **Written against rc.6**: every command, config, and data point verified on rc.6 — **newer versions may invalidate everything**
+- **Written against rc.8**: every command, config, and data point verified on rc.8 — **newer versions may invalidate everything**
 - **Limited benchmark sample**: single machine, single model, limited task set — not an authoritative evaluation
 - **Chinese-first**: the English edition is a translation/condensation and may lag the Chinese content
 - **Incomplete coverage**: dsh has 60+ official packages; this handbook deep-dives the core path; long-tail plugins aren't covered one by one
 
-> **Usage advice**: treat this handbook as an "rc.6 snapshot + methodology", not an "eternal bible". When versions update, run through the [roadmap learning path](./roadmap.md) acceptance checks first, then decide whether to update your dependency line.
+> **Usage advice**: treat this handbook as an "rc.8 snapshot + methodology", not an "eternal bible". When versions update, run through the [roadmap learning path](./roadmap.md) acceptance checks first, then decide whether to update your dependency line.
 
 ---
 
-*Info as of 2026-08-13 (dsh 0.1.0-rc.6). For newer versions, issues/PRs are welcome to correct.*
+*Info as of 2026-08-13 (dsh 0.1.0-rc.8). For newer versions, issues/PRs are welcome to correct.*

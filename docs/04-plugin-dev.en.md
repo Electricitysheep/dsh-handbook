@@ -44,12 +44,12 @@ Key fields in `package.json`:
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/dsh-agent": "^0.1.0-rc.6"
+    "@deepseek-ai/dsh-agent": "^0.1.0-rc.8"
   }
 }
 ```
 
-> ⚠️ Always use the `^0.1.0-rc.6` dependency line. The rc.1 npm dependency chain is broken (see Chapter 3 pitfalls).
+> ⚠️ Always use the `^0.1.0-rc.8` dependency line. The rc.1 npm dependency chain is broken (see Chapter 3 pitfalls).
 
 ## 4.3 Pure Function: Decision Logic (Zero Dependencies, Unit-Testable)
 

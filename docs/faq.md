@@ -50,10 +50,10 @@ Windows 上 3080 可能落在 Hyper-V/WSL2/Docker Desktop 的保留端口区间�
 保持会话延续、prompt 前缀稳定、批量同会话。实测可到 97%（见[第 5 章](./05-cases.md)）；社区实测长跑可达 99.7%（[#560](https://github.com/deepseek-ai/deepseek-harness/discussions/560)）。
 
 **Q：第三方模型/自定义网关没有"推理强度"选项？**
-rc.6 的 llm-pi-ai 只暴露 `thinkingFormat`/`supportsReasoningEffort`，且手写 provider 的 reasoningEfforts 需在 settings.yaml 手动声明（[#122](https://github.com/deepseek-ai/deepseek-harness/discussions/122) [#302](https://github.com/deepseek-ai/deepseek-harness/discussions/302) [#736](https://github.com/deepseek-ai/deepseek-harness/discussions/736)）。声明后报 `400 unknown variant developer` 是网关不认 developer role——需配 `compat.supportsDeveloperRole: false`（[#280](https://github.com/deepseek-ai/deepseek-harness/discussions/280) [#614](https://github.com/deepseek-ai/deepseek-harness/discussions/614) [#636](https://github.com/deepseek-ai/deepseek-harness/discussions/636)）。社区有自动探测网关方言的插件（[#559](https://github.com/deepseek-ai/deepseek-harness/discussions/559)）。
+rc.8 的 llm-pi-ai 只暴露 `thinkingFormat`/`supportsReasoningEffort`，且手写 provider 的 reasoningEfforts 需在 settings.yaml 手动声明（[#122](https://github.com/deepseek-ai/deepseek-harness/discussions/122) [#302](https://github.com/deepseek-ai/deepseek-harness/discussions/302) [#736](https://github.com/deepseek-ai/deepseek-harness/discussions/736)）。声明后报 `400 unknown variant developer` 是网关不认 developer role——需配 `compat.supportsDeveloperRole: false`（[#280](https://github.com/deepseek-ai/deepseek-harness/discussions/280) [#614](https://github.com/deepseek-ai/deepseek-harness/discussions/614) [#636](https://github.com/deepseek-ai/deepseek-harness/discussions/636)）。社区有自动探测网关方言的插件（[#559](https://github.com/deepseek-ai/deepseek-harness/discussions/559)）。
 
 **Q：所有工具调用都报 `Error: unknown tool ""`？**
-rc.6 流式解析 bug：SSE 分块覆盖赋值把工具名/ID 抹成空串（[#725](https://github.com/deepseek-ai/deepseek-harness/discussions/725) 根因 + 修复；[#161](https://github.com/deepseek-ai/deepseek-harness/discussions/161) 同族）。**两类触发根因**：
+rc.8 流式解析 bug：SSE 分块覆盖赋值把工具名/ID 抹成空串（[#725](https://github.com/deepseek-ai/deepseek-harness/discussions/725) 根因 + 修复；[#161](https://github.com/deepseek-ai/deepseek-harness/discussions/161) 同族）。**两类触发根因**：
 1. **覆盖赋值**：`translate.ts` 对 `block.name`/`block.callId` 逐分块覆盖而非累加，后续分块带空 `function.name` 时把已解析的工具名抹成空串（帖内主修复：改为 `(block.name ?? '') + ...` 累加）；
 2. **null 隐式转字符串**：部分模型（如 hy3、longcat-2.0）在流式 delta 中给 `id`/`name` 填 `null`——`null !== undefined` 恒真，原判断会把 `null` 隐式转成字符串拼接，产出破坏性工具名（如 `"Glob" + null → "Globnull"`）。更彻底的修复是**严格类型校验**：`typeof call.id === 'string'` / `typeof call.function?.name === 'string'` 才累加（#725 评论区补充方案）。
 
@@ -65,10 +65,10 @@ rc.6 流式解析 bug：SSE 分块覆盖赋值把工具名/ID 抹成空串（[#7
 ## 插件开发
 
 **Q：插件装不上（404）？**
-rc.1 依赖断裂——确认用 `^0.1.0-rc.6` 线（第 3 章坑 #1）。
+rc.1 依赖断裂——确认用 `^0.1.0-rc.8` 线（第 3 章坑 #1）。
 
 **Q：写第一个插件最容易踩哪些坑？（社区六坑）**
-来源：官方讨论区 [#380](https://github.com/deepseek-ai/deepseek-harness/discussions/380)「写第一个 dsh 插件踩的六个坑」（作者 codeAnqiang-ma 授权收录，dsh `0.1.0-rc.6` 本机复核，致谢 @codeAnqiang-ma）。忠实提炼：
+来源：官方讨论区 [#380](https://github.com/deepseek-ai/deepseek-harness/discussions/380)「写第一个 dsh 插件踩的六个坑」（作者 codeAnqiang-ma 授权收录，dsh `0.1.0-rc.8` 本机复核，致谢 @codeAnqiang-ma）。忠实提炼：
 1. **`@deepseek-ai/*` 能否 import 取决于插件装在哪**：dev `link` 进 profile 时，Node 沿软链接真实路径解析，走不到兜底目录 `~/.dsh/profiles/node_modules`（只有 registry 安装才能撞上）→ 报 `ERR_MODULE_NOT_FOUND`。解法：插件不 import 任何 `@deepseek-ai/*`，全从 `ctx` 上拿；要用 schemastery 写 config schema 就走 peer dependency（registry 形态下通）。
 2. **`inject` 只能是字符串数组**：写成 `{ required: [...], optional: [...] }` 会把 `required`/`optional` 当成两个服务名，启动卡在 `pending (waiting for services: required, optional)`。官方包全是数组写法（`["skills"]`、`["systemPrompt"]`、`["agents","tools","skills"]`）。
 3. **想成为一层 profile 必须声明 `dsh.bundle`**：`package.json` 加 `"dsh": { "bundle": { "patch": "./cordis.patch.yml" } }`，否则 `dsh plugin add` 装完只是普通依赖、插件毫无动静（警告夹在 pnpm 输出里易漏）。改包名要同步 patch 里的 `name`，否则报 `plugin(s) failed to load`。
@@ -85,10 +85,10 @@ rc.1 依赖断裂——确认用 `^0.1.0-rc.6` 线（第 3 章坑 #1）。
 克隆[插件模板](../examples/plugin-template/)，改纯函数逻辑，挂载即用。想验证 waterfall 行为但没有 API Key？见[第 8 章 8.7 节](./08-tools-context.md#87-插件运行时验证方法论零成本)：官方 smoke/mock 路径无需模型服务，完整 waterfall dump 则需要社区审计插件。
 
 **Q：Code 模式下 run_code/bash 一直报 `missing required property "description"`？**
-rc.6 工具参数坑：run_code 与 bash 的 description 字段同名且标 required，模型常把内层 bash.description 当已传，外层缺字段 → 死循环重试（[#558](https://github.com/deepseek-ai/deepseek-harness/discussions/558) [#581](https://github.com/deepseek-ai/deepseek-harness/discussions/581) [#689](https://github.com/deepseek-ai/deepseek-harness/discussions/689)）。遇到时手动补外层 description 或换标准模式。
+rc.8 工具参数坑：run_code 与 bash 的 description 字段同名且标 required，模型常把内层 bash.description 当已传，外层缺字段 → 死循环重试（[#558](https://github.com/deepseek-ai/deepseek-harness/discussions/558) [#581](https://github.com/deepseek-ai/deepseek-harness/discussions/581) [#689](https://github.com/deepseek-ai/deepseek-harness/discussions/689)）。遇到时手动补外层 description 或换标准模式。
 
 **Q：分叉（fork）会话里 edit 总报 "edit requires reading ... first"？**
-rc.6 bug：fork 新建 session 不继承父会话的"已读文件"观察状态，历史里明明读过、策略却认为没读（[#275](https://github.com/deepseek-ai/deepseek-harness/discussions/275) [#450](https://github.com/deepseek-ai/deepseek-harness/discussions/450)）。重读一次文件即可绕过。
+rc.8 bug：fork 新建 session 不继承父会话的"已读文件"观察状态，历史里明明读过、策略却认为没读（[#275](https://github.com/deepseek-ai/deepseek-harness/discussions/275) [#450](https://github.com/deepseek-ai/deepseek-harness/discussions/450)）。重读一次文件即可绕过。
 
 **Q：装完某个插件后 dsh 启动报 `Invalid schema for function ...`？**
 插件 schema 写坏或 agent 改坏了 `cordis.patch.yml`，整个 dsh 起不来（[#297](https://github.com/deepseek-ai/deepseek-harness/discussions/297) [#447](https://github.com/deepseek-ai/deepseek-harness/discussions/447) [#708](https://github.com/deepseek-ai/deepseek-harness/discussions/708)）。恢复：删/修 `~/.dsh/profiles/web/cordis.patch.yml` 里对应行，或备份还原。别让 agent 自己装插件改配置前先备份。
@@ -113,7 +113,7 @@ rc 阶段有破坏性变更；核心依赖等 `0.1.0` 正式版，生态玩法�
 ## Windows 兼容
 
 **Q：选工作区时中文路径被截断（`开`/`一`/`需` 等字后面全丢）？**
-rc.6 著名 bug：Windows 原生目录选择器 readUtf16 只查 UTF-16 低字节，遇到低字节为 0x00 的汉字（开 U+5F00、一 U+4E00、需 U+9700 等）就提前截断（[#107](https://github.com/deepseek-ai/deepseek-harness/discussions/107) [#151](https://github.com/deepseek-ai/deepseek-harness/discussions/151) [#563](https://github.com/deepseek-ai/deepseek-harness/discussions/563)）。17+ 帖复现（[#244](https://github.com/deepseek-ai/deepseek-harness/discussions/244) [#580](https://github.com/deepseek-ai/deepseek-harness/discussions/580) 等），社区有 cherry-pick 修复。临时方案：工作区路径避开 U+XX00 字符。
+rc.8 著名 bug：Windows 原生目录选择器 readUtf16 只查 UTF-16 低字节，遇到低字节为 0x00 的汉字（开 U+5F00、一 U+4E00、需 U+9700 等）就提前截断（[#107](https://github.com/deepseek-ai/deepseek-harness/discussions/107) [#151](https://github.com/deepseek-ai/deepseek-harness/discussions/151) [#563](https://github.com/deepseek-ai/deepseek-harness/discussions/563)）。17+ 帖复现（[#244](https://github.com/deepseek-ai/deepseek-harness/discussions/244) [#580](https://github.com/deepseek-ai/deepseek-harness/discussions/580) 等），社区有 cherry-pick 修复。临时方案：工作区路径避开 U+XX00 字符。
 
 **Q：目录选择框报 `win32 folder dialog worker exited before reporting a result`？**
 koffi/native picker 系列崩溃（[#30](https://github.com/deepseek-ai/deepseek-harness/discussions/30) [#154](https://github.com/deepseek-ai/deepseek-harness/discussions/154) [#236](https://github.com/deepseek-ai/deepseek-harness/discussions/236)）。koffi 3.1.3/3.1.4 预编译损坏可锁 3.1.2（[#293](https://github.com/deepseek-ai/deepseek-harness/discussions/293)）；另有 STA CoUninitialize 段错误根因（[#768](https://github.com/deepseek-ai/deepseek-harness/discussions/768)）。
@@ -122,7 +122,7 @@ koffi/native picker 系列崩溃（[#30](https://github.com/deepseek-ai/deepseek
 Host/Origin 信任校验问题：用 `http://localhost:3080` 访问通常正常（[#153](https://github.com/deepseek-ai/deepseek-harness/discussions/153) [#313](https://github.com/deepseek-ai/deepseek-harness/discussions/313) [#764](https://github.com/deepseek-ai/deepseek-harness/discussions/764)）。注意服务端打印的地址可能不可用，改 localhost 试试。
 
 **Q：局域网/手机访问报 `crypto.randomUUID is not a function`？**
-明文 HTTP 非 loopback 不是安全上下文，`crypto.randomUUID` 不可用，所有 RPC 失败（[#221](https://github.com/deepseek-ai/deepseek-harness/discussions/221) [#367](https://github.com/deepseek-ai/deepseek-harness/discussions/367) [#514](https://github.com/deepseek-ai/deepseek-harness/discussions/514) [#755](https://github.com/deepseek-ai/deepseek-harness/discussions/755)）。rc.6 未带仓库已修的 shim；远程访问别用明文 IP。
+明文 HTTP 非 loopback 不是安全上下文，`crypto.randomUUID` 不可用，所有 RPC 失败（[#221](https://github.com/deepseek-ai/deepseek-harness/discussions/221) [#367](https://github.com/deepseek-ai/deepseek-harness/discussions/367) [#514](https://github.com/deepseek-ai/deepseek-harness/discussions/514) [#755](https://github.com/deepseek-ai/deepseek-harness/discussions/755)）。rc.8 未带仓库已修的 shim；远程访问别用明文 IP。
 
 **Q：Windows 下调用 pwsh/工具报 `missing required property "command"` 或假死？**
 pwsh 调用失败家族（[#121](https://github.com/deepseek-ai/deepseek-harness/discussions/121) [#225](https://github.com/deepseek-ai/deepseek-harness/discussions/225)），最严重时整个 dsh 假死（[#663](https://github.com/deepseek-ai/deepseek-harness/discussions/663)）。涉及沙箱与 PowerShell 组合的已知问题，Windows 用户先降级为 bash（若可用）或等修复。
