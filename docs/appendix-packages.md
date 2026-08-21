@@ -2,7 +2,7 @@
 
 > **本清单为「已知包」清单**：收录白皮书正文实测/提及过、且能在 npm registry 上核实的官方包（`@deepseek-ai/dsh-*` 与 `@deepseek-ai/cordis`），包描述来自 `npm view` 实测结果。dsh 处于 `0.1.0-rc` 快速迭代期，**包名与描述随版本更新**——若与官方仓库 `packages/AGENTS.md` 或 npm 最新描述不一致，以官方为准。未能核实的包标注「（待补全）」，不虚构包名。
 >
-> **包数口径**：本清单收录经 npm 核实的 **33 个核心包**（CLI 直接依赖 53 个 + 家族发布总量 221 个，见 [08 章 8.1 节](./08-tools-context.md) 说明）；白皮书/官方所称「60+ 能力包」指仓库 `packages/` 下全部子目录，完整列表见官方仓库 `packages/README.md`（47 组权威表）。
+> **包数口径**：本清单收录经 npm 核实的 **36 个核心包**（CLI 直接依赖 54 个 + 家族发布总量 221 个，见 [08 章 8.1 节](./08-tools-context.md) 说明）；白皮书/官方所称「60+ 能力包」指仓库 `packages/` 下全部子目录，完整列表见官方仓库 `packages/README.md`（47 组权威表）。
 >
 > 包名与仓库布局对应关系：npm 包 `@deepseek-ai/dsh-xxx` ≈ 官方仓库 `packages/<group>/xxx`（如 `dsh-tool-fs` ↔ `fs/tool-fs`）。
 >
@@ -38,6 +38,9 @@ dsh 的"地基"：装一个 `@deepseek-ai/dsh` 就能跑，profile 由内置 bun
 | `@deepseek-ai/dsh-tool-str-replace-editor` | 模型侧编辑工具：查看、创建、字面量替换、行插入（工具结果含 `locations` → 产物追踪） | 工具 |
 | `@deepseek-ai/dsh-shell` | 抽象 bash 执行器 seam（`ctx.shell`） | 工具 |
 | `@deepseek-ai/dsh-tool-bash` | 模型侧 bash 工具，可选通用后台任务与沙箱升级支持 | 工具 |
+| `@deepseek-ai/dsh-tool-bash-persistent` | 模型侧 owner 作用域的**持久化 bash 工具**，底层为 Harness PTY 服务 | 工具 |
+| `@deepseek-ai/dsh-tool-pwsh` | 模型侧 pwsh 工具，构建在 bash executor seam 之上 | 工具 |
+| `@deepseek-ai/dsh-tool-pwsh-persistent` | 模型侧 owner 作用域的**持久化 PowerShell 工具**，底层为 Harness PTY 服务（**rc.8 新增包**，Windows 长驻 shell 场景） | 工具 |
 | `@deepseek-ai/dsh-web` | 抽象 web 访问能力 seam（`ctx.web`）：search/fetch 提供者注册表、与注册顺序无关的选择、请求/结果词汇、WebError 分类 | 工具 |
 | `@deepseek-ai/dsh-tool-web` | 模型侧 web 工具（`web_search`、`web_fetch`），基于 `ctx.web` | 工具 |
 | `@deepseek-ai/dsh-tool-todo` | 模型侧待办工具 `todo_write`，基于事件溯源会话日志 | 工具 |
@@ -115,7 +118,11 @@ dsh 的"地基"：装一个 `@deepseek-ai/dsh` 就能跑，profile 由内置 bun
 | `@deepseek-ai/dsh-pty` | rc.1 时代依赖，从未发布（`pnpm dlx` 404 的根因，见第 2 章 FAQ） |
 | `@deepseek-ai/dsh-type-meta` | rc.1 时代依赖，从未发布（rc.1 依赖断裂的根因，见第 3 章 3.5 节） |
 
-> 规避方式：依赖统一走 `^0.1.0-rc.8` 线。
+> 规避方式：依赖统一走 `^0.1.0-rc.6` 线（caret 语义已覆盖 rc.7/rc.8，**不要逐版本上调**——写成 `^0.1.0-rc.8` 会把 rc.6/rc.7 用户挡在门外）。
+>
+> **根因（2026-08-21 实测补充）**：多数 `@deepseek-ai/dsh-*` 包的 npm `latest` dist-tag **至今仍指向废弃的 `0.0.1-rc.1`**（实测 `dsh-base`、`dsh-tool-fs`、`dsh-tool-pwsh`、`dsh-pwsh-local`、`dsh-tool-bash-persistent` 等均如此；`dsh-agent` 停在 `0.1.0-rc.6`），而 `0.1.0-rc.8`／`0.1.1-rc.1` 虽已发布却未打标签。因此**不写版本号直接 `pnpm add @deepseek-ai/dsh-*` 会被解析回 rc.1 线**，进而拉入上表两个从未发布的包而 404——这正是「rc.1 依赖断裂」的机制。
+>
+> 核对方式：`npm view @deepseek-ai/<name> dist-tags`。**始终显式写版本区间，不要依赖 `latest`。**
 
 ---
 

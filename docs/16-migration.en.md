@@ -1,6 +1,6 @@
 # Chapter 16: Migrating from Claude Code
 
-> Goal of this chapter, arrive with your accumulated setup instead of rebuilding from zero. Every asset type gets a measured answer to "what happens to it in DSH", all verified against the `0.1.0-rc.8` source.
+> Goal of this chapter, arrive with your accumulated setup instead of rebuilding from zero. Every asset type gets a measured answer to "what happens to it in DSH", all verified against the `0.1.0-rc.6` source.
 
 ## TL;DR
 

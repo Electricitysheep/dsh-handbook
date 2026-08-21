@@ -129,7 +129,7 @@ flowchart TB
 
 | 维度 | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI |
 |---|---|---|---|---|---|---|
-| 开源 | ✅ MIT | ❌ 闭源 | ✅ 开源（harness 架构，2025） | ✅ MIT | ❌ 闭源 | ❌ 闭源 |
+| 开源 | ✅ MIT | ❌ 闭源 | ✅ Apache-2.0（CLI/harness） | ✅ MIT | ❌ 闭源 | ❌ 闭源 |
 | 模型绑定 | 模型无关（官方适配 DeepSeek） | Claude 系 | GPT 系 | 任意 | Gemini 系 | Kimi 系 |
 | 官方运行时 | ✅（web + headless + 插件生态） | 产品即运行时 | 产品即运行时 | 客户端（无官方后端） | 产品即运行时 | 产品即运行时 |
 | **插件体系** | **官方级：一切皆插件，60+ 官方包** | 配置/钩子为主 | 配置为主 | 配置为主 | 无 | 无 |
@@ -160,7 +160,7 @@ flowchart TB
 
 **Claude Code（Anthropic）**：目前最成熟的终端编码助手。开箱即用、TUI 体验好、生态成熟——**适合想马上干活的人**。缺点：闭源、绑定 Claude 模型、定制空间有限（只能配置/钩子）。和 dsh 比：dsh 能改的东西它改不了（界面/工具链/后端），但 dsh 的"开箱即用"还比不上它。
 
-**OpenAI Codex**：OpenAI 的终端 agent，**2025 年底已开源其 harness 架构**。工程能力强、GPT 系模型加持。和 dsh 比：两者已同为开源运行时，核心差异在 **插件体系**—— dsh “一切皆插件”（60+ 官方包，host/client 双半可深度定制），Codex 则以终端编码助手形态为主。
+**OpenAI Codex**：OpenAI 的终端 agent，**其 harness 早已开源**——[openai/codex](https://github.com/openai/codex) 自 2025-04 建仓起即为 Apache-2.0 公开仓库（Rust 重写，含 SDK 与 app-server）。工程能力强、GPT 系模型加持。**注意开源边界**：开源的是 harness 层（CLI/SDK/app-server），模型（GPT 系）与云端 Codex 产品仍闭源。和 dsh 比：两者已同为开源运行时，核心差异在 **插件体系**—— dsh “一切皆插件”（60+ 官方包，host/client 双半可深度定制），Codex 则以终端编码助手形态为主。
 
 **OpenCode**：开源、终端、可配任意模型——和 dsh 最像的"邻居"。关键差异：**OpenCode 没有官方后端运行时**（它是客户端 + 配置），dsh 有官方 bundle + 60+ 包 + 插件生态，可定制面更深。**如果你是 OpenCode 用户，迁移 dsh 的成本很低**（概念类似）。
 

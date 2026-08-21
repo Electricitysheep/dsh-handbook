@@ -57,7 +57,7 @@ dsh 的会话统计行（Web UI 底部）显示：`N 轮 · M 步 | LLM Xs · �
 
 | # | 坑 | 现象 | 解法 |
 |---|---|---|---|
-| 1 | rc.1 依赖断裂 | `pnpm install` 404（`dsh-type-meta` 等从未发布） | 依赖用 `^0.1.0-rc.8` 线 |
+| 1 | rc.1 依赖断裂 | `pnpm install` 404（`dsh-type-meta` 等从未发布） | 依赖用 `^0.1.0-rc.6` 线 |
 | 2 | 插件缺 main | `No "exports" main defined` | 暴露 `.` 入口；`"main": "src/index.ts"` 可被 tsx 加载 |
 | 3 | `next()` 忘 await | provider/model 丢失报错 | `agent/request` 的 `next()` 返回 Promise，必须 await |
 | 4 | 事件类型不识别 | `'agent/request' is not assignable to keyof Events` | npm 未 re-export 类型增强，边界放宽签名 |

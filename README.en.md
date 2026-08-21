@@ -347,7 +347,7 @@ agent-default-model:
 1. **Is dsh a model?** No — a runtime; models plug in via the llm plugin
 2. **vs Claude Code?** Claude Code is the "whole car"; dsh is the "LEGO base" (open, customizable)
 3. **Does it cost money?** dsh is free/open-source; conversations billed per use (cache discount: Flash tier 98% / Pro tier 99%+, ~97% session cache hit rate measured)
-4. **Plugin 404?** rc.1 dependency breakage — pin the `^0.1.0-rc.8` line
+4. **Plugin 404?** rc.1 dependency breakage — pin the `^0.1.0-rc.6` line
 5. **Production-ready?** rc stage has breaking changes; ecosystem play is fine now
 > Full FAQ: [docs/faq.md](./docs/faq.md)
 </details>
@@ -356,7 +356,7 @@ agent-default-model:
 
 | Dimension | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI |
 |---|---|---|---|---|---|---|
-| Open source | ✅ MIT | ❌ | ❌ | ✅ MIT | ❌ | ❌ |
+| Open source | ✅ MIT | ❌ | ✅ Apache-2.0 (CLI/harness) | ✅ MIT | ❌ | ❌ |
 | Model binding | model-agnostic | Claude family | GPT family | any | Gemini family | Kimi family |
 | **Plugin system** | **official-grade: everything is a plugin, 60+ packages** | config/hooks | config | config | none | none |
 | Custom UI | ✅ (client half) | ❌ | ❌ | partial | ❌ | ❌ |
@@ -420,7 +420,7 @@ Active on [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek
 
 ## ℹ️ Version
 
-- Based on dsh `0.1.0-rc.8` / DeepSeek-V4-Flash-0731 (open-sourced 2026-08-13)
+- Prose measured against dsh `0.1.0-rc.6` / DeepSeek-V4-Flash-0731 (open-sourced 2026-08-13); version line synced to `0.1.0-rc.8`
 - Verified on Windows 11 + Node 24
 
 ## 📜 License
