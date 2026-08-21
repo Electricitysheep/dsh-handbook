@@ -86,7 +86,7 @@ flowchart TB
 
 | Dimension | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI |
 |---|---|---|---|---|---|---|
-| Open source | ✅ MIT | ❌ | ❌ | ✅ MIT | ❌ | ❌ |
+| Open source | ✅ MIT | ❌ | ✅ Apache-2.0 (CLI/harness) | ✅ MIT | ❌ | ❌ |
 | Model binding | model-agnostic | Claude | GPT | any | Gemini | Kimi |
 | Official runtime | ✅ + plugin ecosystem | product | product | client only | product | product |
 | **Plugin system** | **first-class, 60+ official pkgs** | config/hooks | config | config | none | none |

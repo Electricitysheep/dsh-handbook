@@ -1,6 +1,6 @@
 # 配置参考大全（Configuration Reference）
 
-> 面向需要深度配置 dsh 的用户：settings.yaml 全字段、profile 结构、cordis.patch.yml 语法。**rc 阶段字段可能变化，以官方 changelog 为准**；本表基于 0.1.0-rc.8 实测与官方文档。
+> 面向需要深度配置 dsh 的用户：settings.yaml 全字段、profile 结构、cordis.patch.yml 语法。**rc 阶段字段可能变化，以官方 changelog 为准**；本表基于 0.1.0-rc.6 实测与官方文档。
 
 ## 1. settings.yaml（全局设置）
 
@@ -113,5 +113,5 @@ dsh --dump-default-config  # 不含用户层/补丁
 |---|---|---|
 | 插件没生效 | cordis.patch.yml 没挂载 / 依赖没装 | 检查 insert 行 + `pnpm install` |
 | 改了 settings 没反应 | 未重启 | 重启 `dsh web` |
-| 依赖 404 | rc.1 线断裂 | 用 `^0.1.0-rc.8` |
+| 依赖 404 | rc.1 线断裂 | 用 `^0.1.0-rc.6` |
 | YAML 解析失败 | 顶层混用 `[]` 和块式条目 | 统一用块式数组 |

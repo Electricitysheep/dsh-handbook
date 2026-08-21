@@ -48,7 +48,7 @@ Advanced: A host plugin can listen to tool events for per-tool timing (the examp
 
 | # | Pitfall | Symptom | Fix |
 |---|---|---|---|
-| 1 | rc.1 broken dependency chain | `pnpm install` 404 (`dsh-type-meta` etc. were never published) | Use the `^0.1.0-rc.8` dependency line |
+| 1 | rc.1 broken dependency chain | `pnpm install` 404 (`dsh-type-meta` etc. were never published) | Use the `^0.1.0-rc.6` dependency line |
 | 2 | Plugin missing `main` | `No "exports" main defined` | Expose a `.` entry; `"main": "src/index.ts"` can be loaded by tsx |
 | 3 | `next()` not awaited | Provider/model lost, error thrown | `next()` in `agent/request` returns a Promise; must await |
 | 4 | Event type not recognized | `'agent/request' is not assignable to keyof Events` | npm doesn't re-export type augmentations; relax the signature at the boundary |

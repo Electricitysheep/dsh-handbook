@@ -235,4 +235,4 @@ Budget using Chapter 10's **Case A (data-quality analysis, 186s)** as the sample
 
 ---
 
-*Info as of 2026-08-16 (dsh 0.1.0-rc.8; peak/valley pricing effective 2026-08-16 16:00 UTC). Pricing and cache policy are subject to the official docs; items marked "(inferred, pending verification)" are extrapolations or estimates — corrections via PR after real-world testing are welcome.*
+*Info as of 2026-08-16 (dsh 0.1.0-rc.6; peak/valley pricing effective 2026-08-16 16:00 UTC). Pricing and cache policy are subject to the official docs; items marked "(inferred, pending verification)" are extrapolations or estimates — corrections via PR after real-world testing are welcome.*

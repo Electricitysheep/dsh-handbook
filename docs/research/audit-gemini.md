@@ -2,7 +2,7 @@
 
 > **审计员**：独立审计员 (Independent Auditor)  
 > **审计日期**：2026-08-14  
-> **审计基线版本**：dsh `0.1.0-rc.8` / deepseek-v4-flash-0731  
+> **审计基线版本**：dsh `0.1.0-rc.6` / deepseek-v4-flash-0731  
 > **审计范围**（只读）：
 > 1. `README.md`
 > 2. `docs/02-quickstart.md`

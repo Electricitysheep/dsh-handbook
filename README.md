@@ -390,7 +390,7 @@ agent-default-model:
 1. **dsh 是模型吗？** 不是——是运行时，模型通过 llm 插件接入
 2. **和 Claude Code 区别？** Claude Code 是"整车"，dsh 是"乐高底座"（开源可定制）
 3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存折扣：Flash 档 98% / Pro 档 99%+，实测会话缓存命中率 97%）
-4. **插件装不上 404？** rc.1 依赖断裂——用 `^0.1.0-rc.8` 线
+4. **插件装不上 404？** rc.1 依赖断裂——用 `^0.1.0-rc.6` 线
 5. **能进生产吗？** rc 阶段有破坏性变更；生态玩法现在可入
 > 完整 FAQ（六类）：[docs/faq.md](./docs/faq.md)
 </details>
@@ -399,7 +399,7 @@ agent-default-model:
 
 | 维度 | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI |
 |---|---|---|---|---|---|---|
-| 开源 | ✅ MIT | ❌ | ✅ 开源（harness 架构） | ✅ MIT | ❌ | ❌ |
+| 开源 | ✅ MIT | ❌ | ✅ Apache-2.0（CLI/harness） | ✅ MIT | ❌ | ❌ |
 | 模型绑定 | 模型无关 | Claude 系 | GPT 系 | 任意 | Gemini 系 | Kimi 系 |
 | **插件体系** | **官方级：一切皆插件，60+ 官方包** | 配置/钩子 | 配置 | 配置 | 无 | 无 |
 | 自定义界面 | ✅（client 半） | ❌ | ❌ | 部分 | ❌ | ❌ |
@@ -469,7 +469,7 @@ agent-default-model:
 
 ## ℹ️ 版本说明
 
-- 基于 dsh `0.1.0-rc.8` / DeepSeek-V4-Flash-0731（2026-08-13 开源）
+- 正文实测基于 dsh `0.1.0-rc.6` / DeepSeek-V4-Flash-0731（2026-08-13 开源）；版本线已同步至 `0.1.0-rc.8`
 - 示例环境：Windows 11 + Node 24
 
 ### 🔄 最近更新

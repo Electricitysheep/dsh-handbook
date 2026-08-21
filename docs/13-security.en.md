@@ -149,7 +149,7 @@ All 4 threads below verified to exist via `gh api graphql` (deepseek-ai/deepseek
 | #466 | An agent inside the sandbox can `taskkill` the host | Process visibility is outside the sandbox vocabulary |
 | #674 | `.tmp` plaintext session residue after crashes is never cleaned | Privacy risk |
 
-> Disclaimer: these are community reports from the rc.8 era (within 48h of the 2026-08-13 release); some may already be fixed in newer rcs — keep the version context in mind when citing.
+> Disclaimer: these are community reports from the rc.6 era (within 48h of the 2026-08-13 release); some may already be fixed in newer rcs — keep the version context in mind when citing.
 
 ### 13.6.1 Runtime failure signatures under the Windows restricted token
 

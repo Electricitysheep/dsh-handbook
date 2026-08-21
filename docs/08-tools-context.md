@@ -41,7 +41,7 @@ dsh 的能力全部以包形式提供（`packages/<group>/<name>`）。新手最
 | **技能（skill）** | `skill/*` | 技能提供者注册表 |
 | **界面（client）** | `client/*`（ui-conversation、ui-tool…） | Web UI 各部件 |
 
-> **完整清单与包数口径**：官方仓库 `packages/README.md` 是包清单权威表（47 组）；`@deepseek-ai/dsh` CLI 的 0.1.0-rc.8 声明 **53 个 `@deepseek-ai/dsh-*` 直接依赖**（+CLI 自身 = 54），家族发布总量约 **221 个**（含 devDeps 与历史 0.0.1-rc.1 列车，官方构建 commit 提及）。白皮书/官方所称"60+"指 `packages/` 下全部子目录。**npm 包名写法**（`@deepseek-ai/dsh-*`）与**仓库路径写法**（`fs/tool-fs`）的对应关系，以及每个包的实测描述，见 [附录 B：官方包速查大全](./appendix-packages.md)。
+> **完整清单与包数口径**：官方仓库 `packages/README.md` 是包清单权威表（47 组）；`@deepseek-ai/dsh` CLI 的 0.1.0-rc.8 声明 **54 个 `@deepseek-ai/dsh-*` 直接依赖**（+CLI 自身 = 55；rc.6 为 53 个，rc.8 新增 `dsh-tool-pwsh-persistent`），家族发布总量约 **221 个**（含 devDeps 与历史 0.0.1-rc.1 列车，官方构建 commit 提及）。白皮书/官方所称"60+"指 `packages/` 下全部子目录。**npm 包名写法**（`@deepseek-ai/dsh-*`）与**仓库路径写法**（`fs/tool-fs`）的对应关系，以及每个包的实测描述，见 [附录 B：官方包速查大全](./appendix-packages.md)。
 >
 > 📚 **想深入架构**：官方 `docs/subsystems/`（session / system-prompt / tools / agent / agent-loop / scope / llm-streaming / subagent）是各子系统的设计文档，比本节的"能力域分组"更系统化；自动生成的权威清单见官方 `docs/tool-catalog.md`、`docs/config-catalog.md`、`docs/module-graph.md`。
 
@@ -203,7 +203,7 @@ pnpm dsh --profile headless "run the bash tool once and report"
 
 ## 8.8 工具链踩坑
 
-rc.8 时代的工具链已知坑（坑 1/2 已入 [FAQ](./faq.md)）：
+rc.6 时代的工具链已知坑（坑 1/2 已入 [FAQ](./faq.md)；**未在 rc.8 重新验证**）：
 
 **坑 1：code 模式 `run_code`/`bash` 的 description required 死循环**（[#558](https://github.com/deepseek-ai/deepseek-harness/discussions/558) [#581](https://github.com/deepseek-ai/deepseek-harness/discussions/581) [#689](https://github.com/deepseek-ai/deepseek-harness/discussions/689)）
 `code` 模式下 `run_code` 与 `bash` 都把 UI 摘要字段叫 `description` 且标成 required：模型常把内层 `bash.description` 当成已传过，外层 JSON 只剩 `{"code":"..."}` → 反复报 `missing required property "description"`，看起来像"随机丢参数"。`#581` 补根因：`ToolArgsError` 不带工具名，模型无法定位错在哪个工具 → 死循环重试（附可 cherry-pick 修复）；`#689` 显示同族问题让 run_code 内所有 `tools.*` 调用都被拒绝。规避：手动补外层 description 或换标准模式。

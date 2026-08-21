@@ -73,7 +73,7 @@ cd ~/.dsh/profiles/web && pnpm install && dsh web
 |---|---|
 | 端口占 | `netstat -ano \| findstr 3080` → kill |
 | 模型无响应 | 查 settings.yaml + API key |
-| 插件装不上 404 | 依赖用 `^0.1.0-rc.8` 线 |
+| 插件装不上 404 | 依赖用 `^0.1.0-rc.6` 线 |
 | 长任务崩 | 全局安装（绕 npx）+ 降推理档 |
 
 ## 术语（速记）
