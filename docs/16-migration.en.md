@@ -1,4 +1,4 @@
-# Chapter 16: Migrating from Claude Code
+# Chapter 16 Migrating from Claude Code, Codex, and OpenCode
 
 > Goal of this chapter, arrive with your accumulated setup instead of rebuilding from zero. Every asset type gets a measured answer to "what happens to it in DSH", all verified against the `0.1.0-rc.6` source.
 
@@ -6,7 +6,7 @@
 
 1. Half the migration is free, project `CLAUDE.md` needs no move (DSH reads it natively) and `SKILL.md` loads unchanged
 2. Half is mechanical, `.mcp.json` converts losslessly (tool names `mcp__server__tool` are identical on both sides) and hooks have a first party bridge
-3. Automation, `npx dsh-movein` prints a dry-run moving estimate, `--apply` performs it; conversation history is `dsh-chat-import` territory
+3. Automation, `npx dsh-movein --from <origin>` prints a dry-run moving estimate, `--apply` performs it; conversation history is `dsh-chat-import` territory
 4. Budget before you move, the skill catalog costs about 28 tokens per skill on every request, move the skills you use, not the skills you have
 
 ## 16.1 Asset table (measured)
@@ -22,15 +22,27 @@
 | Subagents | No direct import | Convert them to skills, the frontmatter is nearly identical |
 | Sessions | Hardest, never hand-write | v0 format with no compatibility promise, use [dsh-chat-import](https://github.com/Nwflower/dsh-chat-import) |
 
+### Codex and OpenCode
+
+| Origin | Automated migration | Kept manual |
+| --- | --- | --- |
+| Codex | Global `AGENTS.md`, custom prompts, and stdio MCP from `config.toml` | Approval and sandbox policy |
+| OpenCode | Instructions, skills, commands, agents, and local or remote MCP with V1 / V2 JSONC precedence | Sessions, permissions, plugins, and multiple or remote instructions |
+
+DSH reads project `AGENTS.md` files natively. OpenCode `{env:VAR}` placeholders remain runtime environment references, and a JSONC parse failure blocks `--apply` before any write.
+
 ## 16.2 Automation
 
 ```sh
 npx dsh-movein            # dry run, moving estimate, writes nothing
 npx dsh-movein --apply    # move in
+npx dsh-movein --from codex
+npx dsh-movein --from opencode
+npx dsh-movein --from opencode --apply
 npx dsh-movein --reverse  # bring DSH-born skills back, dual boot
 ```
 
-Or install as a plugin (`dsh plugin --profile web add dsh-movein`) and ask the agent to do the move. Permission rules get a migration diff report, unmapped rules are listed instead of silently dropped, and every move is recorded in `~/.dsh/movein-manifest.json`.
+The plugin command `dsh plugin --profile web add dsh-movein` provides Claude Code and OpenCode migration tools. Codex migration uses the CLI. Permission rules get a migration diff report, unmapped rules are listed instead of silently dropped, and every move is recorded in `~/.dsh/movein-manifest.json`.
 
 ## 16.3 Boot traps the community actually hit
 
