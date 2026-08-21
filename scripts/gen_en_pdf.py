@@ -17,6 +17,7 @@ Usage:
     python scripts/gen_en_pdf.py [repo_root] [out_docx]
 """
 
+import datetime
 import os
 import re
 import sys
@@ -30,7 +31,11 @@ from docx.shared import Cm, Pt, RGBColor
 
 REPO = sys.argv[1] if len(sys.argv) > 1 else "."
 DOCS = os.path.join(REPO, "docs")
-OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(REPO, "DeepSeek-Harness-Handbook.docx")
+LANG = (sys.argv[3] if len(sys.argv) > 3 else os.environ.get("DSH_LANG", "en")).lower()
+if LANG not in ("en", "zh"):
+    raise SystemExit("lang must be 'en' or 'zh', got: %s" % LANG)
+_DEFAULT_OUT = "DeepSeek-Harness-Handbook.docx" if LANG == "en" else "DeepSeek-Harness-Handbook-zh.docx"
+OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(REPO, _DEFAULT_OUT)
 
 LATIN = "Calibri"
 MONO = "Consolas"
@@ -465,35 +470,48 @@ def add_page_number_footer(doc):
     add_field("NUMPAGES")
 
 
-def build_cover(doc):
+def build_cover(doc, nchap, version, datestr):
+    EN = (LANG == "en")
     for _ in range(5):
         p = doc.add_paragraph()
         p.paragraph_format.space_after = Pt(10)
+
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_after = Pt(6)
-    add_inline(p, "DeepSeek Harness Handbook", size=30, bold=True, color=NAVY)
+    add_inline(p, "DeepSeek Harness Handbook" if EN else "DeepSeek Harness \u767d\u76ae\u4e66",
+               size=30, bold=True, color=NAVY)
 
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_after = Pt(18)
-    add_inline(p, "dsh-handbook \u00b7 Complete English Edition", size=16, bold=True)
+    add_inline(p, "dsh-handbook \u00b7 Complete English Edition" if EN
+               else "dsh-handbook \u00b7 \u4e2d\u6587\u5b8c\u6574\u7248", size=16, bold=True)
 
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_after = Pt(6)
-    add_inline(p, "From zero to one with DeepSeek\u2019s open-source agent runtime \u2014 "
-                  "the beginner\u2019s encyclopedia: install, use, develop plugins, tune, secure, and budget.",
-              size=12, italic=True, color=GRAY)
+    add_inline(p,
+               ("From zero to one with DeepSeek\u2019s open-source agent runtime \u2014 the "
+                "beginner\u2019s encyclopedia: install, use, develop plugins, tune, secure, and budget.")
+               if EN else
+               ("\u4ece 0 \u5230 1 \u7528\u597d DeepSeek \u5f00\u6e90 Agent \u8fd0\u884c\u65f6\u2014\u2014"
+                "\u5b89\u88c5\u3001\u4f7f\u7528\u3001\u5199\u63d2\u4ef6\u3001\u8c03\u4f18\u3001\u5b89\u5168\u4e0e\u6210\u672c\u3002"),
+               size=12, italic=True, color=GRAY)
 
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_before = Pt(24)
-    add_inline(p, "14 Chapters + Appendix (Glossary / Packages / Benchmark)", size=12, bold=True)
+    add_inline(p,
+               ("%d Chapters + Appendix (Glossary / Packages / Benchmark)" % nchap) if EN
+               else ("%d \u7ae0 + \u9644\u5f55 ABC\uff08\u672f\u8bed\u8868 / \u5b98\u65b9\u5305 / \u5b9e\u6d4b\u5bf9\u6bd4\uff09" % nchap),
+               size=12, bold=True)
 
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    add_inline(p, "Synced from docs/ \u00b7 dsh 0.1.0-rc.6 \u00b7 2026-08-14", size=10, color=GRAY)
+    add_inline(p, "%s docs/ \u00b7 dsh %s \u00b7 %s"
+               % ("Synced from" if EN else "\u540c\u6b65\u81ea", version, datestr),
+               size=10, color=GRAY)
 
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -534,17 +552,22 @@ def main():
     rpr = style.element.get_or_add_rPr()
     rpr.get_or_add_rFonts().set(qn("w:eastAsia"), CJK)
 
-    chapter_files = sorted(
-        f for f in os.listdir(DOCS)
-        if re.match(r"^\d{2}-.*\.en\.md$", f)
-    )
+    if LANG == "en":
+        _pat = re.compile(r"^\d{2}-.*\.en\.md$")
+    else:
+        _pat = re.compile(r"^\d{2}-(?!.*\.en\.md).*\.md$")
+    chapter_files = sorted(f for f in os.listdir(DOCS) if _pat.match(f))
+    if not chapter_files:
+        raise SystemExit("no chapter files found for lang=%s in %s" % (LANG, DOCS))
     appendix_files = [
         ("Appendix A", "appendix-glossary.md"),
         ("Appendix B", "appendix-packages.md"),
         ("Appendix C", "benchmark.md"),
     ]
 
-    build_cover(doc)
+    _version = os.environ.get("DSH_VERSION", "0.1.0-rc.8")
+    _date = os.environ.get("DSH_DATE", datetime.date.today().isoformat())
+    build_cover(doc, len(chapter_files), _version, _date)
 
     # collect titles for the TOC
     chapters = []
@@ -571,14 +594,14 @@ def main():
         render_markdown(doc, os.path.join(DOCS, f), chapter_h1=True)
 
     # appendices (Chinese original, with English section note)
-    render_heading(doc, 1, "Appendix \u00b7 \u9644\u5f55\uff08\u4e2d\u6587\u539f\u6587\uff09", page_break=True)
-    body_paragraph(
-        doc,
-        "The appendices below are maintained in Chinese; they are included here in their "
-        "original form so the PDF stays complete. English readers can find the equivalent "
-        "concepts inside Chapters 1\u201314.",
-        size=10, italic=True, color=GRAY, space_after=10,
-    )
+    render_heading(doc, 1, "Appendix · 附录（中文原文）" if LANG == "en" else "附录", page_break=True)
+    if LANG == "en":
+        _note = ("The appendices below are maintained in Chinese; they are included here in "
+                 "their original form so the PDF stays complete. English readers can find the "
+                 "equivalent concepts inside Chapters 1-%d." % len(chapter_files))
+    else:
+        _note = "\u4ee5\u4e0b\u9644\u5f55\u4e3a\u4e2d\u6587\u539f\u6587\uff0c\u968f\u6b63\u6587\u540c\u6b65\u7ef4\u62a4\u3002"
+    body_paragraph(doc, _note, size=10, italic=True, color=GRAY, space_after=10)
     for label, fname in appendix_files:
         print(f"  rendering {fname} ({label})")
         render_heading(doc, 2, f"{label} \u00b7 {fname.replace('.md', '')} (Chinese original)")
