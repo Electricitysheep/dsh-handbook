@@ -45,6 +45,8 @@ npx dsh-movein --reverse  # DSH 里长出来的技能搬回 Claude Code（双栖
 
 也可装成插件让 agent 代劳。`dsh plugin --profile web add dsh-movein` 提供 Claude Code 与 OpenCode 迁移工具，Codex 迁移使用 CLI。
 
+项目仓库现以主要公开路径命名为 [claude-to-opencode](https://github.com/sjh9714/claude-to-opencode)。`dsh-movein` npm 包名和所有 DSH 命令保持不变。
+
 权限规则会输出**迁移差异报告**（几条原样生效、几条映射不了逐条列出），不静默转换。每次搬家在 `~/.dsh/movein-manifest.json` 记录来源与落点。
 
 ## 16.3 社区真实踩过的坑（启动相关）
@@ -55,4 +57,4 @@ npx dsh-movein --reverse  # DSH 里长出来的技能搬回 Claude Code（双栖
 
 ## 16.4 搬前先算账
 
-技能目录以 system-reminder 注入每个请求：固定包装 143 token，每个技能约 28 token（96 字符描述计）。129 个技能的配置每请求背约 3.8k token，缓存省钱但省不了上下文窗口。**搬你用的技能，不是你有的技能**，描述写短点。复现脚本与方法见 [dsh-movein 的 token 账单实测](https://github.com/sjh9714/dsh-movein/blob/main/docs/token-bill.md)。
+技能目录以 system-reminder 注入每个请求：固定包装 143 token，每个技能约 28 token（96 字符描述计）。129 个技能的配置每请求背约 3.8k token，缓存省钱但省不了上下文窗口。**搬你用的技能，不是你有的技能**，描述写短点。复现脚本与方法见 [dsh-movein 的 token 账单实测](https://github.com/sjh9714/claude-to-opencode/blob/main/docs/token-bill.md)。

@@ -44,6 +44,8 @@ npx dsh-movein --reverse  # bring DSH-born skills back, dual boot
 
 The plugin command `dsh plugin --profile web add dsh-movein` provides Claude Code and OpenCode migration tools. Codex migration uses the CLI. Permission rules get a migration diff report, unmapped rules are listed instead of silently dropped, and every move is recorded in `~/.dsh/movein-manifest.json`.
 
+The project repository is now named [claude-to-opencode](https://github.com/sjh9714/claude-to-opencode) for its primary public route. The `dsh-movein` npm package and all DSH commands remain unchanged.
+
 ## 16.3 Boot traps the community actually hit
 
 1. A patch row referencing a package the profile cannot resolve makes `dsh` boot fatally, install first, write config after.
@@ -52,4 +54,4 @@ The plugin command `dsh plugin --profile web add dsh-movein` provides Claude Cod
 
 ## 16.4 The token bill
 
-The skill catalog is injected into every request, 143 tokens of framing plus about 28 tokens per skill. A 129-skill setup carries about 3.8k tokens per request, caching softens the money, not the context window. Reproducible measurement, [the dsh-movein token bill](https://github.com/sjh9714/dsh-movein/blob/main/docs/token-bill.md).
+The skill catalog is injected into every request, 143 tokens of framing plus about 28 tokens per skill. A 129-skill setup carries about 3.8k tokens per request, caching softens the money, not the context window. Reproducible measurement, [the dsh-movein token bill](https://github.com/sjh9714/claude-to-opencode/blob/main/docs/token-bill.md).
