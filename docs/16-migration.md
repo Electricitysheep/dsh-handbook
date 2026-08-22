@@ -1,4 +1,4 @@
-# 第 16 章：从 Claude Code 迁移
+# 第 16 章 从 Claude Code、Codex 与 OpenCode 迁移
 
 > 本章目标：**带着积累搬家，而不是从零重建**。每类资产给出「在 DSH 里会怎样」的实测结论，全部按 `0.1.0-rc.6` 源码逐项验证。
 
@@ -6,7 +6,7 @@
 
 1. **一半是免费的**：项目 `CLAUDE.md` 不用搬（DSH 原生就读），`SKILL.md` 格式原样兼容
 2. **一半是机械的**：`.mcp.json` 可无损转换（工具名 `mcp__server__tool` 两边完全一致），hooks 有官方桥
-3. **自动化**：`npx dsh-movein` 出搬家清单预演，`--apply` 落地；会话历史用 `dsh-chat-import`
+3. **自动化**：`npx dsh-movein --from <来源>` 出搬家清单预演，`--apply` 落地；会话历史用 `dsh-chat-import`
 4. **搬前先算账**：技能目录每个技能每请求约 28 token，搬你用的，不是你有的
 
 ## 16.1 资产对照表（实测）
@@ -23,15 +23,27 @@
 | 斜杠命令（`.claude/commands`） | 无文件等价物 | DSH 命令是代码注册的，用户可调用技能是文件级替代 |
 | 会话 | 最难，别手写 | 会话文件是 v0 格式 + zstd 帧 + 严格事件校验，官方明确不承诺兼容。历史会话用 [dsh-chat-import](https://github.com/Nwflower/dsh-chat-import)（13 个来源，可反向导出） |
 
+### Codex 与 OpenCode
+
+| 来源 | 自动迁移 | 保留手动 |
+| --- | --- | --- |
+| Codex | 全局 `AGENTS.md`、自定义 prompt、`config.toml` 中的 stdio MCP | 审批与沙箱策略 |
+| OpenCode | 指令、技能、命令、代理、本地或远程 MCP，支持 V1 / V2 JSONC 优先级 | 会话、权限、插件、多文件或远程指令 |
+
+OpenCode 项目 `AGENTS.md` 由 DSH 原生读取。`{env:VAR}` 会保留为运行时环境变量引用，JSONC 解析失败会在任何写入前阻止 `--apply`。
+
 ## 16.2 自动化搬家
 
 ```sh
 npx dsh-movein            # 预演，出搬家清单，不写任何文件
 npx dsh-movein --apply    # 落地
+npx dsh-movein --from codex
+npx dsh-movein --from opencode
+npx dsh-movein --from opencode --apply
 npx dsh-movein --reverse  # DSH 里长出来的技能搬回 Claude Code（双栖）
 ```
 
-也可装成插件让 agent 代劳：`dsh plugin --profile web add dsh-movein`，然后在对话里说「把我的 Claude Code 配置搬过来」。
+也可装成插件让 agent 代劳。`dsh plugin --profile web add dsh-movein` 提供 Claude Code 与 OpenCode 迁移工具，Codex 迁移使用 CLI。
 
 权限规则会输出**迁移差异报告**（几条原样生效、几条映射不了逐条列出），不静默转换。每次搬家在 `~/.dsh/movein-manifest.json` 记录来源与落点。
 
