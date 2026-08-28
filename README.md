@@ -436,6 +436,7 @@ agent-default-model:
 
 本白皮书的方法论来自真实开源实践：
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) —— 社区侧边栏插件（第 5 章案例）
+- [DeepSeek Harness Handbook](https://github.com/sandbaseai/deepseek-harness-handbook/) —— 独立的运行手册，聚焦运行时边界、故障排查与源码证据（英文 canonical + 多语言）
 
 ### 🧩 社区插件推荐（来自官方讨论区 / [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 精选）
 

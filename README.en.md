@@ -391,6 +391,7 @@ agent-default-model:
 
 Methodology comes from real open-source work:
 - [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar) — community sidebar plugin (ch. 5 cases)
+- [DeepSeek Harness Handbook](https://github.com/sandbaseai/deepseek-harness-handbook/) — independent operator reference for runtime boundaries, troubleshooting, and source-linked evidence (English canonical + multilingual)
 
 ### 🧩 Recommended Community Plugins (from Official Discussions / [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin))
 
