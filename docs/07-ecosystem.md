@@ -71,6 +71,7 @@
 | `dsh-handbook`（本白皮书） | 新手教程 | 生态文档 |
 | **DeepSeek Desktop** | Windows 桌面端（x64 社区安装包，v0.2.0 离线安装器） | [#872](https://github.com/deepseek-ai/deepseek-harness/discussions/872)，同族 [#529](https://github.com/deepseek-ai/deepseek-harness/discussions/529) [#446](https://github.com/deepseek-ai/deepseek-harness/discussions/446) |
 | **turtle-ui** | 终端 TUI 界面插件（[turtle1999/turtle-ui](https://github.com/turtle1999/turtle-ui)） | 社区 TUI 方案，安装尝试见 [#871](https://github.com/deepseek-ai/deepseek-harness/discussions/871) |
+| **Blue** | 终端 TUI：pi-tui 渲染器以树外 Cordis 插件树挂载于 `dsh-base`（33 个 Fiber 插件可热替换、可省略，删光增强行仍可启动）；流式回复、工具卡片、审批问卷、底部 dock 面板、六套主题、中英双语，一体化启动器 `@dsh-blue/blue-cli` | [dsh-blue/blue](https://github.com/dsh-blue/blue)（MIT，中文文档 [dsh-blue.dev](https://dsh-blue.dev/)），介绍帖 [#5038](https://github.com/deepseek-ai/deepseek-harness/discussions/5038) |
 | **memory 插件族** | 跨会话长期记忆（设计提案 / 长期记忆 / MEMORY.md·USER.md 移植） | [#192](https://github.com/deepseek-ai/deepseek-harness/discussions/192) [#484](https://github.com/deepseek-ai/deepseek-harness/discussions/484) [#525](https://github.com/deepseek-ai/deepseek-harness/discussions/525) |
 | **《记忆体》提案** | 跨会话、隔离、用户显式挂载的记忆单元（底层设计，可挂接记忆插件族） | [#1822](https://github.com/deepseek-ai/deepseek-harness/discussions/1822) szx-a |
 | **dsh-sgme** | 记忆引擎：对话历史与长期记忆分层，提炼前自动剪枝（省 65-96% 会话内容），按场景注入记忆块 | [freehul/sgme](https://github.com/freehul/sgme)（npm 包 `dsh-sgme`），[#1052](https://github.com/deepseek-ai/deepseek-harness/discussions/1052) |
