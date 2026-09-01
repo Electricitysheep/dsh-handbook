@@ -129,7 +129,7 @@ flowchart TB
 
 | 维度 | **dsh** | Claude Code | OpenAI Codex | OpenCode | Gemini CLI | Kimi CLI |
 |---|---|---|---|---|---|---|
-| 开源 | ✅ MIT | ❌ 闭源 | ✅ Apache-2.0（CLI/harness） | ✅ MIT | ❌ 闭源 | ❌ 闭源 |
+| 开源 | ✅ MIT | ❌ 闭源 | ✅ Apache-2.0（CLI/harness） | ✅ MIT | ✅ Apache-2.0 | ❌ 闭源 |
 | 模型绑定 | 模型无关（官方适配 DeepSeek） | Claude 系 | GPT 系 | 任意 | Gemini 系 | Kimi 系 |
 | 官方运行时 | ✅（web + headless + 插件生态） | 产品即运行时 | 产品即运行时 | 客户端（无官方后端） | 产品即运行时 | 产品即运行时 |
 | **插件体系** | **官方级：一切皆插件，60+ 官方包** | 配置/钩子为主 | 配置为主 | 配置为主 | 无 | 无 |
