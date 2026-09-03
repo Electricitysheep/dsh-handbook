@@ -452,7 +452,7 @@ agent-default-model:
 | [dsh-usage](https://github.com/kestiany/dsh-usage) | Token 用量 + 费用估算 + 52 周热力图（#1169） |
 | [dsh-sgme](https://github.com/freehul/sgme) | 记忆引擎：按场景注入 + 自动剪枝（省 65-96% 会话，#1052） |
 | [AgentSoul](https://github.com/yuhui-sama/dsh-agentsoul) | 本地人格 + 长期记忆 + 记忆蒸馏（#1478） |
-| [dsh-vault](https://github.com/akslcw/dsh-vault) | 加密凭据保险库：TOTP/API Key/SSH 加密存储（#1457） |
+| [dsh-vault](https://github.com/Ox0400/dsh-vault) | 加密凭据保险库：TOTP/API Key/SSH 加密存储（#1457） |
 
 > 完整列表见 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)（122+ 插件）。想被收录？[社区案例征集](https://github.com/Electricitysheep/dsh-handbook/discussions/12)
 
