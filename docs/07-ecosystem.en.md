@@ -33,6 +33,7 @@
 | `DSH-better-sidebar` | File management / terminal / Git / browser sidebar | Most complete community plugin |
 | Example speed-up plugin | Tool-call speed-up (automatic reasoning_effort adjustment) | Teaching example (Chapter 4) |
 | `dsh-handbook` (this handbook) | Beginner tutorial | Ecosystem documentation |
+| **dsh-session-enhance** | Full-control session management for DSH Web: archive, guaranteed physical delete (tombstone anti-resurrection), drag-and-drop workspace moves, notifications, copy session ID, one-click record sync | [Tinger-X/dsh-session-enhance](https://github.com/Tinger-X/dsh-session-enhance) (npm `dsh-session-enhance@0.2.8`, Apache-2.0), show-and-tell [#5156](https://github.com/deepseek-ai/deepseek-harness/discussions/5156) |
 
 **Discovering plugins:** Search GitHub for `topic:dsh-plugin`.
 **Publishing a plugin:** Add the `dsh-plugin` topic to your repo + publish on npm.
