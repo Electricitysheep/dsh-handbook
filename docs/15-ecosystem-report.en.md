@@ -68,6 +68,8 @@ Data side: **only 9 plugins in the sandbox category** (security tooling is scarc
 
 **Cross-validation**: security demand is high (active auditing) but security tools are few (9 sandbox plugins) — **a supply gap**.
 
+**Community first mover**: [dsh-plugin-certification](https://github.com/PerryLink/dsh-plugin-certification) fills the validation half of the registry gap — a public spec v1 with five reproducible dimensions (manifest compliance / build hygiene / supply-chain Scorecard / release provenance / sandboxed install smoke), a public registry (`data/certified.json`) and README badges. First certified entry: PerryLink/dsh-auto-review, grade B, snapshot 2026-09-03.
+
 ### Insight 4: A family of serialization / boundary bugs is breaking out at once
 
 Discussion side: unknown tool "" (#725 / #1405), reasoning serialization elision (#739 / #1850), truncated tool-call contamination (#1519), run_code async callback drops (#1476), corrupted sessions dragging down boot (#1473 / #1497) — **all boundary issues in the llm-deepseek serialization layer / session state machine**.
