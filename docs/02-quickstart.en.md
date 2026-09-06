@@ -25,14 +25,14 @@ First run downloads dsh (large package, 40+ plugin modules, 1-3 min). You're goo
 
 <!-- [style] 输出/目录类代码块统一补 text 语言标签 -->
 ```text
-0.1.0-rc.7
+0.1.2-rc.1
 ```
 
-> ⚠️ **Version vs npm dist-tag skew** (verified 2026-08-21): `0.1.0-rc.8` shipped on 2026-08-19, but npm's `latest` tag still points at `0.1.0-rc.7` (`next` points at `0.1.1-rc.1`). So the command above actually installs **rc.7, not rc.8**. Pin the version explicitly to get rc.8:
+> ⚠️ **npm published line vs GitHub tag** (verified 2026-09-06): npm's `latest` tag points at `0.1.2-rc.1` (`next` is also `0.1.2-rc.1`, `alpha` is `0.1.2-alpha.5`); the newest GitHub tag is `v0.1.3-alpha.1`, not yet published to npm. The commands below install the npm published line:
 >
 > ```bash
-> npx -y @deepseek-ai/dsh@0.1.0-rc.8 --version
-> npm install -g @deepseek-ai/dsh@0.1.0-rc.8
+> npx -y @deepseek-ai/dsh@0.1.2-rc.1 --version
+> npm install -g @deepseek-ai/dsh@0.1.2-rc.1
 > ```
 >
 > Check what the tags resolve to at any time: `npm view @deepseek-ai/dsh dist-tags`
@@ -190,7 +190,7 @@ agent-default-model:
 | `npx` very slow | first-run package size; `npm i -g` helps |
 | browser can't reach 3080 | port busy: `netstat -ano \| findstr 3080` → kill PID |
 | model not responding | check `~/.dsh/settings.yaml` + API key |
-| plugin install 404 | **rc.1 dependency break**: use `^0.1.0-rc.6` line (Ch.3 pitfall #1) |
+| plugin install 404 | **rc.1 dependency break**: use the `>=0.1.2-rc.1 <0.2.0` line (Ch.3 pitfall #1) |
 | behavior changed after upgrade | rc-stage breaking changes; check changelog |
 
 ---

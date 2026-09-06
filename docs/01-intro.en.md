@@ -22,7 +22,7 @@ A model (DeepSeek V4) only "replies with text." To make it work in your reposito
 | Open-sourced | 2026-08-13 |
 | License | MIT |
 | Language | TypeScript (Node.js ≥ 22) |
-| Version | `0.1.0-rc.x` (rc.8; fast iteration, breaking changes expected) |
+| Version | `0.1.x` (GitHub tag `v0.1.3-alpha.1`; npm published line `0.1.2-rc.1`; fast iteration, breaking changes expected) |
 | Runtime | Cordis |
 | Built-in profiles | `web` + `headless` |
 

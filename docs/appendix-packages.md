@@ -118,7 +118,7 @@ dsh 的"地基"：装一个 `@deepseek-ai/dsh` 就能跑，profile 由内置 bun
 | `@deepseek-ai/dsh-pty` | rc.1 时代依赖，从未发布（`pnpm dlx` 404 的根因，见第 2 章 FAQ） |
 | `@deepseek-ai/dsh-type-meta` | rc.1 时代依赖，从未发布（rc.1 依赖断裂的根因，见第 3 章 3.5 节） |
 
-> 规避方式：依赖统一走 `^0.1.0-rc.6` 线（caret 语义已覆盖 rc.7/rc.8，**不要逐版本上调**——写成 `^0.1.0-rc.8` 会把 rc.6/rc.7 用户挡在门外）。
+> 规避方式：依赖统一走 `>=0.1.2-rc.1 <0.2.0`（npm 已发布线 `0.1.2-rc.1`；**不要写旧 rc caret**——prerelease-tuple 规则下 `^0.1.0-rc.6` 只匹配 rc.6 一行，与 0.1.2-rc.1 波次冲突会导致 tarball 裸装失败）。
 >
 > **根因（2026-08-21 实测补充）**：多数 `@deepseek-ai/dsh-*` 包的 npm `latest` dist-tag **至今仍指向废弃的 `0.0.1-rc.1`**（实测 `dsh-base`、`dsh-tool-fs`、`dsh-tool-pwsh`、`dsh-pwsh-local`、`dsh-tool-bash-persistent` 等均如此；`dsh-agent` 停在 `0.1.0-rc.6`），而 `0.1.0-rc.8`／`0.1.1-rc.1` 虽已发布却未打标签。因此**不写版本号直接 `pnpm add @deepseek-ai/dsh-*` 会被解析回 rc.1 线**，进而拉入上表两个从未发布的包而 404——这正是「rc.1 依赖断裂」的机制。
 >

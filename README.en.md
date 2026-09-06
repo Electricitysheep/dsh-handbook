@@ -17,12 +17,12 @@
 ![chapters](https://img.shields.io/badge/chapters-15-green)
 ![pdf](https://img.shields.io/badge/PDF-1.6MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
-![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.8-8A2BE2)
+![dsh](https://img.shields.io/badge/dsh-v0.1.3--alpha.1-8A2BE2)
 
 </div>
 
 > [!WARNING]
-> dsh is currently at `0.1.0-rc.8` (pre-release). API/config may change with breaking changes; evaluate carefully before production use.
+> dsh's current GitHub version is `v0.1.3-alpha.1` (pre-release tag; npm published line `0.1.2-rc.1`). API/config may change with breaking changes; evaluate carefully before production use. See [ℹ️ Version](#ℹ️-version).
 
 ## 🚀 30-Second Quickstart
 
@@ -347,7 +347,7 @@ agent-default-model:
 1. **Is dsh a model?** No — a runtime; models plug in via the llm plugin
 2. **vs Claude Code?** Claude Code is the "whole car"; dsh is the "LEGO base" (open, customizable)
 3. **Does it cost money?** dsh is free/open-source; conversations billed per use (cache discount: Flash tier 98% / Pro tier 99%+, ~97% session cache hit rate measured)
-4. **Plugin 404?** rc.1 dependency breakage — pin the `^0.1.0-rc.6` line
+4. **Plugin 404?** rc.1 dependency breakage — use the `>=0.1.2-rc.1 <0.2.0` line
 5. **Production-ready?** rc stage has breaking changes; ecosystem play is fine now
 > Full FAQ: [docs/faq.md](./docs/faq.md)
 </details>
@@ -420,7 +420,7 @@ Active on [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek
 
 ## ℹ️ Version
 
-- Prose measured against dsh `0.1.0-rc.6` / DeepSeek-V4-Flash-0731 (open-sourced 2026-08-13); version line synced to `0.1.0-rc.8`
+- Prose measured against dsh `0.1.0-rc.6` / DeepSeek-V4-Flash-0731 (open-sourced 2026-08-13); version line synced to `v0.1.3-alpha.1` (npm published line `0.1.2-rc.1`)
 - Verified on Windows 11 + Node 24
 
 ## 📜 License

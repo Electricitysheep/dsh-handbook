@@ -18,12 +18,12 @@
 ![chapters](https://img.shields.io/badge/章节-15-green)
 ![pdf](https://img.shields.io/badge/PDF-5.5MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
-![dsh](https://img.shields.io/badge/dsh-0.1.0--rc.8-8A2BE2)
+![dsh](https://img.shields.io/badge/dsh-v0.1.3--alpha.1-8A2BE2)
 
 </div>
 
 > [!WARNING]
-> dsh 当前为 `0.1.0-rc.8`（预发布阶段），生产环境请谨慎评估，详见 [ℹ️ 版本说明](#ℹ️-版本说明)。
+> dsh 当前 GitHub 版本为 `v0.1.3-alpha.1`（预发布 tag；npm 已发布线 `0.1.2-rc.1`），生产环境请谨慎评估，详见 [ℹ️ 版本说明](#ℹ️-版本说明)。
 
 ## 🚀 快速体验（30 秒）
 
@@ -390,7 +390,7 @@ agent-default-model:
 1. **dsh 是模型吗？** 不是——是运行时，模型通过 llm 插件接入
 2. **和 Claude Code 区别？** Claude Code 是"整车"，dsh 是"乐高底座"（开源可定制）
 3. **要花钱吗？** dsh 免费开源；对话按量付费（缓存折扣：Flash 档 98% / Pro 档 99%+，实测会话缓存命中率 97%）
-4. **插件装不上 404？** rc.1 依赖断裂——用 `^0.1.0-rc.6` 线
+4. **插件装不上 404？** rc.1 依赖断裂——依赖线用 `>=0.1.2-rc.1 <0.2.0`
 5. **能进生产吗？** rc 阶段有破坏性变更；生态玩法现在可入
 > 完整 FAQ（六类）：[docs/faq.md](./docs/faq.md)
 </details>
@@ -469,7 +469,7 @@ agent-default-model:
 
 ## ℹ️ 版本说明
 
-- 正文实测基于 dsh `0.1.0-rc.6` / DeepSeek-V4-Flash-0731（2026-08-13 开源）；版本线已同步至 `0.1.0-rc.8`
+- 正文实测基于 dsh `0.1.0-rc.6` / DeepSeek-V4-Flash-0731（2026-08-13 开源）；版本线已同步至 `v0.1.3-alpha.1`（npm 已发布线 `0.1.2-rc.1`）
 - 示例环境：Windows 11 + Node 24
 
 ### 🔄 最近更新

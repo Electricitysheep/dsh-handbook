@@ -65,7 +65,7 @@ rc.6 流式解析 bug：SSE 分块覆盖赋值把工具名/ID 抹成空串（[#7
 ## 插件开发
 
 **Q：插件装不上（404）？**
-rc.1 依赖断裂——确认用 `^0.1.0-rc.6` 线（第 3 章坑 #1）。
+rc.1 依赖断裂——确认依赖线用 `>=0.1.2-rc.1 <0.2.0`（第 3 章坑 #1）。
 
 **Q：写第一个插件最容易踩哪些坑？（社区六坑）**
 来源：官方讨论区 [#380](https://github.com/deepseek-ai/deepseek-harness/discussions/380)「写第一个 dsh 插件踩的六个坑」（作者 codeAnqiang-ma 授权收录，dsh `0.1.0-rc.6` 本机复核，致谢 @codeAnqiang-ma）。忠实提炼：
