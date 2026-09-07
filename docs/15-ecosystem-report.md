@@ -113,7 +113,7 @@
 
 ### 如果你是插件开发者
 1. **缺口优先**：金融/数据库/音频/评测是蓝海（竞争对手少，需求确定）
-2. **安全工具稀缺**：sandbox 分类仅 9 个——安全/权限/审计类插件供给不足
+2. **安全工具稀缺**：sandbox 分类仅 9 个——安全/权限/审计类插件供给不足；验证层已有社区先行项目：[dsh-plugin-certification](https://github.com/PerryLink/dsh-plugin-certification)（公开 spec v1 + 五维可复现验收：manifest 合规 / 构建卫生 / 供应链 Scorecard / 发布 provenance / 沙箱安装冒烟；公开 registry `data/certified.json` + README 徽章；首条认证 PerryLink/dsh-auto-review，评级 B，快照 2026-09-03）
 3. **视觉/记忆是热点**：但竞争激烈，差异化（垂直场景/企业）比跟风更优
 
 ### 如果你在选型
