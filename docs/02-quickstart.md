@@ -59,14 +59,14 @@ npx -y @deepseek-ai/dsh --version
 
 <!-- [style] 输出/目录类代码块统一补 text 语言标签 -->
 ```text
-0.1.0-rc.7
+0.1.2-rc.1
 ```
 
-> ⚠️ **版本号与 npm dist-tag 不同步**（2026-08-21 实测）：官方已发布 `0.1.0-rc.8`（2026-08-19），但 npm 的 `latest` 标签仍指向 `0.1.0-rc.7`（`next` 指向 `0.1.1-rc.1`）。所以上面这条命令实际装到的是 **rc.7 而不是 rc.8**。需要 rc.8 必须显式指定版本：
+> ⚠️ **npm 已发布线与 GitHub tag**（2026-09-06 实测）：npm 的 `latest` 标签指向 `0.1.2-rc.1`（`next` 同为 `0.1.2-rc.1`，`alpha` 为 `0.1.2-alpha.5`）；GitHub 最新 tag 为 `v0.1.3-alpha.1`，尚未发布到 npm。下面命令按 npm 已发布线安装：
 >
 > ```bash
-> npx -y @deepseek-ai/dsh@0.1.0-rc.8 --version
-> npm install -g @deepseek-ai/dsh@0.1.0-rc.8
+> npx -y @deepseek-ai/dsh@0.1.2-rc.1 --version
+> npm install -g @deepseek-ai/dsh@0.1.2-rc.1
 > ```
 >
 > 随时核对各标签实际指向：`npm view @deepseek-ai/dsh dist-tags`
@@ -267,7 +267,7 @@ agent-default-model:
 | `npx` 极慢 | 首次下载包体大；`npm i -g` 后更快 |
 | 浏览器打不开 3080 | 端口被占：`netstat -ano \| findstr 3080` → kill PID |
 | 模型无响应 | 检查 `~/.dsh/settings.yaml` 模型配置 + API Key |
-| 插件装不上（404） | **rc.1 依赖断裂**：确认依赖用 `^0.1.0-rc.6` 线（第 3 章常见坑 #1） |
+| 插件装不上（404） | **rc.1 依赖断裂**：确认依赖线用 `>=0.1.2-rc.1 <0.2.0`（第 3 章常见坑 #1） |
 | 升级后行为变了 | rc 阶段破坏性变更正常，看官方 changelog |
 
 ---

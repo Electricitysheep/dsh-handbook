@@ -113,5 +113,5 @@ dsh --dump-default-config  # 不含用户层/补丁
 |---|---|---|
 | 插件没生效 | cordis.patch.yml 没挂载 / 依赖没装 | 检查 insert 行 + `pnpm install` |
 | 改了 settings 没反应 | 未重启 | 重启 `dsh web` |
-| 依赖 404 | rc.1 线断裂 | 用 `^0.1.0-rc.6` |
+| 依赖 404 | rc.1 线断裂 | 用 `>=0.1.2-rc.1 <0.2.0` |
 | YAML 解析失败 | 顶层混用 `[]` 和块式条目 | 统一用块式数组 |

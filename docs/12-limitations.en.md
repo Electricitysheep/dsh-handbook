@@ -1,6 +1,6 @@
 # Chapter 12: Known Limitations & Boundaries — the Honest Edition
 
-> Goal: list dsh's **known limitations** and usage boundaries without hype. When this handbook was written, dsh was still at `0.1.0-rc.6` (pre-release; the version line has since moved to `0.1.0-rc.8`). These limitations are "facts of this moment", not "permanent fate" — they will change as versions iterate.
+> Goal: list dsh's **known limitations** and usage boundaries without hype. When this handbook was written, dsh was still at `0.1.0-rc.6` (pre-release; the version line has since moved to `v0.1.3-alpha.1`, npm published line `0.1.2-rc.1`). These limitations are "facts of this moment", not "permanent fate" — they will change as versions iterate.
 >
 > All "known issues" come from hands-on testing + public feedback in the official repo discussions (deepseek-ai/deepseek-harness, as of 2026-08-13).
 
@@ -22,7 +22,7 @@ dsh has gone through at least one **dependency breakage** from rc.1 to rc.8: inc
 
 **Real impact on you**:
 - Tutorials/plugins may need rewriting every couple of weeks
-- Pinning the version line (`^0.1.0-rc.6`) is the baseline; but whether an rc-line upgrade is "backward compatible" or "start over" depends on the official team's mood
+- Pinning the version line (`>=0.1.2-rc.1 <0.2.0`) is the baseline; but whether an rc-line upgrade is "backward compatible" or "start over" depends on the official team's mood
 
 > [!WARNING]
 > Evaluate carefully before production use. At writing time the official team is iterating fast — **what works today may be deprecated tomorrow**.
@@ -91,7 +91,7 @@ Black swans a selector must consider:
 
 Finally, honestly about this handbook itself:
 
-- **Written against rc.6**: every command, config, and data point was verified on rc.6; the version line has since moved to rc.8, but **figures labelled rc.6 have not been re-run on rc.8** — **newer versions may invalidate everything**
+- **Written against rc.6**: every command, config, and data point was verified on rc.6; the version line has since moved to v0.1.3-alpha.1 (npm 0.1.2-rc.1), but **figures labelled rc.6 have not been re-run on the new line** — **newer versions may invalidate everything**
 - **Limited benchmark sample**: single machine, single model, limited task set — not an authoritative evaluation
 - **Chinese-first**: the English edition is a translation/condensation and may lag the Chinese content
 - **Incomplete coverage**: dsh has 60+ official packages; this handbook deep-dives the core path; long-tail plugins aren't covered one by one
