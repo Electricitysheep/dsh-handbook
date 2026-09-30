@@ -64,6 +64,8 @@ dsh's context mechanism:
 - **Skill catalog injection:** The list of available skills enters the context; the model calls them as needed
 - **Tool schemas:** Every request carries tool definitions
 
+**How big is that context on the wire?** (measured, non-interactive) A local proxy recorded one non-interactive `deepseek-flash` request on 2026-09-17: the system prompt was **4,656 characters**, and **25 tool definitions** travelled with it — more than the short verb names in 8.2, because that table records names seen being *called* in logs, while the request declares everything the model *may* call. Prompt text and reproduction steps: [dsh capture](https://github.com/Continuum-AI-Corp/OrcaPromptVault/blob/main/DeepSeek/dsh-deepseek-flash-system-prompt-2026-09-17.md) (only the prompt text was kept for that run; the tool schema was not archived).
+
 ## 8.4 Long Conversations: Compaction
 
 Long conversations blow up the context window. dsh's `compaction` plugins (e.g. `compaction-basic`) handle:

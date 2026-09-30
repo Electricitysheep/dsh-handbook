@@ -77,6 +77,8 @@ dsh 的上下文机制：
 - **技能目录注入**：可用技能列表进入上下文，模型按需调用
 - **工具 schema**：每步请求携带工具定义
 
+**这段上下文在线上有多大？**（实测补充，非交互模式）2026-09-17 用本地代理抓 `deepseek-flash` 的一次非交互请求：系统提示 **4,656 字符**，同一请求随行 **25 个工具定义**——比 8.2 表里常见的那几个动词名多，因为那张表记的是日志里看见模型调用过的名字，而请求里声明的是模型**可以**调用的全集。提示词原文与复现步骤：[dsh 实抓](https://github.com/Continuum-AI-Corp/OrcaPromptVault/blob/main/DeepSeek/dsh-deepseek-flash-system-prompt-2026-09-17.md)（该次只留了提示词文本，工具 schema 未存档）。
+
 ### 8.3.1 PTC 模式（Code mode）：一段代码编排多轮工具调用
 
 **PTC = Programmatic Tool Calling（程序化工具调用）**——官方中文站称「PTC 模式」，官方英文页面对应 **Code mode**（[#1052](https://github.com/deepseek-ai/deepseek-harness/discussions/1052) 评论区社区详解；官方站点原文："PTC 模式通过模型生成的一段代码组合多轮工具调用"）。
