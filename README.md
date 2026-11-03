@@ -18,17 +18,17 @@
 ![chapters](https://img.shields.io/badge/章节-15-green)
 ![pdf](https://img.shields.io/badge/PDF-5.5MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
-![dsh](https://img.shields.io/badge/dsh-v0.1.3--alpha.1-8A2BE2)
+![dsh](https://img.shields.io/badge/dsh-v0.2.2--alpha.3-8A2BE2)
 
 </div>
 
 > [!WARNING]
-> dsh 当前 GitHub 版本为 `v0.1.3-alpha.1`（预发布 tag；npm 已发布线 `0.1.2-rc.1`），生产环境请谨慎评估，详见 [ℹ️ 版本说明](#ℹ️-版本说明)。
+> **正文实测基线是 `0.1.0-rc.6`（版本线同步到 `v0.1.3-alpha.1`），当前 DSH 已是 `v0.2.2-alpha.3`。** 自该基线以来有破坏性变更：Node `>=24.9`（0.2.2 起）、`engines.dsh` 强制校验（0.2.1-alpha.4 起）、`ctx.menus` 移除（0.2.2-alpha.3，改名 `ctx.contextMenus`）；另有 `@deepseek-ai/dsh-client-runtime` 在 0.1.2 移除、Typert codec 在 0.1.6-alpha.2 改为 `create()`。按本手册操作前，请以[官方文档](https://deepseek-harness.github.io/deepseek-harness/)与[升级指南](https://github.com/deepseek-ai/deepseek-harness/tree/master/docs/upgrade-guide)为准；正文示例可能仍按 0.1 API 编写。
 
 ## 🚀 快速体验（30 秒）
 
 ```bash
-# 1. 安装（需要 Node.js ≥ 22）
+# 1. 安装（需要 Node.js ≥ 24.9）
 npx -y @deepseek-ai/dsh web
 
 # 2. 浏览器打开 http://127.0.0.1:3080，开始对话
