@@ -17,17 +17,17 @@
 ![chapters](https://img.shields.io/badge/chapters-15-green)
 ![pdf](https://img.shields.io/badge/PDF-1.6MB-orange)
 ![license](https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey)
-![dsh](https://img.shields.io/badge/dsh-v0.1.3--alpha.1-8A2BE2)
+![dsh](https://img.shields.io/badge/dsh-v0.2.2--alpha.3-8A2BE2)
 
 </div>
 
 > [!WARNING]
-> dsh's current GitHub version is `v0.1.3-alpha.1` (pre-release tag; npm published line `0.1.2-rc.1`). API/config may change with breaking changes; evaluate carefully before production use. See [ℹ️ Version](#ℹ️-version).
+> **The prose was measured on `0.1.0-rc.6` (the version line was synced to `v0.1.3-alpha.1`); DSH is now `v0.2.2-alpha.3`.** Breaking changes since that baseline: Node `>=24.9` (0.2.2), enforced `engines.dsh` (0.2.1-alpha.4), removal of `ctx.menus` (0.2.2-alpha.3, renamed `ctx.contextMenus`); separately, `@deepseek-ai/dsh-client-runtime` was removed in 0.1.2 and Typert codecs moved to `create()` in 0.1.6-alpha.2. Before following this handbook, check the [official docs](https://deepseek-harness.github.io/deepseek-harness/) and the [upgrade guides](https://github.com/deepseek-ai/deepseek-harness/tree/master/docs/upgrade-guide); examples may still target the 0.1 API.
 
 ## 🚀 30-Second Quickstart
 
 ```bash
-# 1. Install (needs Node.js ≥ 22)
+# 1. Install (needs Node.js ≥ 24.9)
 npx -y @deepseek-ai/dsh web
 
 # 2. Open http://127.0.0.1:3080 and start chatting
