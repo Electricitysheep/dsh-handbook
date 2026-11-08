@@ -8,7 +8,7 @@
 
 ```
 plugin-template/
-├── package.json          # host 插件声明（`>=0.1.2-rc.1 <0.2.0` 依赖线）
+├── package.json          # host 插件声明（`>=0.2.2-rc.1 <0.3.0` 依赖线，`engines.dsh` 同为 0.2 线）
 ├── tsconfig.json
 ├── src/
 │   ├── policy.ts         # 纯函数：决策逻辑（零依赖，可单测）
@@ -24,8 +24,8 @@ plugin-template/
 # 1. 复制模板（改名为你的插件）
 cp -r plugin-template my-plugin && cd my-plugin
 # 2. 改 package.json 的 name 字段
-# 3. 安装 + 测试
-npm install && npm test
+# 3. 安装 + 测试（模板已在 0.2.2-rc.1 下验证 8 个测试 + typecheck）
+npm install && npm test && npm run typecheck
 # 4. 挂载到 dsh（见下）
 ```
 
