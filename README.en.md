@@ -3,7 +3,7 @@
 > **From zero to one with DeepSeek Harness — the beginner's encyclopedia for DeepSeek's open-source agent runtime.**
 > English · [中文](./README.md)
 
-**📖 [Read online](https://electricitysheep.github.io/dsh-handbook/) · 📄 [Download PDF](./DeepSeek-Harness-Handbook.pdf) · ⭐ [Star us](https://github.com/Electricitysheep/dsh-handbook/stargazers)**
+**📖 [Read online](https://electricitysheep.github.io/dsh-handbook/) · 📄 [Download PDF](https://github.com/Electricitysheep/dsh-handbook/releases/download/v1.8.0/DeepSeek-Harness-Handbook.pdf) · ⭐ [Star us](https://github.com/Electricitysheep/dsh-handbook/stargazers)**
 
 <p align="center">
   <img src="./docs/assets/banner.svg" alt="dsh-handbook banner" width="720"/>
@@ -384,8 +384,8 @@ agent-default-model:
 
 ## 📄 PDF
 
-- **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](./DeepSeek-Harness-白皮书.pdf) (15 chapters + appendices A–C, ~130k+ chars, 5.5MB, professional typesetting: cover/TOC/styles)
-- **English edition**: [DeepSeek-Harness-Handbook.pdf](./DeepSeek-Harness-Handbook.pdf) (14 chapters + appendices, 81 pages, ~150k chars, 1.6MB, professional typesetting: cover/TOC/styles; appendices in Chinese original — EN edition covers 14 chapters; Ch. 15 available online)
+- **Chinese full edition**: [DeepSeek-Harness-白皮书.pdf](https://github.com/Electricitysheep/dsh-handbook/releases/download/v1.8.0/DeepSeek-Harness-.pdf) (15 chapters + appendices A–C, ~130k+ chars, 5.5MB, professional typesetting: cover/TOC/styles)
+- **English edition**: [DeepSeek-Harness-Handbook.pdf](https://github.com/Electricitysheep/dsh-handbook/releases/download/v1.8.0/DeepSeek-Harness-Handbook.pdf) (14 chapters + appendices, 81 pages, ~150k chars, 1.6MB, professional typesetting: cover/TOC/styles; appendices in Chinese original — EN edition covers 14 chapters; Ch. 15 available online)
 
 ## 🌐 Ecosystem Links
 
