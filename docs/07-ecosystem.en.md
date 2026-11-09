@@ -34,6 +34,7 @@
 | Example speed-up plugin | Tool-call speed-up (automatic reasoning_effort adjustment) | Teaching example (Chapter 4) |
 | `dsh-handbook` (this handbook) | Beginner tutorial | Ecosystem documentation |
 | **dsh-session-enhance** | Full-control session management for DSH Web: archive, guaranteed physical delete (tombstone anti-resurrection), drag-and-drop workspace moves, notifications, copy session ID, one-click record sync | [Tinger-X/dsh-session-enhance](https://github.com/Tinger-X/dsh-session-enhance) (npm `dsh-session-enhance@0.2.8`, Apache-2.0), show-and-tell [#5156](https://github.com/deepseek-ai/deepseek-harness/discussions/5156) |
+| **dsh-keenable** | Web search: points the built-in `web_search` / `web_fetch` at Keenable, adds no new tools; no API key or account needed, so search works with local or third-party models (the built-in provider needs a DeepSeek account or key); pages are fetched on Keenable's servers, private hosts refused; optional `KEENABLE_API_KEY` lifts the keyless rate limit (10 req/s, 1,000/h per IP) | [keenableai/dsh-keenable](https://github.com/keenableai/dsh-keenable) (npm `@keenable/dsh-keenable@0.1.2`, MIT, dsh 0.2.0-rc.2 up to 0.4) |
 
 **Discovering plugins:** Search GitHub for `topic:dsh-plugin`.
 **Publishing a plugin:** Add the `dsh-plugin` topic to your repo + publish on npm.
