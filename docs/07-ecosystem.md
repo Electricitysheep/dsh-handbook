@@ -86,6 +86,7 @@
 | **dsh-progress-viz** | headless 长任务可见化：live stage/ETA 仪表盘（headless 默认只打印最终答案，长任务看不出进度） | [#2442](https://github.com/deepseek-ai/deepseek-harness/discussions/2442) |
 | **memory-porter** | 把 Claude/ChatGPT 历史记忆迁入 DSH（含逐字证据核对）——记忆家族"搬旧数据"方案 | [#2819](https://github.com/deepseek-ai/deepseek-harness/discussions/2819) |
 | **dsh-session-enhance** | 会话管理增强：归档管理 / 真实物理删除（墓碑防复活）/ 跨工作区拖拽搬移 / 对话通知 / 复制会话 ID / 一键同步记录 | [Tinger-X/dsh-session-enhance](https://github.com/Tinger-X/dsh-session-enhance)（npm `dsh-session-enhance@0.2.8`，Apache-2.0），展示帖 [#5156](https://github.com/deepseek-ai/deepseek-harness/discussions/5156) |
+| **dsh-keenable** | 联网搜索：把内置 `web_search` / `web_fetch` 指向 Keenable，不新增工具；无需 API Key 和账号，本地或第三方模型也能搜索（内置搜索需 DeepSeek 账号或 Key）；网页由 Keenable 服务器抓取，拒绝内网地址；可选 `KEENABLE_API_KEY` 解除免 Key 限速（每 IP 10 次/秒、1000 次/小时） | [keenableai/dsh-keenable](https://github.com/keenableai/dsh-keenable)（npm `@keenable/dsh-keenable@0.1.2`，MIT，dsh 0.2.0-rc.2 起、0.4 以下） |
 
 **发现插件**：GitHub 搜 `topic:dsh-plugin`。
 **发布插件**：给你的仓库加 `dsh-plugin` topic + npm 发布。
